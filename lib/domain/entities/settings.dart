@@ -1,7 +1,7 @@
 /// A class that represent the [Settings]
 ///
 /// This class includes properties for the Settings: [isLoggedIn]
-/// futhermore it includes methodes for converting fromJson, toJson and tostring
+/// furthermore it includes methods for converting fromJson, toJson and toString
 class Settings{
   bool isLoggedIn;
 

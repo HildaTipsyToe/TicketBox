@@ -1,7 +1,7 @@
 /// A class that represent the [Post]
 ///
 /// This class includes properties for the Posts: [postId], [adminId], [adminName], [groupId], [dateIssued], [price], [receiverId], [receiverName], [ticketTypeId] & [ticketTypeName],
-/// futhermore it includes methodes for converting fromJson, toJson, copyWith and tostring
+/// furthermore it includes methods for converting fromJson, toJson, copyWith and toString
 class Post {
   final String postId;
   final String adminId;

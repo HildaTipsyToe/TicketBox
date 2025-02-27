@@ -1,7 +1,7 @@
 /// A class that represent the [Membership]
 ///
 /// This class includes properties for the Memberships: [membershipId], [userId], [userName], [groupId], [groupName], [balance] & [roleId]
-/// futhermore it includes methodes for converting fromJson, toJson, copyWith and tostring
+/// furthermore it includes methods for converting fromJson, toJson, copyWith and toString
 class Membership {
   final String membershipId;
   final String userId;

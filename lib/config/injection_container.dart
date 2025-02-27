@@ -1,6 +1,8 @@
 
 import 'package:get_it/get_it.dart';
 
+import '../infrastructure/repository/auth_repository.dart';
+
 final sl = GetIt.instance;
 bool mock = false;
 
@@ -30,14 +32,14 @@ void _initUseCases() {
 
 void _initRepositories() {
   if (mock) {
-    // sl.registerLazySingleton<IAuthRepository>(() => AuthRepositoryMock());
+    sl.registerLazySingleton<IAuthRepository>(() => AuthRepositoryMock());
     // sl.registerLazySingleton<IUserRepository>(() => UserRepositoryMock(sl<ApiDataSource>()));
     // sl.registerLazySingleton<IGroupRepository>(() => GroupRepositoryImpl(sl<ApiDataSource>()));
     // sl.registerLazySingleton<IMembershipRepository>(() => MembershipRepositoryImpl(sl<ApiDataSource>()));
     // sl.registerLazySingleton<ITicketTypeRepository>(() => TicketTypeRepositoryImpl(sl<ApiDataSource>()));
     // sl.registerLazySingleton<IPostRepository>(() => PostRepositoryImpl(sl<ApiDataSource>()));
   } else {
-    // sl.registerLazySingleton<IAuthRepository>(() => AuthRepositoryImpl());
+    sl.registerLazySingleton<IAuthRepository>(() => AuthRepositoryImpl());
     // sl.registerLazySingleton<IUserRepository>(() => UserRepositoryImpl(sl<ApiDataSource>()));
     // sl.registerLazySingleton<IGroupRepository>(() => GroupRepositoryImpl(sl<ApiDataSource>()));
     // sl.registerLazySingleton<IMembershipRepository>(() => MembershipRepositoryImpl(sl<ApiDataSource>()));

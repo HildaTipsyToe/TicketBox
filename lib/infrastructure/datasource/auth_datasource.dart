@@ -4,6 +4,7 @@ import '../../config/injection_container.dart';
 
 import '../../domain/entities/settings.dart';
 import '../../domain/entities/user.dart';
+import '../repository/auth_repository.dart';
 
 abstract class AuthDataSource {
 
@@ -70,7 +71,7 @@ class FirebaseAuthDataSource extends AuthDataSource {
       sl<BKUser>().userId = temp!.uid;
       sl<BKUser>().userName = temp.displayName!;
       sl<BKUser>().userMail = temp.email!;
-      sl<IUserRepository>().createUser(temp.uid, temp.displayName!, temp.email!);
+      // sl<IUserRepository>().createUser(temp.uid, temp.displayName!, temp.email!);
     } on FirebaseAuthException catch (error) {
       throw AuthError(message: error.message, code: error.code);
     }

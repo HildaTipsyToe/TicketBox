@@ -1,7 +1,7 @@
 /// A class that represent the [BKUser]
 ///
 /// This class includes properties for the users: [userId], [userName] & [userMail],
-/// futhermore it includes methodes for converting fromJson, and tostring
+/// furthermore it includes methods for converting fromJson, and toString
 class BKUser {
   String userId;
   String userName;
