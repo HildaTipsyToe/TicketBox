@@ -1,5 +1,7 @@
 /// A class that represent the [Messages]
 ///
+/// This class includes properties for the Groups: [groupId] & [groupName]
+/// furthermore it includes methods for converting fromJson, toJson and toString
 /// This class includes properties for the Groups: [messageId], [userId], [groupId], [timeStamp] & [text]
 /// futhermore it includes methodes for converting fromMap, toJson and tostring
 class Messages {

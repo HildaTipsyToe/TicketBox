@@ -1,7 +1,7 @@
 /// A class that represent the [Group]
 ///
 /// This class includes properties for the Groups: [groupId] & [groupName]
-/// futhermore it includes methodes for converting fromMap, toJson and tostring
+/// furthermore it includes methods for converting fromMAp, toJson and toString
 class Group {
   final String groupId;
   final String groupName;

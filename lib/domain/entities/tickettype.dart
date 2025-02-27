@@ -1,7 +1,7 @@
 /// A class that represent the [TicketType]
 ///
 /// This class includes properties for the TicketTypes: [ticketTypeId], [ticketName], [groupId] & [price],
-/// futhermore it includes methodes for converting fromMap, toJson, copyWith and tostring
+/// furthermore it includes methods for converting fromMap, toJson, copyWith and toString
 class TicketType {
   final String ticketTypeId;
   final String ticketName;
