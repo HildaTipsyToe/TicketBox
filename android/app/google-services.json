@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "698472966152",
+    "project_id": "ticketbox-57476",
+    "storage_bucket": "ticketbox-57476.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:698472966152:android:63099b88248a67e36b49bd",
+        "android_client_info": {
+          "package_name": "com.tec.ticketbox"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAfjyXEDUiRJpfLfn7qgHitB1NEf8kEUiA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
