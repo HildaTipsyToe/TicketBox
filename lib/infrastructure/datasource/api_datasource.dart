@@ -9,4 +9,5 @@ class ApiDataSource {
   CollectionReference get postCollection => _firestore.collection('Posts');
   CollectionReference get userCollection => _firestore.collection('Users');
   CollectionReference get messageCollection => _firestore.collection('Messages');
+  Stream<QuerySnapshot> get messageStream => _firestore.collection('Messages').snapshots();
 }
