@@ -7,5 +7,6 @@ class ApiDataSource {
 
   CollectionReference get userCollection => _firestore.collection('Users');
   CollectionReference get membershipCollection => _firestore.collection('Memberships');
+  CollectionReference get postCollection => _firestore.collection('Posts');
   
 }
