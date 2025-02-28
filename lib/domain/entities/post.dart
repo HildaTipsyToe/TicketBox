@@ -1,7 +1,7 @@
 /// A class that represent the [Post]
 ///
 /// This class includes properties for the Posts: [postId], [adminId], [adminName], [groupId], [dateIssued], [price], [receiverId], [receiverName], [ticketTypeId] & [ticketTypeName],
-/// furthermore it includes methods for converting fromJson, toJson, copyWith and toString
+/// furthermore it includes methods for converting fromMap, toJson, copyWith and toString
 class Post {
   final String postId;
   final String adminId;
@@ -28,7 +28,7 @@ class Post {
   }) : dateIssued = dateIssued ?? DateTime.now().toString();
 
   /// Factory method to create a [Post] object from a map
-  factory Post.fromJson(Map<String, dynamic> json) {
+  factory Post.fromMap(Map<String, dynamic> json) {
     return Post(
       adminId: json['admin'] ?? '',
       adminName: json['adminName'] ?? '',
