@@ -1,5 +1,7 @@
 
 import 'package:get_it/get_it.dart';
+import 'package:ticketbox/infrastructure/datasource/api_datasource.dart';
+import 'package:ticketbox/infrastructure/repository/user_repository.dart';
 
 import '../infrastructure/repository/auth_repository.dart';
 
@@ -27,7 +29,7 @@ void _initViewModels() {
 
 void _initUseCases() {
   // sl.registerLazySingleton<Settings>(() => Settings(isLoggedIn: false));
-  // sl.registerLazySingleton<BKUser>(() => BKUser(userId: '1', userName: '2', userMail: '3'));
+  // sl.registerLazySingleton<TBUser>(() => TBUser(userId: '1', userName: '2', userMail: '3'));
 }
 
 void _initRepositories() {
@@ -40,7 +42,7 @@ void _initRepositories() {
     // sl.registerLazySingleton<IPostRepository>(() => PostRepositoryImpl(sl<ApiDataSource>()));
   } else {
     sl.registerLazySingleton<IAuthRepository>(() => AuthRepositoryImpl());
-    // sl.registerLazySingleton<IUserRepository>(() => UserRepositoryImpl(sl<ApiDataSource>()));
+    sl.registerLazySingleton<IUserRepository>(() => UserRepository(sl<ApiDataSource>()));
     // sl.registerLazySingleton<IGroupRepository>(() => GroupRepositoryImpl(sl<ApiDataSource>()));
     // sl.registerLazySingleton<IMembershipRepository>(() => MembershipRepositoryImpl(sl<ApiDataSource>()));
     // sl.registerLazySingleton<ITicketTypeRepository>(() => TicketTypeRepositoryImpl(sl<ApiDataSource>()));

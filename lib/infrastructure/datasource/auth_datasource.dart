@@ -31,9 +31,9 @@ class FirebaseAuthDataSource extends AuthDataSource {
   Future<User?> getCurrentUser() async {
     User? temp = firebaseAuth.currentUser;
     if(temp != null){
-    sl<BKUser>().userId = temp.uid;
-    sl<BKUser>().userName = (temp.displayName ?? temp.email)!;
-    sl<BKUser>().userMail = temp.email!;
+    sl<TBUser>().userId = temp.uid;
+    sl<TBUser>().userName = (temp.displayName ?? temp.email)!;
+    sl<TBUser>().userMail = temp.email!;
     return temp;
     }
     return null;
@@ -51,9 +51,9 @@ class FirebaseAuthDataSource extends AuthDataSource {
           email: email, password: password);
           sl<Settings>().isLoggedIn = true;
           User? temp = firebaseAuth.currentUser;
-          sl<BKUser>().userId = temp!.uid;
-          sl<BKUser>().userName = (temp.displayName ?? temp.email)!;
-          sl<BKUser>().userMail = temp.email!;
+          sl<TBUser>().userId = temp!.uid;
+          sl<TBUser>().userName = (temp.displayName ?? temp.email)!;
+          sl<TBUser>().userMail = temp.email!;
 
     } on FirebaseAuthException catch (error) {
       throw AuthError(message: error.message, code: error.code);
@@ -68,9 +68,9 @@ class FirebaseAuthDataSource extends AuthDataSource {
       await firebaseAuth.currentUser?.updateDisplayName(name);
       sl<Settings>().isLoggedIn = true;
       User? temp = firebaseAuth.currentUser;
-      sl<BKUser>().userId = temp!.uid;
-      sl<BKUser>().userName = temp.displayName!;
-      sl<BKUser>().userMail = temp.email!;
+      sl<TBUser>().userId = temp!.uid;
+      sl<TBUser>().userName = temp.displayName!;
+      sl<TBUser>().userMail = temp.email!;
       // sl<IUserRepository>().createUser(temp.uid, temp.displayName!, temp.email!);
     } on FirebaseAuthException catch (error) {
       throw AuthError(message: error.message, code: error.code);
