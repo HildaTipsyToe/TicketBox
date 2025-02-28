@@ -21,7 +21,7 @@ abstract class IMembershipRepository {
 
 /// Class that represent the user repository
 ///
-/// The [MembershipRepository] have methode for:
+/// The [MembershipRepository] have methods for:
 /// - create membership
 /// - retriving membership by user ID
 /// - retriving membership by group ID
