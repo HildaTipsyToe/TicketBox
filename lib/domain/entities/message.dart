@@ -9,7 +9,7 @@ class Message {
   final String userId;
   final String userName;
   final String groupId;
-  final Timestamp timeStamp;
+  final Timestamp? timeStamp;
   final String text;
 
   Message({
@@ -17,7 +17,7 @@ class Message {
     required this.userId,
     required this.userName,
     required this.groupId,
-    required this.timeStamp,
+    this.timeStamp,
     required this.text,
   });
 
@@ -39,7 +39,7 @@ class Message {
       'userId': userId,
       'userName': userName,
       'groupId': groupId,
-      'timeStamp': timeStamp,
+      'timeStamp': FieldValue.serverTimestamp(),
       'text': text,
     };
   }

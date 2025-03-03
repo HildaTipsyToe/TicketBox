@@ -37,7 +37,6 @@ class ChatViewModel extends BaseViewModel {
         userId: '',
         userName: '',
         groupId: '',
-        timeStamp: Timestamp.fromDate(DateTime.now()),
         text: input);
 
     // Call the repository to add the TicketType
