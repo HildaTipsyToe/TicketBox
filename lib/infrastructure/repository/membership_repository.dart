@@ -19,7 +19,7 @@ abstract class IMembershipRepository {
   Future<bool> canUpdateMembershipRole(Membership membership);
 }
 
-/// Class that represent the user repository
+/// Class that represent the membership repository
 ///
 /// The [MembershipRepository] have methods for:
 /// - create membership
@@ -102,9 +102,9 @@ class MembershipRepository extends IMembershipRepository {
       // ....
 
       // Deleting the group itself
-      DocumentReference groupRef =
+      DocumentReference membershipRef =
           _apiDataSource.membershipCollection.doc(membership.membershipId);
-      batch.delete(groupRef);
+      batch.delete(membershipRef);
 
       await batch.commit();
     } catch (error) {
