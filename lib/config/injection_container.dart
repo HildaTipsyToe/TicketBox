@@ -10,12 +10,14 @@ import '../domain/entities/settings.dart';
 import '../domain/entities/user.dart';
 import '../infrastructure/datasource/auth_datasource.dart';
 import '../infrastructure/repository/auth_repository.dart';
+import '../infrastructure/repository/group_repository.dart';
 import '../infrastructure/repository/message_repository.dart';
+import '../infrastructure/repository/tickettype_repository.dart';
 import '../presentation/views/chat/chat_view_model.dart';
 import '../presentation/views/login/login_view_model.dart';
 
 final sl = GetIt.instance;
-bool mock = false;
+bool mock = true;
 
 
 Future<void> injectionInit() async {
@@ -45,20 +47,19 @@ void _initUseCases() {
 void _initRepositories() {
   if (mock) {
     sl.registerLazySingleton<IAuthRepository>(() => AuthRepositoryMock());
-    // sl.registerLazySingleton<IUserRepository>(() => UserRepositoryMock(sl<ApiDataSource>()));
-    // sl.registerLazySingleton<IGroupRepository>(() => GroupRepositoryMock(sl<ApiDataSource>()));
-    // sl.registerLazySingleton<IMembershipRepository>(() => MembershipRepositoryMock(sl<ApiDataSource>()));
-    // sl.registerLazySingleton<ITicketTypeRepository>(() => TicketTypeRepositoryMock(sl<ApiDataSource>()));
-    // sl.registerLazySingleton<IPostRepository>(() => PostRepositoryMock(sl<ApiDataSource>()));
+    sl.registerLazySingleton<IUserRepository>(() => UserRepositoryMock());
+    sl.registerLazySingleton<IGroupRepository>(() => GroupRepositoryMock());
+    sl.registerLazySingleton<IMembershipRepository>(() => MembershipRepositoryMock());
+    sl.registerLazySingleton<ITicketTypeRepository>(() => TicketTypeRepositoryMock());
+    sl.registerLazySingleton<IPostRepository>(() => PostRepositoryMock());
     sl.registerLazySingleton<IMessageRepository>(() => MessageRepositoryMock());
   } else {
     sl.registerLazySingleton<IAuthRepository>(() => AuthRepositoryImpl());
-    sl.registerLazySingleton<IUserRepository>(() => UserRepository(sl<ApiDataSource>()));
-    sl.registerLazySingleton<IMembershipRepository>(() => MembershipRepository(sl<ApiDataSource>()));
-    sl.registerLazySingleton<IPostRepository>(() => PostRepository(sl<ApiDataSource>()));
-    // sl.registerLazySingleton<IGroupRepository>(() => GroupRepositoryImpl(sl<ApiDataSource>()));
-    // sl.registerLazySingleton<ITicketTypeRepository>(() => TicketTypeRepositoryImpl(sl<ApiDataSource>()));
-    // sl.registerLazySingleton<IPostRepository>(() => PostRepositoryImpl(sl<ApiDataSource>()));
+    sl.registerLazySingleton<IUserRepository>(() => UserRepositoryImpl(sl<ApiDataSource>()));
+    sl.registerLazySingleton<IMembershipRepository>(() => MembershipRepositoryImpl(sl<ApiDataSource>()));
+    sl.registerLazySingleton<IPostRepository>(() => PostRepositoryImpl(sl<ApiDataSource>()));
+    sl.registerLazySingleton<IGroupRepository>(() => GroupRepositoryImpl(sl<ApiDataSource>()));
+    sl.registerLazySingleton<ITicketTypeRepository>(() => TicketTypeRepositoryImpl(sl<ApiDataSource>()));
     sl.registerLazySingleton<IMessageRepository>(() => MessageRepositoryImpl(sl<ApiDataSource>()));
   }
 }

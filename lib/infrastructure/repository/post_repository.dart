@@ -18,16 +18,16 @@ abstract class IPostRepository {
 
 /// Class that represent the post repoistory
 ///
-/// The [PostRepository] have methods for:
+/// The [PostRepositoryImpl] have methods for:
 /// - create posts
 /// - retriving posts by group id
 /// - retriving posts by reciver id and group id
 /// - updating posts
 /// - deleting posts
-class PostRepository extends IPostRepository {
+class PostRepositoryImpl extends IPostRepository {
   final ApiDataSource _apiDataSource;
 
-  PostRepository(this._apiDataSource);
+  PostRepositoryImpl(this._apiDataSource);
 
   /// Method for giving a user a posts [post]
   @override
@@ -155,5 +155,54 @@ class PostRepository extends IPostRepository {
       log('Error handeling updating the post: $error');
       return Future.error('Error handeling updating the post: $error');
     }
+  }
+}
+
+class PostRepositoryMock extends IPostRepository {
+  @override
+  Future<void> addPost(Post post) async {
+    print('Mock - Post added');
+  }
+
+  @override
+  Future<void> deletePost(Post post) async {
+    print('Mock - Post deleted');
+  }
+
+  @override
+  Future<List<Post>> getPostsByGroupId(String groupId) async {
+    print('Mock - Get post by GroupId');
+    List<Post> p = [
+      Post(
+          adminId: 'adminId',
+          adminName: 'adminName',
+          groupId: groupId,
+          price: 1,
+          receiverId: 'receiverId',
+          receiverName: 'receiverName',
+          ticketTypeId: 'ticketTypeId',
+          ticketTypeName: 'ticketTypeName')];
+    return p;
+  }
+
+  @override
+  Future<List<Post>> getPostsByReceiverIdAndGroupId(String receiverId, String groupId) async {
+    print('Mock - Get post by ReceiverId and GroupId');
+    List<Post> p = [
+      Post(
+          adminId: 'adminId',
+          adminName: 'adminName',
+          groupId: groupId,
+          price: 1,
+          receiverId: 'receiverId',
+          receiverName: 'receiverName',
+          ticketTypeId: 'ticketTypeId',
+          ticketTypeName: 'ticketTypeName')];
+    return p;
+  }
+
+  @override
+  Future<void> updatePost(String id, Map<String, dynamic> newData) async {
+    print('Mock - Post updated');
   }
 }

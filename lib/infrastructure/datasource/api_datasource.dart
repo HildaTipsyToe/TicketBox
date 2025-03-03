@@ -1,5 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+/// Class that represent the Api Datasource
+///
+/// Connects to the different tables of the firebase database.
 class ApiDataSource {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
@@ -9,7 +12,4 @@ class ApiDataSource {
   CollectionReference get ticketTypeCollection => _firestore.collection('TicketTypes');
   CollectionReference get userCollection => _firestore.collection('Users');
   CollectionReference get messageCollection => _firestore.collection('Messages');
-  Stream<QuerySnapshot> get messageStream => _firestore.collection('Messages').snapshots();
-
-
 }

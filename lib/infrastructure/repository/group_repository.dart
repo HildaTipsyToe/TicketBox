@@ -9,7 +9,7 @@ import 'package:ticketbox/infrastructure/datasource/auth_datasource.dart';
 /// Abstract class that represent the group reposistory
 ///
 /// This interface defines the contract for memberships-related data operations.
-abstract class IGroupReposistory {
+abstract class IGroupRepository {
   Future<String> addGroup(Map<String, dynamic> groupData);
   Future<void> updateGroup(String id, Map<String, dynamic> newData);
   Future<void> deleteGroup(String groupId);
@@ -17,14 +17,14 @@ abstract class IGroupReposistory {
 
 /// Class that represent the group repository
 ///
-/// The [GroupRepository] have methods for:
+/// The [GroupRepositoryImpl] have methods for:
 /// - create group
 /// - update group
 /// - deleting group
-class GroupRepository extends IGroupReposistory {
+class GroupRepositoryImpl extends IGroupRepository {
   final ApiDataSource _apiDataSource;
 
-  GroupRepository(this._apiDataSource);
+  GroupRepositoryImpl(this._apiDataSource);
 
   /// Method for creating a group with a property of [Map] named [groupData]
   @override
@@ -105,5 +105,23 @@ class GroupRepository extends IGroupReposistory {
       log('Error handeling updating the group: $error');
       return Future.error('Error handeling updating the group: $error');
     }
+  }
+}
+
+class GroupRepositoryMock extends IGroupRepository {
+  @override
+  Future<String> addGroup(Map<String, dynamic> groupData) async {
+    print('Mock - add group');
+    return 'Group created';
+  }
+
+  @override
+  Future<void> deleteGroup(String groupId) async {
+    print('Mock - Group deleted');
+  }
+
+  @override
+  Future<void> updateGroup(String id, Map<String, dynamic> newData) async {
+    print('Mock - Group updated');
   }
 }

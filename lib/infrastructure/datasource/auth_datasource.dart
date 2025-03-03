@@ -6,15 +6,23 @@ import '../../domain/entities/settings.dart';
 import '../../domain/entities/user.dart';
 import '../repository/auth_repository.dart';
 
+/// Class that represent the Auth Datasource
+///
+/// The [Auth Datasource] have methods for:
+/// - Sign in with [email] and [password]
+/// - Get the current user
+/// - Create user by [name], [email] and [password]
+/// - Send an email where the user can reset a password by [email]
+/// - Sign out current user
 abstract class AuthDataSource {
 
   Stream<User?> get authStatus;
 
-  Future<User?> getCurrentUser();
-  Future<void> signOut();
   Future<void> signInWithEmailAndPassword(String email, String password);
+  Future<User?> getCurrentUser();
   Future<void> createUser(String name, String email, String password);
   Future<void> forgotPassword(String email);
+  Future<void> signOut();
 
 }
 

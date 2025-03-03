@@ -21,7 +21,7 @@ abstract class IMembershipRepository {
 
 /// Class that represent the membership repository
 ///
-/// The [MembershipRepository] have methods for:
+/// The [MembershipRepositoryImpl] have methods for:
 /// - create membership
 /// - retriving membership by user ID
 /// - retriving membership by group ID
@@ -29,10 +29,10 @@ abstract class IMembershipRepository {
 /// - deleting membership
 /// - authorization to update membership
 /// - authorization to delete membership
-class MembershipRepository extends IMembershipRepository {
+class MembershipRepositoryImpl extends IMembershipRepository {
   final ApiDataSource _apiDataSource;
 
-  MembershipRepository(this._apiDataSource);
+  MembershipRepositoryImpl(this._apiDataSource);
 
   /// Method for giving a user a membership to a group with value [membershipData]
   @override
@@ -189,5 +189,59 @@ class MembershipRepository extends IMembershipRepository {
       log('Error handeling updating the memebership of a user: $error');
       return Future.error('Error updating the membership: $error');
     }
+  }
+}
+
+class MembershipRepositoryMock extends IMembershipRepository {
+  @override
+  Future<void> addMembership(Membership membershipData) async {
+    print('Mock - Membership created');
+  }
+
+  @override
+  Future<Map<String, dynamic>> canDeleteMembership(Membership membership) async {
+    print('Mock - can delete?');
+    Map<String, dynamic> result = {
+      'canDelete': false,
+      'message': '',
+      'groupDeleted': false
+    };
+    return result;
+  }
+
+  @override
+  Future<bool> canUpdateMembershipRole(Membership membership) async {
+    print('Mock - can update?');
+    return true;
+  }
+
+  @override
+  Future<void> deleteMembership(Membership membership) async {
+    print('Mock - Membership deleted');
+  }
+
+  @override
+  Future<List<Membership>> getMembershipByUserID(String id) async {
+    print('Mock - Get membership by userId');
+    List<Membership> m = [
+      Membership(userId: 'userId', userName: 'userName', groupId: 'groupId1', groupName: 'groupName1', balance: 1, roleId: 1),
+      Membership(userId: 'userId', userName: 'userName', groupId: 'groupId2', groupName: 'groupName2', balance: 2, roleId: 2)
+    ];
+    return m;
+  }
+
+  @override
+  Future<List<Membership>> getMembershipsByGroupId(String id) async {
+    print('Mock - Get membership by groupId');
+    List<Membership> m = [
+      Membership(userId: 'userId1', userName: 'userName1', groupId: 'groupId', groupName: 'groupName', balance: 1, roleId: 1),
+      Membership(userId: 'userId2', userName: 'userName2', groupId: 'groupId', groupName: 'groupName', balance: 2, roleId: 2)
+    ];
+    return m;
+  }
+
+  @override
+  Future<void> updateMembership(String id, Map<String, dynamic> newData) async {
+    print('Mock - membership updated');
   }
 }

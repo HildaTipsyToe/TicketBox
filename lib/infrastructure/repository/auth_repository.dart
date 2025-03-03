@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import '../../config/injection_container.dart';
 import '../../domain/entities/settings.dart';
+import '../../domain/entities/user.dart';
 import '../datasource/auth_datasource.dart';
 
 /// Abstract class that represent the authentication reposistory
@@ -21,6 +22,10 @@ class AuthRepositoryMock extends IAuthRepository {
   @override
   signInWithEmailAndPassword(String email, String password) async {
     print('Mock - signin with $email and $password' );
+    sl<Settings>().isLoggedIn = true;
+    sl<TBUser>().userId = 'userId';
+    sl<TBUser>().userName = 'username';
+    sl<TBUser>().userMail = email;
   }
 
   @override

@@ -14,10 +14,10 @@ abstract class ITicketTypeRepository {
   Future<void> deleteTicketType(String id);
 }
 
-class TickettypeRepository extends ITicketTypeRepository {
+class TicketTypeRepositoryImpl extends ITicketTypeRepository {
   final ApiDataSource _apiDataSource;
 
-  TickettypeRepository(this._apiDataSource);
+  TicketTypeRepositoryImpl(this._apiDataSource);
 
   @override
   Future<void> addTicketType(Map<String, dynamic> ticketTypeData) async {
@@ -67,5 +67,29 @@ class TickettypeRepository extends ITicketTypeRepository {
       log('Error handeling updating the ticket type: $error');
       return Future.error('Error handeling updating the ticket type: $error');
     }
+  }
+}
+
+class TicketTypeRepositoryMock extends ITicketTypeRepository {
+  @override
+  Future<void> addTicketType(Map<String, dynamic> ticketTypeData) async {
+    print('Mock - TicketType added');
+  }
+
+  @override
+  Future<void> deleteTicketType(String id) async {
+    print('Mock - TicketType deleted');
+  }
+
+  @override
+  Future<List<TicketType>> getTicketTypesByGroupId(String groupId) async {
+    print('Mock - Get TicketType by groupId');
+    List<TicketType> t = [TicketType(ticketName: 'ticketName', groupId: groupId)];
+    return t;
+  }
+
+  @override
+  Future<void> updateTicketType(String id, Map<String, dynamic> newData) async {
+    print('Mock - TicketType updated');
   }
 }

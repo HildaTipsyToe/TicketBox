@@ -14,14 +14,14 @@ abstract class IUserRepository {
 
 /// Class that represent the user repository
 ///
-/// The [UserRepository] have methode for:
+/// The [UserRepositoryImpl] have methode for:
 /// - create user
 /// - retriving user
 /// - update user
-class UserRepository extends IUserRepository {
+class UserRepositoryImpl extends IUserRepository {
   final ApiDataSource _apiDataSource;
 
-  UserRepository(this._apiDataSource);
+  UserRepositoryImpl(this._apiDataSource);
 
   /// Method for fetching the user by [email]
   /// else return null, with a log statment
@@ -78,5 +78,23 @@ class UserRepository extends IUserRepository {
       log('Error handeling updating user name: $error');
       return;
     }
+  }
+}
+
+class UserRepositoryMock extends IUserRepository {
+  @override
+  Future<void> createUser(String uid, String name, String email) async {
+    print('Mock - user created');
+  }
+
+  @override
+  Future<TBUser?> getUserByEmail(String email) async {
+    print('Mock - Get user');
+    return TBUser(userId: 'userId', userName: 'userName', userMail: 'userMail');
+  }
+
+  @override
+  Future<void> updateUserName(String userId, String newUserName) async {
+    print('Mock - Username updated');
   }
 }

@@ -1,36 +1,21 @@
 // Abstract repository interface for Post
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ticketbox/domain/entities/message.dart';
 
 import '../datasource/api_datasource.dart';
 
-/// Abstract class that represent the message reposistory
+/// Class that represent the message repository
 ///
-/// This interface defines the contract for message-related data operations.
+/// The [MessageRepository] have methods for:
+/// - Stream messages by [groupId]
+/// - Add message
+/// - delete message by [messageId]
 abstract class IMessageRepository {
-  // Future<List<Message>> getMessagesByGroupId(String groupId);
   Stream<QuerySnapshot> getMessageStream(String groupId);
   Future<void> addMessage(Message message);
   Future<void> deleteMessage(String messageId);
-}
-
-// Mockup implementation of the Post repository
-class MessageRepositoryMock implements IMessageRepository {
-  @override
-  Future<void> addMessage(Message message) async {
-    // TODO: implement addMessage
-  }
-
-  @override
-  Future<void> deleteMessage(String messageId) async {
-    // TODO: implement deleteMessage
-  }
-
-  @override
-  Stream<QuerySnapshot<Object?>> getMessageStream(String groupId) {
-    // TODO: implement getMessageStream
-    throw UnimplementedError();
-  }
 }
 
 // Concrete implementation of the Post repository
@@ -87,5 +72,28 @@ class MessageRepositoryImpl implements IMessageRepository {
     } catch (e) {
       print('Error deleting post and updating memberships: $e');
     }
+  }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+// Mockup implementation of the Post repository
+class MessageRepositoryMock implements IMessageRepository {
+
+  @override
+  Stream<QuerySnapshot<Object?>> getMessageStream(String groupId) {
+    print('Mock - get Stream');
+    final controller = StreamController<QuerySnapshot<Object?>>();
+    return controller.stream;
+  }
+
+  @override
+  Future<void> addMessage(Message message) async {
+    print('Mock - message added');
+  }
+
+  @override
+  Future<void> deleteMessage(String messageId) async {
+    print('Mock - message deleted');
   }
 }
