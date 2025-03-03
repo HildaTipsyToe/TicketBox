@@ -4,12 +4,17 @@ import 'package:ticketbox/domain/entities/message.dart';
 
 import '../datasource/api_datasource.dart';
 
+/// Abstract class that represent the message reposistory
+///
+/// This interface defines the contract for message-related data operations.
 abstract class IMessageRepository {
-  Future<List<Message>> getMessagesByGroupId(String groupId);
+  // Future<List<Message>> getMessagesByGroupId(String groupId);
   Stream<QuerySnapshot> getMessageStream(String groupId);
   Future<void> addMessage(Message message);
-  Future<void> deleteMessage(Message message);
+  Future<void> deleteMessage(String messageId);
 }
+
+// Mockup implementation of the Post repository
 class MessageRepositoryMock implements IMessageRepository {
   @override
   Future<void> addMessage(Message message) async {
@@ -17,17 +22,8 @@ class MessageRepositoryMock implements IMessageRepository {
   }
 
   @override
-  Future<void> deleteMessage(Message message) async {
+  Future<void> deleteMessage(String messageId) async {
     // TODO: implement deleteMessage
-  }
-
-  @override
-  Future<List<Message>> getMessagesByGroupId(String groupId) async {
-    List<Message> messages = [
-      Message(userId: 'xxx', userName: 'xxx', groupId: groupId, timeStamp: Timestamp.fromDate(DateTime.parse('01-01-2025')), text: 'text1'),
-      Message(userId: 'yyy', userName: 'yyy', groupId: groupId, timeStamp: Timestamp.fromDate(DateTime.parse('02-01-2025')), text: 'text2')
-    ];
-    return messages;
   }
 
   @override
@@ -36,29 +32,18 @@ class MessageRepositoryMock implements IMessageRepository {
     throw UnimplementedError();
   }
 }
+
 // Concrete implementation of the Post repository
 class MessageRepositoryImpl implements IMessageRepository {
   final ApiDataSource _apiDataSource;
 
   MessageRepositoryImpl(this._apiDataSource);
 
-  @override
-  Future<List<Message>> getMessagesByGroupId(String groupId) async {
-    // Query the message collection where the specified field matches the provided value
-    QuerySnapshot querySnapshot = await _apiDataSource.messageCollection
-        .where('groupId', isEqualTo: groupId)
-        .orderBy('timeStamp', descending: true)
-        .get();
-
-    // Map the documents to the Message model
-    List<Message> messages = querySnapshot.docs
-        .map((doc) => Message.fromMap(doc.data() as Map<String, dynamic>)
-        .copyWith(messageId: doc.id))
-        .toList();
-
-    return messages;
-  }
-
+  /// Returns a real-time stream of messages for a specific group by [groupId].
+  ///
+  /// This function listens to the Firestore collection and fetches messages
+  /// where the `groupId` matches the given parameter.
+  /// Messages are ordered by `timeStamp` in descending order (newest first).
   @override
   Stream<QuerySnapshot> getMessageStream(String groupId) {
     return _apiDataSource.messageCollection
@@ -67,6 +52,7 @@ class MessageRepositoryImpl implements IMessageRepository {
         .snapshots();
   }
 
+  /// Adds a new message by [message] to the Firestore database using a batch operation.
   @override
   Future<void> addMessage(Message message) async {
     WriteBatch batch = FirebaseFirestore.instance.batch();
@@ -84,14 +70,14 @@ class MessageRepositoryImpl implements IMessageRepository {
     }
   }
 
+  /// Deletes a message by [messageId] in the Firestore database using a batch operation.
   @override
-  Future<void> deleteMessage(Message message) async {
+  Future<void> deleteMessage(String messageId) async {
     WriteBatch batch = FirebaseFirestore.instance.batch();
 
     try {
       // Reference to the message to be deleted
-      DocumentReference messageRef =
-      _apiDataSource.messageCollection.doc(message.messageId);
+      DocumentReference messageRef = _apiDataSource.messageCollection.doc(messageId);
 
       // Delete the message
       batch.delete(messageRef);

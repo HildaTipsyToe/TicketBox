@@ -22,9 +22,9 @@ class Message {
   });
 
   /// Factory method to create a [Message] object from a map
-  factory Message.fromMap(Map<String, dynamic> json) {
+  factory Message.fromMap(String id, Map<String, dynamic> json) {
     return Message(
-        // messageId: json['messageId'],
+        messageId: id,
         userId: json['userId'],
         userName: json['userName'],
         groupId: json['groupId'],

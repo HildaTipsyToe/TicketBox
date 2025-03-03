@@ -10,13 +10,13 @@ class TBOutlineButton extends StatefulWidget {
   final double? height;
   final double? roundBorder;
   final Color borderColor;
-  Color? textColor;
+  final Color? textColor;
   final EdgeInsets? padding;
 
-  TBOutlineButton({super.key,
+  const TBOutlineButton({super.key,
     this.text,
     this.icon,
-    this.textColor,
+    this.textColor = Colors.black,
     required this.onPressed,
     this.width,
     this.height,
@@ -33,7 +33,7 @@ class _TBOutlineButton extends State<TBOutlineButton> {
   Color color = Colors.white;
   @override
   Widget build(BuildContext context) {
-    widget.textColor ??= Colors.black;
+    // widget.textColor ??= Colors.black;
 
     return MouseRegion(
       onHover: onHover,

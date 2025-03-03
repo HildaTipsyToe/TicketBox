@@ -5,8 +5,9 @@ class TBIconButton extends StatefulWidget {
   final double? iconSize;
   final IconData icon;
   final Color? color;
+  final double? size;
 
-  const TBIconButton({super.key, this.iconSize, required this.onPressed, required this.icon, this.color});
+  const TBIconButton({super.key, this.iconSize, required this.onPressed, required this.icon, this.color, this.size});
 
   @override
   State<StatefulWidget> createState() => _TBIconButton();
@@ -35,8 +36,8 @@ class _TBIconButton extends State<TBIconButton> {
       child: GestureDetector(
         onTap: widget.onPressed,
         child: Container(
-          width: 50,
-          height: 50,
+          width: widget.size ?? 50,
+          height: widget.size ?? 50,
           decoration: BoxDecoration(
             color: color,
             boxShadow: const [
@@ -47,8 +48,8 @@ class _TBIconButton extends State<TBIconButton> {
                 offset: Offset(0, 4),
               ),
             ],
-            borderRadius: const BorderRadius.all(
-              Radius.circular(25),
+            borderRadius: BorderRadius.all(
+              Radius.circular(widget.size == null ? 25 : widget.size!/2),
             ),
             border: Border.all(color: Colors.black),
           ),

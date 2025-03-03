@@ -53,21 +53,38 @@ class ChatViewWidget extends StatelessWidget {
                   itemCount: messages.length,
                   itemBuilder: (context, index) {
                     final message = messages[index];
-                    return Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.grey, width: 1), // Tilføjer en grå kant
-                          borderRadius: BorderRadius.circular(10), // Runde hjørner (valgfrit)
+                    return Stack(
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.grey, width: 1), // Tilføjer en grå kant
+                            borderRadius: BorderRadius.circular(10), // Runde hjørner (valgfrit)
+                          ),
+                          margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10), // Juster margin
+                          child: ListTile(
+                            title: Text(message['text']),
+                            subtitle: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(message['userName']),
+                                  Text(message['timeStamp'] != null ? DateFormat('HH:mm - dd-MM-yyyy').format(message['timeStamp'].toDate()) : '')
+                                ]),
+                          ),
                         ),
-                        margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10), // Juster margin
-                        child: ListTile(
-                          title: Text(message['text']),
-                          subtitle: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(message['userName']),
-                                Text(message['timeStamp'] != null ? DateFormat('HH:mm - dd-MM-yyyy').format(message['timeStamp'].toDate()) : '')
-                              ]),
-                        ),
+                        if(roleId == '1')
+                          Positioned(
+                            right: 10,
+                            top: 5,
+                            child: TBIconButton(
+                              icon: Icons.settings,
+                              onPressed: () async {
+                                model.deleteMessage(message.id);
+                              },
+                              iconSize: 12,
+                              size: 20
+                            ),
+                          )
+                      ]
                     );
                   },
                 );

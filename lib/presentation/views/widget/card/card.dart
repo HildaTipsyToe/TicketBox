@@ -40,8 +40,8 @@ class TBCard extends StatelessWidget {
               BoxShadow(
                 color: shadowColor ??
                     (backgroundColor != null
-                        ? backgroundColor!.withOpacity(0.3)
-                        : const Color.fromARGB(255, 233, 233, 233).withOpacity(0.2)),
+                        ? backgroundColor!.withValues(alpha: 75)
+                        : const Color.fromARGB(255, 233, 233, 233).withValues(alpha: 50)),
                 spreadRadius: 1,
                 blurRadius: 5,
                 offset: const Offset(0, 4), // changes position of shadow

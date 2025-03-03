@@ -5,14 +5,14 @@ class TBHalfButton extends StatefulWidget {
   final IconData? icon;
   final VoidCallback onPressed;
   final double? roundBorder;
-  TextDirection? textDirection = TextDirection.ltr;
+  final TextDirection? textDirection;
 
-  TBHalfButton({super.key,
+  const TBHalfButton({super.key,
     this.text,
     this.icon,
     required this.onPressed,
     this.roundBorder,
-    this.textDirection,
+    this.textDirection = TextDirection.ltr,
   });
 
   @override

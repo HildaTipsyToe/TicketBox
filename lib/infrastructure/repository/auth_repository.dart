@@ -4,6 +4,9 @@ import '../../config/injection_container.dart';
 import '../../domain/entities/settings.dart';
 import '../datasource/auth_datasource.dart';
 
+/// Abstract class that represent the authentication reposistory
+///
+/// This interface defines the contract for authentication-related data operations.
 abstract class IAuthRepository {
   Future<void> signInWithEmailAndPassword(String email, String password);
   Future<User?> getCurrentUser();
@@ -12,53 +15,40 @@ abstract class IAuthRepository {
   Future<void> signOut();
 }
 
+// Mockup implementation of the auth repository
 class AuthRepositoryMock extends IAuthRepository {
 
   @override
   signInWithEmailAndPassword(String email, String password) async {
-    try {
-      await sl<AuthDataSource>().signInWithEmailAndPassword(email, password);
-    }
-    on FirebaseAuthException catch (error) {
-      throw AuthError(message: error.message, code: error.code);
-    }
-
+    print('Mock - signin with $email and $password' );
   }
 
   @override
   getCurrentUser() async {
-    return sl<AuthDataSource>().getCurrentUser();
+    print('Mock - get current user');
+    return null;
   }
 
   @override
   Future<void> forgotPassword(String email) async {
-    try {
-      await sl<AuthDataSource>().forgotPassword(email);
-    }
-    on FirebaseAuthException catch (error) {
-      throw AuthError(message: error.message, code: error.code);
-    }
+    print('Mock - forget password for $email');
   }
 
   @override
   Future<void> createUser(String name, String email, String password) async {
-    try {
-      await sl<AuthDataSource>().createUser(name, email, password);
-    }
-    on FirebaseAuthException catch (error) {
-    throw AuthError(message: error.message, code: error.code);
-    }
+    print('Mock create user');
   }
 
   @override
   Future<void> signOut() async {
     sl<Settings>().isLoggedIn = false;
-    await sl<AuthDataSource>().signOut();
+    print('Mock - log out');
   }
 }
 
-
+// Concrete implementation of auth repository
 class AuthRepositoryImpl extends IAuthRepository {
+
   @override
   signInWithEmailAndPassword(String email, String password) async {
     try {
@@ -101,6 +91,7 @@ class AuthRepositoryImpl extends IAuthRepository {
   }
 }
 
+// Definitions of authentication errors from firebase
 class AuthError implements Exception {
   final String? message;
   final String? code;

@@ -24,7 +24,7 @@ class BaseViewScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    PreferredSize appbar = PreferredSize(preferredSize: const Size.fromHeight(75), child: TBAppbar(context: context, leading: leading, action: action, overrideOnBackPressed: overrideOnBackPressed));
+    PreferredSize appbar = PreferredSize(preferredSize: const Size.fromHeight(75), child: tbAppbar(context: context, leading: leading, action: action, overrideOnBackPressed: overrideOnBackPressed));
     return Scaffold(
       appBar: appbar,
       //      ? const Drawer(

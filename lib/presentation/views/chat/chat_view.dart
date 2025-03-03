@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../config/injection_container.dart';
-import '../../shared/constants/app_colors.dart';
 import '../base/base_view_scaffold.dart';
 import 'chat_view_model.dart';
 import 'chat_view_widget.dart';

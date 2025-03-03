@@ -6,7 +6,7 @@ import '../../../../domain/entities/user.dart';
 import '../../../../infrastructure/repository/auth_repository.dart';
 
 
-AppBar TBAppbar({
+AppBar tbAppbar({
   bool? leading,
   bool? action,
   VoidCallback? overrideOnBackPressed,

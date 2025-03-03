@@ -148,7 +148,7 @@ class LoginViewModel extends BaseViewModel {
           "chat",
           queryParameters: {
             'groupId': '',
-            'roleId': '',
+            'roleId': '1',
           },
         );
         setBusy(false);

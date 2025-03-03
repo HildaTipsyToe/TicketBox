@@ -15,11 +15,11 @@ class TBFilledButton extends StatefulWidget {
   final Color? borderColor;
   final Color? textColor;
   final double? roundBorder;
-  TextDirection? textDirection = TextDirection.ltr;
+  final TextDirection? textDirection;
 
-  TBFilledButton({
+  const TBFilledButton({
     super.key,
-    this.textDirection,
+    this.textDirection = TextDirection.ltr,
     this.textColor,
     this.hoverColor,
     this.text,
