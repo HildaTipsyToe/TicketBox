@@ -93,13 +93,20 @@ class MembershipRepository extends IMembershipRepository {
     return result;
   }
 
-  /// Method for deleting membership with value [membership]
+  /// Method for deleting membership and members posts with value [membership]
   @override
   Future<void> deleteMembership(Membership membership) async {
     WriteBatch batch = FirebaseFirestore.instance.batch();
     try {
       // Query and delete posts related to the memberships
       // ....
+      QuerySnapshot postsSnapshot = await _apiDataSource.postCollection
+          .where('userId', isEqualTo: membership.userId)
+          .get();
+
+      for (QueryDocumentSnapshot docs in postsSnapshot.docs) {
+        batch.delete(docs.reference);
+      }
 
       // Deleting the group itself
       DocumentReference membershipRef =
@@ -109,6 +116,7 @@ class MembershipRepository extends IMembershipRepository {
       await batch.commit();
     } catch (error) {
       log('Error handeling the deletion of a memebership: $error');
+      return Future.error('Error handeling the deletion of a memebership: $error');
     }
   }
 
