@@ -17,13 +17,13 @@ abstract class IPostRepository {
 }
 
 /// Class that represent the post repoistory
-/// 
+///
 /// The [PostRepository] have methods for:
 /// - create posts
 /// - retriving posts by group id
 /// - retriving posts by reciver id and group id
 /// - updating posts
-/// - deleting posts 
+/// - deleting posts
 class PostRepository extends IPostRepository {
   final ApiDataSource _apiDataSource;
 
@@ -65,7 +65,7 @@ class PostRepository extends IPostRepository {
     }
   }
 
-/// Method for deleting post from a membership with [post] as a parameter
+  /// Method for deleting post from a membership with [post] as a parameter
   @override
   Future<void> deletePost(Post post) async {
     WriteBatch batch = FirebaseFirestore.instance.batch();
@@ -102,7 +102,7 @@ class PostRepository extends IPostRepository {
     }
   }
 
-/// Method for fetching a post with [groupId] as a parameter
+  /// Method for fetching a post with [groupId] as a parameter
   @override
   Future<List<Post>> getPostsByGroupId(String groupId) async {
     try {
@@ -111,7 +111,8 @@ class PostRepository extends IPostRepository {
           .get();
 
       List<Post> posts = querySnapshot.docs
-          .map((doc) => Post.fromMap(doc.data() as Map<String, dynamic>))
+          .map((doc) => Post.fromMap(doc.data() as Map<String, dynamic>)
+              .copyWith(postId: doc.id))
           .toList();
 
       return posts;
@@ -122,7 +123,7 @@ class PostRepository extends IPostRepository {
     }
   }
 
-/// Method for fetching a post with [groupId] and [receiverId] as parameters
+  /// Method for fetching a post with [groupId] and [receiverId] as parameters
   @override
   Future<List<Post>> getPostsByReceiverIdAndGroupId(
       String receiverId, String groupId) async {
@@ -133,7 +134,8 @@ class PostRepository extends IPostRepository {
           .get();
 
       List<Post> posts = querySnapshot.docs
-          .map((doc) => Post.fromMap(doc.data() as Map<String, dynamic>))
+          .map((doc) => Post.fromMap(doc.data() as Map<String, dynamic>)
+              .copyWith(postId: doc.id))
           .toList();
 
       return posts;
@@ -144,7 +146,7 @@ class PostRepository extends IPostRepository {
     }
   }
 
-/// Method for updating post with [id] and [newData] as parameters
+  /// Method for updating post with [id] and [newData] as parameters
   @override
   Future<void> updatePost(String id, Map<String, dynamic> newData) async {
     try {

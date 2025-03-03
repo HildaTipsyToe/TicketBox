@@ -116,7 +116,8 @@ class MembershipRepository extends IMembershipRepository {
       await batch.commit();
     } catch (error) {
       log('Error handeling the deletion of a memebership: $error');
-      return Future.error('Error handeling the deletion of a memebership: $error');
+      return Future.error(
+          'Error handeling the deletion of a memebership: $error');
     }
   }
 
@@ -148,7 +149,8 @@ class MembershipRepository extends IMembershipRepository {
           .get();
 
       List<Membership> membership = querySnapshot.docs
-          .map((doc) => Membership.fromMap(doc.data() as Map<String, dynamic>))
+          .map((doc) => Membership.fromMap(doc.data() as Map<String, dynamic>)
+              .copyWith(membershipId: doc.id)) //using the CopyWith because the Id is the doc id, and not in the object itself.
           .toList();
 
       return membership;
@@ -167,7 +169,8 @@ class MembershipRepository extends IMembershipRepository {
           .get();
 
       List<Membership> membership = querySnapshot.docs
-          .map((doc) => Membership.fromMap(doc.data() as Map<String, dynamic>))
+          .map((doc) => Membership.fromMap(doc.data() as Map<String, dynamic>)
+              .copyWith(membershipId: doc.id))
           .toList();
 
       return membership;
