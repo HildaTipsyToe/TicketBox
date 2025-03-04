@@ -105,6 +105,11 @@ class LoginViewModel extends BaseViewModel {
   final signInFormKey = GlobalKey<FormState>();
   final createUserFormKey = GlobalKey<FormState>();
 
+  LoginViewModel(){
+    passwordController.text = "Test1234";
+    emailController.text = 'j@j.com';
+  }
+
   SignInAuthError signInAuthError = SignInAuthError.noError;
   ResetPasswordAuthError resetPasswordAuthError = ResetPasswordAuthError.noError;
   CreateUserAuthError createUserAuthError = CreateUserAuthError.noError;
@@ -144,13 +149,14 @@ class LoginViewModel extends BaseViewModel {
         signInAuthError = SignInAuthError.noError;
         emailController.text = '';
         passwordController.text = '';
-        context.pushNamed(
-          "chat",
-          queryParameters: {
-            'groupId': '',
-            'roleId': '',
-          },
-        );
+        // context.pushNamed(
+        //   "chat",
+        //   queryParameters: {
+        //     'groupId': '',
+        //     'roleId': '',
+        //   },
+        // );
+        context.pushNamed('dashboard');
         setBusy(false);
       } on AuthError catch (error) {
         print('error.code: ${error.code}');
