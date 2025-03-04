@@ -10,6 +10,7 @@ import 'package:ticketbox/infrastructure/datasource/auth_datasource.dart';
 ///
 /// This interface defines the contract for memberships-related data operations.
 abstract class IGroupRepository {
+abstract class IGroupRepository {
   Future<String> addGroup(Map<String, dynamic> groupData);
   Future<void> updateGroup(String id, Map<String, dynamic> newData);
   Future<void> deleteGroup(String groupId);

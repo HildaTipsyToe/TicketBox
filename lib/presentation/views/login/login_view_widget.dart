@@ -20,7 +20,7 @@ class LoginViewWidget extends StatelessWidget {
               const Text('Du er logget ind'),
               TBFilledButton(
                   onPressed: () {
-                    context.push("/chat");
+                    context.goNamed('dashboard');
                   },
                   text: 'OK')
             ],
