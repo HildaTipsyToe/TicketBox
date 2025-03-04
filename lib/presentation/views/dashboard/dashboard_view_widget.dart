@@ -37,7 +37,6 @@ class DashboardViewWidget extends StatelessWidget {
             itemCount: group!.length,
             itemBuilder: (BuildContext context, int index) {
               final data = group[index];
-              print(data.roleId);
               return SizedBox(
                 width: double.infinity,
                 child: Center(
