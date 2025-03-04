@@ -261,4 +261,16 @@ class MembershipRepositoryMock extends IMembershipRepository {
   Future<void> updateMembership(String id, Map<String, dynamic> newData) async {
     print('Mock - membership updated');
   }
+  
+  @override
+  Future<List<Membership>> getGroupByUserID(String id) {
+    // TODO: implement getGroupByUserID
+    throw UnimplementedError();
+  }
+  
+  @override
+  Stream<List<Membership>> getGroupsByUserIDStream(String id) {
+    // TODO: implement getGroupsByUserIDStream
+    throw UnimplementedError();
+  }
 }
