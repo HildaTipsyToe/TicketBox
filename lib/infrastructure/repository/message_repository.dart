@@ -13,7 +13,7 @@ import '../datasource/api_datasource.dart';
 /// - Add message
 /// - delete message by [messageId]
 abstract class IMessageRepository {
-  Stream<QuerySnapshot> getMessageStream(String groupId);
+  Stream<List<Message>> getMessageStream(String groupId);
   Future<void> addMessage(Message message);
   Future<void> deleteMessage(String messageId);
 }
@@ -30,11 +30,16 @@ class MessageRepositoryImpl implements IMessageRepository {
   /// where the `groupId` matches the given parameter.
   /// Messages are ordered by `timeStamp` in descending order (newest first).
   @override
-  Stream<QuerySnapshot> getMessageStream(String groupId) {
+  Stream<List<Message>> getMessageStream(String groupId) {
     return _apiDataSource.messageCollection
         .where('groupId', isEqualTo: groupId)
         .orderBy('timeStamp', descending: true)
-        .snapshots();
+        .snapshots()
+        .map((querySnapshot) { // Konverter snapshot til liste af Message-objekter
+      return querySnapshot.docs.map((doc) {
+        return Message.fromMap(doc.id, doc.data() as Map<String, dynamic>);
+      }).toList();
+    });
   }
 
   /// Adds a new message by [message] to the Firestore database using a batch operation.
@@ -81,9 +86,12 @@ class MessageRepositoryImpl implements IMessageRepository {
 class MessageRepositoryMock implements IMessageRepository {
 
   @override
-  Stream<QuerySnapshot<Object?>> getMessageStream(String groupId) {
+  Stream<List<Message>> getMessageStream(String groupId) {
     print('Mock - get Stream');
-    final controller = StreamController<QuerySnapshot<Object?>>();
+    final controller = StreamController<List<Message>>();
+    List<Message> messages = [];
+    messages.add(Message(userId: 'userId', userName: 'userName', groupId: groupId, text: 'text'));
+    controller.add(List.from(messages)); // Sender en ny liste til streamen
     return controller.stream;
   }
 

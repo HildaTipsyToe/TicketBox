@@ -17,7 +17,7 @@ import '../presentation/views/chat/chat_view_model.dart';
 import '../presentation/views/login/login_view_model.dart';
 
 final sl = GetIt.instance;
-bool mock = true;
+bool mock = false;
 
 
 Future<void> injectionInit() async {

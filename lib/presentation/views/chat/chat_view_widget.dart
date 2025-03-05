@@ -1,8 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:ticketbox/presentation/views/widget/buttons/icon_button.dart';
 
+import '../../../domain/entities/message.dart';
 import '../../shared/constants/app_colors.dart';
 import '../widget/process_indicator/circular_progress_indicator.dart';
 import 'chat_view_model.dart';
@@ -26,7 +26,7 @@ class ChatViewWidget extends StatelessWidget {
       child: Column(
         children: [
           Expanded(
-            child: StreamBuilder<QuerySnapshot>(
+            child: StreamBuilder<List<Message>>(
               stream: model.getMessageStream(groupId),
               builder: (context, snapshot) {
                 if (snapshot.hasError) {
@@ -35,19 +35,19 @@ class ChatViewWidget extends StatelessWidget {
                   );
                 }
 
-                if (!snapshot.hasData) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(
                     child: TBCircularProgressIndicator(),
                   );
                 }
 
-                if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                if (snapshot.data!.isEmpty) {
                   return Center(
                     child: Text('No messages yet', style: TextStyle(fontSize: 16)),
                   );
                 }
 
-                final messages = snapshot.data!.docs;
+                final messages = snapshot.data!;
                 return ListView.builder(
                   reverse: true,
                   itemCount: messages.length,
@@ -62,12 +62,12 @@ class ChatViewWidget extends StatelessWidget {
                           ),
                           margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10), // Juster margin
                           child: ListTile(
-                            title: Text(message['text']),
+                            title: Text(message.text),
                             subtitle: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(message['userName']),
-                                  Text(message['timeStamp'] != null ? DateFormat('HH:mm - dd-MM-yyyy').format(message['timeStamp'].toDate()) : '')
+                                  Text(message.userName),
+                                  Text(message.timeStamp != null ? DateFormat('HH:mm - dd-MM-yyyy').format(message.timeStamp!.toDate()) : '')
                                 ]),
                           ),
                         ),
@@ -78,7 +78,7 @@ class ChatViewWidget extends StatelessWidget {
                             child: TBIconButton(
                               icon: Icons.settings,
                               onPressed: () async {
-                                model.deleteMessage(message.id);
+                                model.deleteMessage(message.messageId);
                               },
                               iconSize: 12,
                               size: 20

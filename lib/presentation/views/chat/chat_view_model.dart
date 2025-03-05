@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import '../../../config/injection_container.dart';
@@ -9,7 +8,7 @@ import '../base/base_view_model.dart';
 class ChatViewModel extends BaseViewModel {
   TextEditingController inputController = TextEditingController();
 
-  Stream<QuerySnapshot<Object?>> getMessageStream(String groupId) {
+  Stream<List<Message>> getMessageStream(String groupId) {
     return sl<IMessageRepository>().getMessageStream(groupId);
   }
 
