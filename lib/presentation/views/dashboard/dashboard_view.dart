@@ -6,7 +6,7 @@ import 'package:ticketbox/presentation/views/dashboard/dashboard_view_model.dart
 import 'package:ticketbox/presentation/views/dashboard/dashboard_view_widget.dart';
 
 class DashboardView extends StatefulWidget {
-  const DashboardView();
+  const DashboardView({super.key});
 
   @override
   State<StatefulWidget> createState() => _DashboardView();
