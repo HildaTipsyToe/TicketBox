@@ -5,17 +5,23 @@ import 'package:ticketbox/domain/entities/post.dart';
 import 'package:ticketbox/infrastructure/repository/post_repository.dart';
 import 'package:ticketbox/presentation/views/base/base_view_model.dart';
 
+/// Class handeling model data for the Group view
+/// 
+/// This class contains:
+///  - [getPostsByReceiverIdAndGroupId]
+///  - 
 class GroupViewModel extends BaseViewModel {
   GroupViewModel();
 
+  /// Method for getting the posts by [receiverId] and [groupId]
   Stream<List<Post>> getPostsByReceiverIdAndGroupId(receiverId, groupId) {
-    Stream<List<Post>> tempPosts;
-    tempPosts = sl<IPostRepository>()
+    Stream<List<Post>> tempPosts = sl<IPostRepository>()
         .getPostsByReceiverIdAndGroupIdStream(receiverId, groupId);
 
     return tempPosts;
   }
 
+  //Dummy data, for the testing
   List<Post> tickets = [
     Post(
         adminId: '',

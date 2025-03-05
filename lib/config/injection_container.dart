@@ -7,6 +7,7 @@ import 'package:ticketbox/infrastructure/repository/membership_repository.dart';
 import 'package:ticketbox/infrastructure/repository/post_repository.dart';
 import 'package:ticketbox/infrastructure/repository/user_repository.dart';
 import 'package:ticketbox/presentation/views/dashboard/dashboard_view_model.dart';
+import 'package:ticketbox/presentation/views/fines/fines_view_model.dart';
 import 'package:ticketbox/presentation/views/group/group_view_model.dart';
 
 import '../domain/entities/settings.dart';
@@ -35,7 +36,7 @@ void _initViewModels() {
   sl.registerLazySingleton<DashboardViewModel>(() => DashboardViewModel());
   // sl.registerLazySingleton<MembersViewModel>(() => MembersViewModel());
   sl.registerLazySingleton<LoginViewModel>(() => LoginViewModel());
-  // sl.registerLazySingleton<FinesViewModel>(() => FinesViewModel());
+  sl.registerLazySingleton<FinesViewModel>(() => FinesViewModel());
   sl.registerLazySingleton<GroupViewModel>(() => GroupViewModel());
   // sl.registerLazySingleton<GroupAdminViewModel>(() => GroupAdminViewModel());
   sl.registerLazySingleton<ChatViewModel>(() => ChatViewModel());
