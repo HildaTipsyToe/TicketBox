@@ -57,7 +57,7 @@ class FirebaseAuthDataSource extends AuthDataSource {
     try {
       await firebaseAuth.signInWithEmailAndPassword(
           email: email, password: password);
-          sl<Settings>().isLoggedIn = true;
+          sl<TBSettings>().isLoggedIn = true;
           User? temp = firebaseAuth.currentUser;
           sl<TBUser>().userId = temp!.uid;
           sl<TBUser>().userName = (temp.displayName ?? temp.email)!;
@@ -74,7 +74,7 @@ class FirebaseAuthDataSource extends AuthDataSource {
     try {
       await firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
       await firebaseAuth.currentUser?.updateDisplayName(name);
-      sl<Settings>().isLoggedIn = true;
+      sl<TBSettings>().isLoggedIn = true;
       User? temp = firebaseAuth.currentUser;
       sl<TBUser>().userId = temp!.uid;
       sl<TBUser>().userName = temp.displayName!;

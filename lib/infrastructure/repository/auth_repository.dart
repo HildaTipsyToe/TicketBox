@@ -22,7 +22,7 @@ class AuthRepositoryMock extends IAuthRepository {
   @override
   signInWithEmailAndPassword(String email, String password) async {
     print('Mock - signin with $email and $password' );
-    sl<Settings>().isLoggedIn = true;
+    sl<TBSettings>().isLoggedIn = true;
     sl<TBUser>().userId = 'userId';
     sl<TBUser>().userName = 'username';
     sl<TBUser>().userMail = email;
@@ -46,18 +46,22 @@ class AuthRepositoryMock extends IAuthRepository {
 
   @override
   Future<void> signOut() async {
-    sl<Settings>().isLoggedIn = false;
+    sl<TBSettings>().isLoggedIn = false;
     print('Mock - log out');
   }
 }
 
 // Concrete implementation of auth repository
 class AuthRepositoryImpl extends IAuthRepository {
+  final AuthDataSource authDataSource;
+  final TBSettings settings; // Inject TBSettings instead of using GetIt
+
+  AuthRepositoryImpl(this.authDataSource, this.settings);
 
   @override
   signInWithEmailAndPassword(String email, String password) async {
     try {
-      await sl<AuthDataSource>().signInWithEmailAndPassword(email, password);
+      await authDataSource.signInWithEmailAndPassword(email, password);
     }
     on FirebaseAuthException catch (error) {
       throw AuthError(message: error.message, code: error.code);
@@ -66,13 +70,13 @@ class AuthRepositoryImpl extends IAuthRepository {
 
   @override
   getCurrentUser() async {
-    return sl<AuthDataSource>().getCurrentUser();
+    return authDataSource.getCurrentUser();
   }
 
   @override
   Future<void> forgotPassword(String email) async {
     try {
-      await sl<AuthDataSource>().forgotPassword(email);
+      await authDataSource.forgotPassword(email);
     }
     on FirebaseAuthException catch (error) {
       throw AuthError(message: error.message, code: error.code);
@@ -82,7 +86,7 @@ class AuthRepositoryImpl extends IAuthRepository {
   @override
   Future<void> createUser(String name, String email, String password) async {
     try {
-      await sl<AuthDataSource>().createUser(name, email, password);
+      await authDataSource.createUser(name, email, password);
     }
     on FirebaseAuthException catch (error) {
     throw AuthError(message: error.message, code: error.code);
@@ -91,8 +95,8 @@ class AuthRepositoryImpl extends IAuthRepository {
 
   @override
   Future<void> signOut() async {
-    sl<Settings>().isLoggedIn = false;
-    await sl<AuthDataSource>().signOut();
+    settings.isLoggedIn = false;
+    await authDataSource.signOut();
   }
 }
 

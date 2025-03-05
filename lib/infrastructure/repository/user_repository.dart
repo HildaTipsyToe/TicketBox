@@ -37,10 +37,11 @@ class UserRepositoryImpl extends IUserRepository {
       if (querySnapshot.docs.isNotEmpty) {
         var userDoc = querySnapshot.docs.first;
         // Parse the collection into a TBUser object
+        var userData = userDoc.data() as Map<String, dynamic>;  // Hent data som en Map<String, dynamic>
         return TBUser(
           userId: userDoc.id,
-          userName: userDoc['userName'],
-          userMail: userDoc['userMail'],
+          userName: userData['userName'],  // Brug data() direkte
+          userMail: userData['userMail'],  // Brug data() direkte
         );
       }
       //If the search result retrived nothing

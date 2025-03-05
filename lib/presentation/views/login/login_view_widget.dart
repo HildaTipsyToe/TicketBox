@@ -14,7 +14,7 @@ class LoginViewWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return sl<Settings>().isLoggedIn == true
+    return sl<TBSettings>().isLoggedIn == true
         ? Column(
             children: [
               const Text('Du er logget ind'),

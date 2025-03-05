@@ -40,7 +40,7 @@ void _initViewModels() {
 }
 
 void _initUseCases() {
-  sl.registerLazySingleton<Settings>(() => Settings(isLoggedIn: false));
+  sl.registerLazySingleton<TBSettings>(() => TBSettings(isLoggedIn: false));
   sl.registerLazySingleton<TBUser>(() => TBUser(userId: '1', userName: '2', userMail: '3'));
 }
 
@@ -54,7 +54,7 @@ void _initRepositories() {
     sl.registerLazySingleton<IPostRepository>(() => PostRepositoryMock());
     sl.registerLazySingleton<IMessageRepository>(() => MessageRepositoryMock());
   } else {
-    sl.registerLazySingleton<IAuthRepository>(() => AuthRepositoryImpl());
+    sl.registerLazySingleton<IAuthRepository>(() => AuthRepositoryImpl(sl<AuthDataSource>(), sl<TBSettings>()));
     sl.registerLazySingleton<IUserRepository>(() => UserRepositoryImpl(sl<ApiDataSource>()));
     sl.registerLazySingleton<IMembershipRepository>(() => MembershipRepositoryImpl(sl<ApiDataSource>()));
     sl.registerLazySingleton<IPostRepository>(() => PostRepositoryImpl(sl<ApiDataSource>()));
