@@ -12,14 +12,15 @@ class GroupViewWidget extends StatelessWidget {
   final String saldo;
   final String roleId;
 
-  const GroupViewWidget(
-      {super.key,
-      required this.model,
-      required this.receiverId,
-      required this.groupId,
-      required this.groupName,
-      required this.saldo,
-      required this.roleId});
+  const GroupViewWidget({
+    super.key,
+    required this.model,
+    required this.receiverId,
+    required this.groupId,
+    required this.groupName,
+    required this.saldo,
+    required this.roleId,
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -9,6 +9,7 @@ import 'package:ticketbox/infrastructure/datasource/api_datasource.dart';
 /// This interface defines the contract for tickettype-related data operations.
 abstract class ITicketTypeRepository {
   Future<List<TicketType>> getTicketTypesByGroupId(String groupId);
+  Stream<List<TicketType>> getTicketTypesByGroupIdStream(String groupId);
   Future<void> addTicketType(Map<String, dynamic> ticketTypeData);
   Future<void> updateTicketType(String id, Map<String, dynamic> newData);
   Future<void> deleteTicketType(String id);
@@ -68,6 +69,17 @@ class TicketTypeRepositoryImpl extends ITicketTypeRepository {
       return Future.error('Error handeling updating the ticket type: $error');
     }
   }
+
+  @override
+  Stream<List<TicketType>> getTicketTypesByGroupIdStream(String groupId) {
+    return _apiDataSource.ticketTypeCollection
+        .where('groupId', isEqualTo: groupId)
+        .snapshots()
+        .map((querySnapshot) => querySnapshot.docs
+            .map((doc) => TicketType.fromMap(doc.data() as Map<String, dynamic>)
+                .copyWith(ticketTypeId: doc.id))
+            .toList());
+  }
 }
 
 class TicketTypeRepositoryMock extends ITicketTypeRepository {
@@ -84,12 +96,20 @@ class TicketTypeRepositoryMock extends ITicketTypeRepository {
   @override
   Future<List<TicketType>> getTicketTypesByGroupId(String groupId) async {
     print('Mock - Get TicketType by groupId');
-    List<TicketType> t = [TicketType(ticketName: 'ticketName', groupId: groupId)];
+    List<TicketType> t = [
+      TicketType(ticketName: 'ticketName', groupId: groupId)
+    ];
     return t;
   }
 
   @override
   Future<void> updateTicketType(String id, Map<String, dynamic> newData) async {
     print('Mock - TicketType updated');
+  }
+
+  @override
+  Stream<List<TicketType>> getTicketTypesByGroupIdStream(String groupId) {
+    // TODO: implement getTicketTypesByGroupIdStream
+    throw UnimplementedError();
   }
 }
