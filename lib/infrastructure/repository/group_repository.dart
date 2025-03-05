@@ -9,6 +9,7 @@ import 'package:ticketbox/infrastructure/datasource/auth_datasource.dart';
 /// Abstract class that represent the group reposistory
 ///
 /// This interface defines the contract for memberships-related data operations.
+
 abstract class IGroupRepository {
   Future<String> addGroup(Map<String, dynamic> groupData);
   Future<void> updateGroup(String id, Map<String, dynamic> newData);
@@ -82,7 +83,7 @@ class GroupRepositoryImpl extends IGroupRepository {
           .where('groupId', isEqualTo: groupId)
           .get();
 
-      for (QueryDocumentSnapshot docs in messagesSnapshot.docs){
+      for (QueryDocumentSnapshot docs in messagesSnapshot.docs) {
         batch.delete(docs.reference);
       }
 

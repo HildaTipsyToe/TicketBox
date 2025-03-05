@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:ticketbox/config/injection_container.dart';
 import 'package:ticketbox/domain/entities/membership.dart';
 import 'package:ticketbox/infrastructure/datasource/api_datasource.dart';
@@ -11,7 +12,8 @@ import 'package:ticketbox/infrastructure/repository/auth_repository.dart';
 /// This interface defines the contract for memberships-related data operations.
 abstract class IMembershipRepository {
   Future<List<Membership>> getMembershipsByGroupId(String id);
-  Future<List<Membership>> getMembershipByUserID(String id);
+  Stream<List<Membership>> getGroupsByUserIDStream(String id);
+  Future<List<Membership>> getGroupByUserID(String id);
   Future<void> addMembership(Membership membershipData);
   Future<void> updateMembership(String id, Map<String, dynamic> newData);
   Future<void> deleteMembership(Membership membership);
@@ -24,6 +26,7 @@ abstract class IMembershipRepository {
 /// The [MembershipRepositoryImpl] have methods for:
 /// - create membership
 /// - retriving membership by user ID
+/// - retriving membership by user ID as a stream
 /// - retriving membership by group ID
 /// - update membership
 /// - deleting membership
@@ -140,17 +143,31 @@ class MembershipRepositoryImpl extends IMembershipRepository {
     }
   }
 
+  /// Method for retriving memberships by the user ID as a stream with value [id]
+  @override
+  Stream<List<Membership>> getGroupsByUserIDStream(String id) {
+    return _apiDataSource.membershipCollection
+        .where('userId', isEqualTo: id)
+        .snapshots()
+        .map((querySnapshot) => querySnapshot.docs
+            .map((doc) => Membership.fromMap(doc.data() as Map<String, dynamic>)
+                .copyWith(membershipId: doc.id))
+            .toList());
+  }
+
   /// Method for retriving memberships by the user ID with value [id]
   @override
-  Future<List<Membership>> getMembershipByUserID(String id) async {
+  Future<List<Membership>> getGroupByUserID(String id) async {
     try {
       var querySnapshot = await _apiDataSource.membershipCollection
           .where('userId', isEqualTo: id)
-          .get();
+          .get(const GetOptions(source: Source.server));
 
       List<Membership> membership = querySnapshot.docs
           .map((doc) => Membership.fromMap(doc.data() as Map<String, dynamic>)
-              .copyWith(membershipId: doc.id)) //using the CopyWith because the Id is the doc id, and not in the object itself.
+              .copyWith(
+                  membershipId: doc
+                      .id)) //using the CopyWith because the Id is the doc id, and not in the object itself.
           .toList();
 
       return membership;
@@ -243,5 +260,17 @@ class MembershipRepositoryMock extends IMembershipRepository {
   @override
   Future<void> updateMembership(String id, Map<String, dynamic> newData) async {
     print('Mock - membership updated');
+  }
+  
+  @override
+  Future<List<Membership>> getGroupByUserID(String id) {
+    // TODO: implement getGroupByUserID
+    throw UnimplementedError();
+  }
+  
+  @override
+  Stream<List<Membership>> getGroupsByUserIDStream(String id) {
+    // TODO: implement getGroupsByUserIDStream
+    throw UnimplementedError();
   }
 }

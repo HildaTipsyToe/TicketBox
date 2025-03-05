@@ -2,9 +2,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
 import 'package:ticketbox/infrastructure/datasource/api_datasource.dart';
+import 'package:ticketbox/infrastructure/repository/group_repository.dart';
 import 'package:ticketbox/infrastructure/repository/membership_repository.dart';
 import 'package:ticketbox/infrastructure/repository/post_repository.dart';
 import 'package:ticketbox/infrastructure/repository/user_repository.dart';
+import 'package:ticketbox/presentation/views/dashboard/dashboard_view_model.dart';
+import 'package:ticketbox/presentation/views/fines/fines_view_model.dart';
+import 'package:ticketbox/presentation/views/group/group_view_model.dart';
 
 import '../domain/entities/settings.dart';
 import '../domain/entities/user.dart';
@@ -29,11 +33,11 @@ Future<void> injectionInit() async {
 }
 
 void _initViewModels() {
-  // sl.registerLazySingleton<DashboardViewModel>(() => DashboardViewModel());
+  sl.registerLazySingleton<DashboardViewModel>(() => DashboardViewModel());
   // sl.registerLazySingleton<MembersViewModel>(() => MembersViewModel());
   sl.registerLazySingleton<LoginViewModel>(() => LoginViewModel());
-  // sl.registerLazySingleton<FinesViewModel>(() => FinesViewModel());
-  // sl.registerLazySingleton<GroupViewModel>(() => GroupViewModel());
+  sl.registerLazySingleton<FinesViewModel>(() => FinesViewModel());
+  sl.registerLazySingleton<GroupViewModel>(() => GroupViewModel());
   // sl.registerLazySingleton<GroupAdminViewModel>(() => GroupAdminViewModel());
   sl.registerLazySingleton<ChatViewModel>(() => ChatViewModel());
 
@@ -63,6 +67,7 @@ void _initRepositories() {
     sl.registerLazySingleton<IMessageRepository>(() => MessageRepositoryImpl(sl<ApiDataSource>()));
   }
 }
+
 
 
 void _initDataSources() {

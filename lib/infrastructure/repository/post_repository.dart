@@ -11,6 +11,8 @@ abstract class IPostRepository {
   Future<List<Post>> getPostsByGroupId(String groupId);
   Future<List<Post>> getPostsByReceiverIdAndGroupId(
       String receiverId, String groupId);
+  Stream<List<Post>> getPostsByReceiverIdAndGroupIdStream(
+      String receiverId, String groupId);
   Future<void> addPost(Post post);
   Future<void> updatePost(String id, Map<String, dynamic> newData);
   Future<void> deletePost(Post post);
@@ -156,6 +158,19 @@ class PostRepositoryImpl extends IPostRepository {
       return Future.error('Error handeling updating the post: $error');
     }
   }
+
+  @override
+  Stream<List<Post>> getPostsByReceiverIdAndGroupIdStream(
+      String receiverId, String groupId) {
+    return _apiDataSource.postCollection
+        .where('reciverId', isEqualTo: receiverId)
+        .where('groupId', isEqualTo: groupId)
+        .snapshots()
+        .map((querySnapshot) => querySnapshot.docs
+            .map((doc) => Post.fromMap(doc.data() as Map<String, dynamic>)
+                .copyWith(postId: doc.id))
+            .toList());
+  }
 }
 
 class PostRepositoryMock extends IPostRepository {
@@ -181,12 +196,14 @@ class PostRepositoryMock extends IPostRepository {
           receiverId: 'receiverId',
           receiverName: 'receiverName',
           ticketTypeId: 'ticketTypeId',
-          ticketTypeName: 'ticketTypeName')];
+          ticketTypeName: 'ticketTypeName')
+    ];
     return p;
   }
 
   @override
-  Future<List<Post>> getPostsByReceiverIdAndGroupId(String receiverId, String groupId) async {
+  Future<List<Post>> getPostsByReceiverIdAndGroupId(
+      String receiverId, String groupId) async {
     print('Mock - Get post by ReceiverId and GroupId');
     List<Post> p = [
       Post(
@@ -197,12 +214,20 @@ class PostRepositoryMock extends IPostRepository {
           receiverId: 'receiverId',
           receiverName: 'receiverName',
           ticketTypeId: 'ticketTypeId',
-          ticketTypeName: 'ticketTypeName')];
+          ticketTypeName: 'ticketTypeName')
+    ];
     return p;
   }
 
   @override
   Future<void> updatePost(String id, Map<String, dynamic> newData) async {
     print('Mock - Post updated');
+  }
+
+  @override
+  Stream<List<Post>> getPostsByReceiverIdAndGroupIdStream(
+      String receiverId, String groupId) {
+    // TODO: implement getPostsByReceiverIdAndGroupIdStream
+    throw UnimplementedError();
   }
 }
