@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ticketbox/presentation/views/dashboard/dashboard_view.dart';
+import 'package:ticketbox/presentation/views/fines/fines_view.dart';
+import 'package:ticketbox/presentation/views/group/group_view.dart';
 
 import '../config/injection_container.dart';
 import '../domain/entities/settings.dart';
@@ -37,29 +39,29 @@ GoRouter goRoutes = GoRouter(
         return DashboardView();
       },
     ),
-    // GoRoute(
-    //   name: 'fines',
-    //   path: '/fines',
-    //   builder: (BuildContext context, GoRouterState state) {
-    //     return FinesView(
-    //       groupId: state.uri.queryParameters['groupId']!,
-    //       roleId: state.uri.queryParameters['roleId']!,
-    //     );
-    //   },
-    // ),
-    // GoRoute(
-    //   name: 'group',
-    //   path: '/group',
-    //   builder: (BuildContext context, GoRouterState state) {
-    //     return GroupView(
-    //       receiverId: state.uri.queryParameters['receiverId']!,
-    //       groupId: state.uri.queryParameters['groupId']!,
-    //       groupName: state.uri.queryParameters['groupName']!,
-    //       saldo: state.uri.queryParameters['saldo']!,
-    //       roleId: state.uri.queryParameters['roleId']!,
-    //     );
-    //   },
-    // ),
+    GoRoute(
+      name: 'fines',
+      path: '/fines',
+      builder: (BuildContext context, GoRouterState state) {
+        return FinesView(
+          groupId: state.uri.queryParameters['groupId']!,
+          roleId: state.uri.queryParameters['roleId']!,
+        );
+      },
+    ),
+    GoRoute(
+      name: 'group',
+      path: '/group',
+      builder: (BuildContext context, GoRouterState state) {
+        return GroupView(
+          receiverId: state.uri.queryParameters['receiverId']!,
+          groupId: state.uri.queryParameters['groupId']!,
+          groupName: state.uri.queryParameters['groupName']!,
+          saldo: state.uri.queryParameters['saldo']!,
+          roleId: state.uri.queryParameters['roleId']!,
+        );
+      },
+    ),
     // GoRoute(
     //   name: 'members',
     //   path: '/members',

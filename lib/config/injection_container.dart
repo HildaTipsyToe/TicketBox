@@ -7,6 +7,8 @@ import 'package:ticketbox/infrastructure/repository/membership_repository.dart';
 import 'package:ticketbox/infrastructure/repository/post_repository.dart';
 import 'package:ticketbox/infrastructure/repository/user_repository.dart';
 import 'package:ticketbox/presentation/views/dashboard/dashboard_view_model.dart';
+import 'package:ticketbox/presentation/views/fines/fines_view_model.dart';
+import 'package:ticketbox/presentation/views/group/group_view_model.dart';
 
 import '../domain/entities/settings.dart';
 import '../domain/entities/user.dart';
@@ -19,7 +21,7 @@ import '../presentation/views/chat/chat_view_model.dart';
 import '../presentation/views/login/login_view_model.dart';
 
 final sl = GetIt.instance;
-bool mock = true;
+bool mock = false;
 
 
 Future<void> injectionInit() async {
@@ -34,8 +36,8 @@ void _initViewModels() {
   sl.registerLazySingleton<DashboardViewModel>(() => DashboardViewModel());
   // sl.registerLazySingleton<MembersViewModel>(() => MembersViewModel());
   sl.registerLazySingleton<LoginViewModel>(() => LoginViewModel());
-  // sl.registerLazySingleton<FinesViewModel>(() => FinesViewModel());
-  // sl.registerLazySingleton<GroupViewModel>(() => GroupViewModel());
+  sl.registerLazySingleton<FinesViewModel>(() => FinesViewModel());
+  sl.registerLazySingleton<GroupViewModel>(() => GroupViewModel());
   // sl.registerLazySingleton<GroupAdminViewModel>(() => GroupAdminViewModel());
   sl.registerLazySingleton<ChatViewModel>(() => ChatViewModel());
 
