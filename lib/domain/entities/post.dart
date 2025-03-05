@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 /// A class that represent the [Post]
 ///
 /// This class includes properties for the Posts: [postId], [adminId], [adminName], [groupId], [dateIssued], [price], [receiverId], [receiverName], [ticketTypeId] & [ticketTypeName],
@@ -25,7 +27,7 @@ class Post {
     required this.receiverName,
     required this.ticketTypeId,
     required this.ticketTypeName,
-  }) : dateIssued = dateIssued ?? DateTime.now().toString();
+  }) : dateIssued = dateIssued ?? DateFormat('dd MM yyy').format(DateTime.now()).toString();
 
   /// Factory method to create a [Post] object from a map
   factory Post.fromMap(Map<String, dynamic> json) {
