@@ -34,14 +34,7 @@ class PostRepositoryImpl extends IPostRepository {
   /// Method for giving a user a posts [post]
   @override
   Future<void> addPost(Post post) async {
-    WriteBatch batch = FirebaseFirestore.instance.batch();
     try {
-      // Reference to the new post
-      DocumentReference postRef = _apiDataSource.postCollection.doc();
-
-      // Add the post to Firestore
-      batch.set(postRef, post.toJson());
-
       // Query for the membership related to the group and receiver
       QuerySnapshot membershipSnapshot = await _apiDataSource
           .membershipCollection
@@ -56,11 +49,8 @@ class PostRepositoryImpl extends IPostRepository {
 
         final newBalance = currentBalance - post.price;
 
-        // Update membership balance
-        batch.update(doc.reference, {'balance': newBalance});
+        await doc.reference.update({'balance': newBalance});
       }
-      // Commit the batch operation
-      await batch.commit();
     } catch (error) {
       log('Error handeling adding a post: $error');
       Future.error('Error handeling adding a post: $error');
@@ -70,39 +60,37 @@ class PostRepositoryImpl extends IPostRepository {
   /// Method for deleting post from a membership with [post] as a parameter
   @override
   Future<void> deletePost(Post post) async {
-    WriteBatch batch = FirebaseFirestore.instance.batch();
-
     try {
       final price = post.price;
-      final reciverId = post.receiverId;
+      final receiverId = post.receiverId;
       final groupId = post.groupId;
 
-      DocumentReference postRef =
-          _apiDataSource.postCollection.doc(post.postId);
+      // Delete the post from Firestore
+      await _apiDataSource.postCollection.doc(post.postId).delete();
 
-      batch.delete(postRef);
-
+      // Query for the membership related to the group and receiver
       QuerySnapshot membershipSnapshot = await _apiDataSource
           .membershipCollection
           .where('groupId', isEqualTo: groupId)
-          .where('userId', isEqualTo: reciverId)
+          .where('userId', isEqualTo: receiverId)
           .get();
 
+      // Going through the membershipSnapshot to update the balance
       for (QueryDocumentSnapshot doc in membershipSnapshot.docs) {
         final membershipData = doc.data() as Map<String, dynamic>;
         final currentBalance = membershipData['balance'] as int;
 
         final newBalance = currentBalance + price;
 
-        batch.update(doc.reference, {'balance': newBalance});
+        // Update the membership balance
+        await doc.reference.update({'balance': newBalance});
       }
-
-      await batch.commit();
     } catch (error) {
-      log('Error handeling deleting post: $error');
-      return Future.error('Error handeling deleting post: $error');
+      log('Error handling deleting post: $error');
+      throw Exception('Error handling deleting post: $error'); // Throw the error for better handling
     }
   }
+
 
   /// Method for fetching a post with [groupId] as a parameter
   @override

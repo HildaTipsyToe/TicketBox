@@ -8,7 +8,7 @@ import 'package:ticketbox/infrastructure/repository/tickettype_repository.dart';
 import 'tickettype_repository_test.mocks.dart';
 
 // Generer mocks af de nødvendige Firestore klasser
-@GenerateMocks([ApiDataSource, CollectionReference, DocumentReference, Query, QueryDocumentSnapshot])
+@GenerateMocks([ApiDataSource, CollectionReference, DocumentReference, Query, QuerySnapshot, QueryDocumentSnapshot])
 void main() {
   late MockApiDataSource mockApiDataSource;
   late MockCollectionReference mockCollectionReference;

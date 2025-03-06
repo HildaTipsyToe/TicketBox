@@ -45,16 +45,9 @@ class MessageRepositoryImpl implements IMessageRepository {
   /// Adds a new message by [message] to the Firestore database using a batch operation.
   @override
   Future<void> addMessage(Message message) async {
-    WriteBatch batch = FirebaseFirestore.instance.batch();
     try {
-      // Reference to the new message
       DocumentReference messageRef = _apiDataSource.messageCollection.doc();
-
-      // Add the message to Firestore
-      batch.set(messageRef, message.toJson());
-
-      // Commit the batch operation
-      await batch.commit();
+      await messageRef.set(message.toJson());
     } catch (e) {
       print('Error adding post and updating memberships: $e');
     }
@@ -63,17 +56,9 @@ class MessageRepositoryImpl implements IMessageRepository {
   /// Deletes a message by [messageId] in the Firestore database using a batch operation.
   @override
   Future<void> deleteMessage(String messageId) async {
-    WriteBatch batch = FirebaseFirestore.instance.batch();
-
     try {
-      // Reference to the message to be deleted
       DocumentReference messageRef = _apiDataSource.messageCollection.doc(messageId);
-
-      // Delete the message
-      batch.delete(messageRef);
-
-      // Commit the batch operation
-      await batch.commit();
+      await messageRef.delete();
     } catch (e) {
       print('Error deleting post and updating memberships: $e');
     }

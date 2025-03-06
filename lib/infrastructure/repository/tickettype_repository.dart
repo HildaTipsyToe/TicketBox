@@ -25,8 +25,8 @@ class TicketTypeRepositoryImpl extends ITicketTypeRepository {
     try {
       await _apiDataSource.ticketTypeCollection.add(ticketTypeData);
     } catch (error) {
-      log('Error handeling adding a ticket type: $error');
-      return Future.error('Error handeling adding a tickettype: $error');
+      log('Error handling adding a ticket type: $error');
+      return Future.error('Error handling adding a tickettype: $error');
     }
   }
 
@@ -35,9 +35,9 @@ class TicketTypeRepositoryImpl extends ITicketTypeRepository {
     try {
       await _apiDataSource.ticketTypeCollection.doc(id).delete();
     } catch (error) {
-      log('Error handeling the deletion of ticket type: $error');
+      log('Error handling the deletion of ticket type: $error');
       return Future.error(
-          'Error handeling the deletion of ticket type: $error');
+          'Error handling the deletion of ticket type: $error');
     }
   }
 
@@ -54,9 +54,9 @@ class TicketTypeRepositoryImpl extends ITicketTypeRepository {
           .toList();
       return tickets;
     } catch (error) {
-      log('Error handeling retreving the ticket types by group id: $error');
+      log('Error handling retrieving the ticket types by group id: $error');
       return Future.error(
-          'Error handeling retreving the ticket types by group id: $error');
+          'Error handling retrieving the ticket types by group id: $error');
     }
   }
 
@@ -65,8 +65,8 @@ class TicketTypeRepositoryImpl extends ITicketTypeRepository {
     try {
       await _apiDataSource.ticketTypeCollection.doc(id).update(newData);
     } catch (error) {
-      log('Error handeling updating the ticket type: $error');
-      return Future.error('Error handeling updating the ticket type: $error');
+      log('Error handling updating the ticket type: $error');
+      return Future.error('Error handling updating the ticket type: $error');
     }
   }
 

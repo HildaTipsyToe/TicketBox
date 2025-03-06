@@ -60,7 +60,7 @@ void _initRepositories() {
     sl.registerLazySingleton<IUserRepository>(() => UserRepositoryImpl(sl<ApiDataSource>()));
     sl.registerLazySingleton<IMembershipRepository>(() => MembershipRepositoryImpl(sl<ApiDataSource>()));
     sl.registerLazySingleton<IPostRepository>(() => PostRepositoryImpl(sl<ApiDataSource>()));
-    sl.registerLazySingleton<IGroupRepository>(() => GroupRepositoryImpl(sl<ApiDataSource>()));
+    sl.registerLazySingleton<IGroupRepository>(() => GroupRepositoryImpl(sl<ApiDataSource>(), sl<AuthDataSource>()));
     sl.registerLazySingleton<ITicketTypeRepository>(() => TicketTypeRepositoryImpl(sl<ApiDataSource>()));
     sl.registerLazySingleton<IMessageRepository>(() => MessageRepositoryImpl(sl<ApiDataSource>()));
   }

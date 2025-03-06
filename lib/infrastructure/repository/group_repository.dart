@@ -1,7 +1,6 @@
 import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:ticketbox/config/injection_container.dart';
 import 'package:ticketbox/domain/entities/membership.dart';
 import 'package:ticketbox/infrastructure/datasource/api_datasource.dart';
 import 'package:ticketbox/infrastructure/datasource/auth_datasource.dart';
@@ -24,13 +23,14 @@ abstract class IGroupRepository {
 /// - deleting group
 class GroupRepositoryImpl extends IGroupRepository {
   final ApiDataSource _apiDataSource;
+  final AuthDataSource _authDataSource;
 
-  GroupRepositoryImpl(this._apiDataSource);
+  GroupRepositoryImpl(this._apiDataSource, this._authDataSource);
 
   /// Method for creating a group with a property of [Map] named [groupData]
   @override
   Future<String> addGroup(Map<String, dynamic> groupData) async {
-    User? currentUser = await sl<AuthDataSource>().getCurrentUser();
+    User? currentUser = await _authDataSource.getCurrentUser();
     if (currentUser == null) {
       return "Unable to find current user!";
     }
@@ -60,40 +60,38 @@ class GroupRepositoryImpl extends IGroupRepository {
   /// Method for deleting a group with a property of [String] named [groupId]
   @override
   Future<void> deleteGroup(String groupId) async {
-    WriteBatch batch = FirebaseFirestore.instance.batch();
     try {
       QuerySnapshot membershipSnapshot = await _apiDataSource
           .membershipCollection
           .where('groupId', isEqualTo: groupId)
           .get();
 
-      for (QueryDocumentSnapshot docs in membershipSnapshot.docs) {
-        batch.delete(docs.reference);
+      for (QueryDocumentSnapshot doc in membershipSnapshot.docs) {
+        await doc.reference.delete(); // Slet hvert medlemskab
       }
 
       QuerySnapshot postsSnapshot = await _apiDataSource.postCollection
           .where('groupId', isEqualTo: groupId)
           .get();
 
-      for (QueryDocumentSnapshot docs in postsSnapshot.docs) {
-        batch.delete(docs.reference);
+      for (QueryDocumentSnapshot doc in postsSnapshot.docs) {
+        await doc.reference.delete();
       }
 
       QuerySnapshot messagesSnapshot = await _apiDataSource.messageCollection
           .where('groupId', isEqualTo: groupId)
           .get();
 
-      for (QueryDocumentSnapshot docs in messagesSnapshot.docs) {
-        batch.delete(docs.reference);
+      for (QueryDocumentSnapshot doc in messagesSnapshot.docs) {
+        await doc.reference.delete();
       }
 
       DocumentReference groupRef = _apiDataSource.groupCollection.doc(groupId);
-      batch.delete(groupRef);
+      await groupRef.delete();
 
-      await batch.commit();
     } catch (error) {
-      log('Error handeling deletion of group: $error');
-      return Future.error('Error handeling deletion of group: $error');
+      log('Error handling deletion of group: $error');
+      return Future.error('Error handling deletion of group: $error');
     }
   }
 
@@ -101,10 +99,10 @@ class GroupRepositoryImpl extends IGroupRepository {
   @override
   Future<void> updateGroup(String id, Map<String, dynamic> newData) async {
     try {
-      return ApiDataSource().groupCollection.doc(id).update(newData);
+      return _apiDataSource.groupCollection.doc(id).update(newData);
     } catch (error) {
-      log('Error handeling updating the group: $error');
-      return Future.error('Error handeling updating the group: $error');
+      log('Error handling updating the group: $error');
+      return Future.error('Error handling updating the group: $error');
     }
   }
 }

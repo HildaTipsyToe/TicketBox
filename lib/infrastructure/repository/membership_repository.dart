@@ -98,28 +98,20 @@ class MembershipRepositoryImpl extends IMembershipRepository {
   /// Method for deleting membership and members posts with value [membership]
   @override
   Future<void> deleteMembership(Membership membership) async {
-    WriteBatch batch = FirebaseFirestore.instance.batch();
     try {
       // Query and delete posts related to the memberships
-      // ....
       QuerySnapshot postsSnapshot = await _apiDataSource.postCollection
           .where('userId', isEqualTo: membership.userId)
           .get();
 
-      for (QueryDocumentSnapshot docs in postsSnapshot.docs) {
-        batch.delete(docs.reference);
-      }
+      for (QueryDocumentSnapshot doc in postsSnapshot.docs) {
+        await doc.reference.delete();      }
 
       // Deleting the group itself
-      DocumentReference membershipRef =
-          _apiDataSource.membershipCollection.doc(membership.membershipId);
-      batch.delete(membershipRef);
-
-      await batch.commit();
     } catch (error) {
-      log('Error handeling the deletion of a memebership: $error');
-      return Future.error(
-          'Error handeling the deletion of a memebership: $error');
+      log('Error handling the deletion of a membership: $error');
+      throw Exception(
+          'Error handling the deletion of a membership: $error');
     }
   }
 
@@ -171,8 +163,8 @@ class MembershipRepositoryImpl extends IMembershipRepository {
 
       return membership;
     } catch (error) {
-      log('Error handeling fetching membership by user Id: $error');
-      return Future.error('Error fetching the memebership by user id: $error');
+      log('Error handling fetching membership by user Id: $error');
+      throw Exception('Error fetching the membership by user id: $error');
     }
   }
 
@@ -191,19 +183,19 @@ class MembershipRepositoryImpl extends IMembershipRepository {
 
       return membership;
     } catch (error) {
-      log('Error handeling fetching the membershipsByGroupId: $error');
-      return Future.error('Error fething the membership: $error');
+      log('Error handling fetching the membershipsByGroupId: $error');
+      throw Exception('Error fetching the membership: $error');
     }
   }
 
-  /// Method for updating the memebership with values [id] and [newData]
+  /// Method for updating the membership with values [id] and [newData]
   @override
   Future<void> updateMembership(String id, Map<String, dynamic> newData) {
     try {
       return _apiDataSource.membershipCollection.doc(id).update(newData);
     } catch (error) {
-      log('Error handeling updating the memebership of a user: $error');
-      return Future.error('Error updating the membership: $error');
+      log('Error handling updating the membership of a user: $error');
+      throw Exception('Error updating the membership: $error');
     }
   }
 }
@@ -235,16 +227,6 @@ class MembershipRepositoryMock extends IMembershipRepository {
   Future<void> deleteMembership(Membership membership) async {
     print('Mock - Membership deleted');
   }
-
-  // @override
-  // Future<List<Membership>> getMembershipByUserID(String id) async {
-  //   print('Mock - Get membership by userId');
-  //   List<Membership> m = [
-  //     Membership(userId: 'userId', userName: 'userName', groupId: 'groupId1', groupName: 'groupName1', balance: 1, roleId: 1),
-  //     Membership(userId: 'userId', userName: 'userName', groupId: 'groupId2', groupName: 'groupName2', balance: 2, roleId: 2)
-  //   ];
-  //   return m;
-  // }
 
   @override
   Future<List<Membership>> getMembershipsByGroupId(String id) async {
