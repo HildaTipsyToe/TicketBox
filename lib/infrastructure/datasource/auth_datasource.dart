@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:ticketbox/infrastructure/repository/user_repository.dart';
 
 import '../../config/injection_container.dart';
 
@@ -79,7 +80,7 @@ class FirebaseAuthDataSource extends AuthDataSource {
       sl<TBUser>().userId = temp!.uid;
       sl<TBUser>().userName = temp.displayName!;
       sl<TBUser>().userMail = temp.email!;
-      // sl<IUserRepository>().createUser(temp.uid, temp.displayName!, temp.email!);
+      sl<IUserRepository>().createUser(temp.uid, temp.displayName!, temp.email!);
     } on FirebaseAuthException catch (error) {
       throw AuthError(message: error.message, code: error.code);
     }
