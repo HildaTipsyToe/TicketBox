@@ -11,6 +11,7 @@ import 'package:ticketbox/infrastructure/repository/auth_repository.dart';
 /// This interface defines the contract for memberships-related data operations.
 abstract class IMembershipRepository {
   Future<List<Membership>> getMembershipsByGroupId(String id);
+  Stream<List<Membership>> getMembershipsByGroupIdStream(String id);
   Stream<List<Membership>> getGroupsByUserIDStream(String id);
   Future<List<Membership>> getGroupByUserID(String id);
   Future<void> addMembership(Membership membershipData);
@@ -27,6 +28,7 @@ abstract class IMembershipRepository {
 /// - retriving membership by user ID
 /// - retriving membership by user ID as a stream
 /// - retriving membership by group ID
+/// - retriving membership by group ID as a stream
 /// - update membership
 /// - deleting membership
 /// - authorization to update membership
@@ -198,6 +200,16 @@ class MembershipRepositoryImpl extends IMembershipRepository {
       throw Exception('Error updating the membership: $error');
     }
   }
+  
+  @override
+  Stream<List<Membership>> getMembershipsByGroupIdStream(String id) {
+    return _apiDataSource.membershipCollection
+          .where('groupId', isEqualTo: id)
+          .snapshots().map((querySnapshot) =>  querySnapshot.docs
+          .map((doc) => Membership.fromMap(doc.data() as Map<String, dynamic>)
+              .copyWith(membershipId: doc.id))
+          .toList());
+  }
 }
 
 class MembershipRepositoryMock extends IMembershipRepository {
@@ -252,6 +264,12 @@ class MembershipRepositoryMock extends IMembershipRepository {
   @override
   Stream<List<Membership>> getGroupsByUserIDStream(String id) {
     // TODO: implement getGroupsByUserIDStream
+    throw UnimplementedError();
+  }
+  
+  @override
+  Stream<List<Membership>> getMembershipsByGroupIdStream(String id) {
+    // TODO: implement getMembershipsByGroupIdStream
     throw UnimplementedError();
   }
 }

@@ -17,7 +17,6 @@ class GroupViewModel extends BaseViewModel {
   Stream<List<Post>> getPostsByReceiverIdAndGroupId(receiverId, groupId) {
     Stream<List<Post>> tempPosts = sl<IPostRepository>()
         .getPostsByReceiverIdAndGroupIdStream(receiverId, groupId);
-
     return tempPosts;
   }
 

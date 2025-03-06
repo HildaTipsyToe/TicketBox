@@ -130,9 +130,9 @@ class PostRepositoryImpl extends IPostRepository {
 
       return posts;
     } catch (error) {
-      log('Error handeling retreving posts by reciver and group id');
+      log('Error handeling retreving posts by receiver and group id');
       return Future.error(
-          'Error handeling retreving posts by reciver and group id');
+          'Error handeling retreving posts by receiver and group id');
     }
   }
 
@@ -150,14 +150,21 @@ class PostRepositoryImpl extends IPostRepository {
   @override
   Stream<List<Post>> getPostsByReceiverIdAndGroupIdStream(
       String receiverId, String groupId) {
-    return _apiDataSource.postCollection
-        .where('reciverId', isEqualTo: receiverId)
+    var temp = _apiDataSource.postCollection
+        .where('receiverId', isEqualTo: receiverId)
         .where('groupId', isEqualTo: groupId)
         .snapshots()
         .map((querySnapshot) => querySnapshot.docs
             .map((doc) => Post.fromMap(doc.data() as Map<String, dynamic>)
                 .copyWith(postId: doc.id))
             .toList());
+
+    temp.listen((posts) {
+      for (var post in posts) {
+        print(post); // Print each post
+      }
+    });
+    return temp;
   }
 }
 

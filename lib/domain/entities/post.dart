@@ -38,7 +38,7 @@ class Post {
       groupId: json['groupId'] ?? '',
       price: json['price'] ?? '',
       receiverId: json['receiverId'] ?? '',
-      receiverName: json['reciverName'] ?? '',
+      receiverName: json['receiverName'] ?? '',
       ticketTypeId: json['ticketTypeId'] ?? '',
       ticketTypeName: json['ticketTypeName'] ?? '',
     );

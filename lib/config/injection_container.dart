@@ -9,6 +9,7 @@ import 'package:ticketbox/infrastructure/repository/user_repository.dart';
 import 'package:ticketbox/presentation/views/dashboard/dashboard_view_model.dart';
 import 'package:ticketbox/presentation/views/fines/fines_view_model.dart';
 import 'package:ticketbox/presentation/views/group/group_view_model.dart';
+import 'package:ticketbox/presentation/views/members/members_view_model.dart';
 
 import '../domain/entities/settings.dart';
 import '../domain/entities/user.dart';
@@ -33,7 +34,7 @@ Future<void> injectionInit() async {
 
 void _initViewModels() {
   sl.registerLazySingleton<DashboardViewModel>(() => DashboardViewModel());
-  // sl.registerLazySingleton<MembersViewModel>(() => MembersViewModel());
+  sl.registerLazySingleton<MembersViewModel>(() => MembersViewModel());
   sl.registerLazySingleton<LoginViewModel>(() => LoginViewModel());
   sl.registerLazySingleton<FinesViewModel>(() => FinesViewModel());
   sl.registerLazySingleton<GroupViewModel>(() => GroupViewModel());

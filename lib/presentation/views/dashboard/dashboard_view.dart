@@ -25,6 +25,7 @@ class _DashboardView extends State<DashboardView> {
           onPressed: () {},
         ),
       ],
+      leading: false,
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           await model.createGroup(context);
@@ -35,9 +36,6 @@ class _DashboardView extends State<DashboardView> {
           size: 32,
         ),
       ),
-      overrideOnBackPressed: () {
-        context.pop();
-      },
       builder: (context) => DashboardViewWidget(model: model),
     );
   }

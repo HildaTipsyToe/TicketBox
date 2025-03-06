@@ -32,4 +32,5 @@ class BaseViewModel extends ChangeNotifier {
       super.notifyListeners();
     }
   }
+  
 }

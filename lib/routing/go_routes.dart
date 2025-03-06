@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:ticketbox/presentation/views/dashboard/dashboard_view.dart';
 import 'package:ticketbox/presentation/views/fines/fines_view.dart';
 import 'package:ticketbox/presentation/views/group/group_view.dart';
+import 'package:ticketbox/presentation/views/members/members_view.dart';
 
 import '../config/injection_container.dart';
 import '../domain/entities/settings.dart';
@@ -62,17 +63,17 @@ GoRouter goRoutes = GoRouter(
         );
       },
     ),
-    // GoRoute(
-    //   name: 'members',
-    //   path: '/members',
-    //   builder: (BuildContext context, GoRouterState state){
-    //     return MembersView(
-    //       groupId: state.uri.queryParameters['groupId']!,
-    //       groupName: state.uri.queryParameters['groupName']!,
-    //       roleId: state.uri.queryParameters['roleId']!,
-    //     );
-    //   }
-    //   ),
+    GoRoute(
+      name: 'members',
+      path: '/members',
+      builder: (BuildContext context, GoRouterState state){
+        return MembersView(
+          groupId: state.uri.queryParameters['groupId']!,
+          groupName: state.uri.queryParameters['groupName']!,
+          roleId: state.uri.queryParameters['roleId']!,
+        );
+      }
+      ),
     // GoRoute(
     //   path: '/group_admin',
     //   builder: (BuildContext context, GoRouterState state) {
