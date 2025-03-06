@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:ticketbox/config/injection_container.dart';
 import 'package:ticketbox/domain/entities/group.dart';
@@ -13,14 +12,9 @@ class DashboardViewModel extends BaseViewModel {
   DashboardViewModel();
 
   Stream<List<Membership>> fetchGroups() {
-    List<Membership> tempMemberships;
     try {
       return sl<IMembershipRepository>()
           .getGroupsByUserIDStream(sl<TBUser>().userId);
-
-      // sl<IMembershipRepository>()
-      //     .test(sl<TBUser>().userId);
-      // return tempMemberships;
     } catch (error) {
       print("FAILED!: $error");
       Exception('ERROR IN THE MAKING!');

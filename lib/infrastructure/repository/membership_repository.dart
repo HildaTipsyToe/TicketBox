@@ -1,7 +1,6 @@
 import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:ticketbox/config/injection_container.dart';
 import 'package:ticketbox/domain/entities/membership.dart';
 import 'package:ticketbox/infrastructure/datasource/api_datasource.dart';
@@ -237,15 +236,15 @@ class MembershipRepositoryMock extends IMembershipRepository {
     print('Mock - Membership deleted');
   }
 
-  @override
-  Future<List<Membership>> getMembershipByUserID(String id) async {
-    print('Mock - Get membership by userId');
-    List<Membership> m = [
-      Membership(userId: 'userId', userName: 'userName', groupId: 'groupId1', groupName: 'groupName1', balance: 1, roleId: 1),
-      Membership(userId: 'userId', userName: 'userName', groupId: 'groupId2', groupName: 'groupName2', balance: 2, roleId: 2)
-    ];
-    return m;
-  }
+  // @override
+  // Future<List<Membership>> getMembershipByUserID(String id) async {
+  //   print('Mock - Get membership by userId');
+  //   List<Membership> m = [
+  //     Membership(userId: 'userId', userName: 'userName', groupId: 'groupId1', groupName: 'groupName1', balance: 1, roleId: 1),
+  //     Membership(userId: 'userId', userName: 'userName', groupId: 'groupId2', groupName: 'groupName2', balance: 2, roleId: 2)
+  //   ];
+  //   return m;
+  // }
 
   @override
   Future<List<Membership>> getMembershipsByGroupId(String id) async {

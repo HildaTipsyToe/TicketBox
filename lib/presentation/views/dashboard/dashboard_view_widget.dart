@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:ticketbox/config/injection_container.dart';
 import 'package:ticketbox/domain/entities/membership.dart';
 import 'package:ticketbox/presentation/views/dashboard/dashboard_view_model.dart';
 import 'package:ticketbox/presentation/views/widget/buttons/icon_button.dart';

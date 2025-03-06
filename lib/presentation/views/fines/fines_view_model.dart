@@ -20,7 +20,7 @@ class FinesViewModel extends BaseViewModel {
     // Retreiving the user data.
     final ticketName = ticketNameController.text;
 
-    final price = int.parse(priceController.text) ?? 0;
+    final price = int.parse(priceController.text);
 
     ticketNameController.text = '';
     priceController.text = '';
