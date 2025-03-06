@@ -74,7 +74,7 @@ class PostRepositoryImpl extends IPostRepository {
 
     try {
       final price = post.price;
-      final reciverId = post.receiverId;
+      final receiverId = post.receiverId;
       final groupId = post.groupId;
 
       DocumentReference postRef =
@@ -85,7 +85,7 @@ class PostRepositoryImpl extends IPostRepository {
       QuerySnapshot membershipSnapshot = await _apiDataSource
           .membershipCollection
           .where('groupId', isEqualTo: groupId)
-          .where('userId', isEqualTo: reciverId)
+          .where('userId', isEqualTo: receiverId)
           .get();
 
       for (QueryDocumentSnapshot doc in membershipSnapshot.docs) {
@@ -142,9 +142,9 @@ class PostRepositoryImpl extends IPostRepository {
 
       return posts;
     } catch (error) {
-      log('Error handeling retreving posts by reciver and group id');
+      log('Error handeling retreving posts by receiver and group id');
       return Future.error(
-          'Error handeling retreving posts by reciver and group id');
+          'Error handeling retreving posts by receiver and group id');
     }
   }
 
@@ -162,14 +162,21 @@ class PostRepositoryImpl extends IPostRepository {
   @override
   Stream<List<Post>> getPostsByReceiverIdAndGroupIdStream(
       String receiverId, String groupId) {
-    return _apiDataSource.postCollection
-        .where('reciverId', isEqualTo: receiverId)
+    var temp = _apiDataSource.postCollection
+        .where('receiverId', isEqualTo: receiverId)
         .where('groupId', isEqualTo: groupId)
         .snapshots()
         .map((querySnapshot) => querySnapshot.docs
             .map((doc) => Post.fromMap(doc.data() as Map<String, dynamic>)
                 .copyWith(postId: doc.id))
             .toList());
+
+    temp.listen((posts) {
+      for (var post in posts) {
+        print(post); // Print each post
+      }
+    });
+    return temp;
   }
 }
 
