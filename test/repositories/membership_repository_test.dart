@@ -22,6 +22,8 @@ void main() {
   late MockQuery mockQuery;
   late MockCollectionReference mockGroupCollection;
   late MockCollectionReference mockMembershipCollection;
+  late MockCollectionReference mockPostCollection;
+  late MockCollectionReference mockMessageCollection;
 
   setUp(() {
     // Initialize the mocks before each test
@@ -34,17 +36,31 @@ void main() {
     mockDocumentReference = MockDocumentReference();
     mockQuery = MockQuery();
 
-    // Mock the groupCollection to return a mock CollectionReference
+    // Mock the Firestore collections
     mockGroupCollection = MockCollectionReference();
+    mockMembershipCollection = MockCollectionReference();
+    mockPostCollection = MockCollectionReference();
+    mockMessageCollection = MockCollectionReference();
+
     when(mockApiDataSource.groupCollection).thenReturn(mockGroupCollection);
+    when(mockApiDataSource.membershipCollection).thenReturn(mockMembershipCollection);
+    when(mockApiDataSource.postCollection).thenReturn(mockPostCollection);
+    when(mockApiDataSource.messageCollection).thenReturn(mockMessageCollection);
 
     // Stub add operation on mock groupCollection to return a mock DocumentReference
     when(mockGroupCollection.add(any)).thenAnswer((_) async => mockDocumentReference);
 
-    // Mock the membership collection
-    mockMembershipCollection = MockCollectionReference();
-    when(mockApiDataSource.membershipCollection).thenReturn(mockMembershipCollection);
+    when(mockGroupCollection.doc(any)).thenReturn(mockDocumentReference);
+
+    // 🔹 Fix: Properly stub where() to return a query mock
+    when(mockMembershipCollection.where(any, isEqualTo: anyNamed('isEqualTo')))
+        .thenReturn(mockQuery);
+    when(mockPostCollection.where(any, isEqualTo: anyNamed('isEqualTo')))
+        .thenReturn(mockQuery);
+    when(mockMessageCollection.where(any, isEqualTo: anyNamed('isEqualTo')))
+        .thenReturn(mockQuery);
   });
+
 
   test('addGroup should return "Group created!" when successful', () async {
     // Mocking current user
@@ -84,15 +100,15 @@ void main() {
     final groupId = 'mock_group_id';
 
     // Mocking the Firestore snapshots for memberships, posts, and messages
-    when(mockApiDataSource.membershipCollection.where('groupId', isEqualTo: groupId))
+    when(mockMembershipCollection.where('groupId', isEqualTo: groupId))
         .thenReturn(mockQuery);
+    when(mockPostCollection.where('groupId', isEqualTo: groupId))
+        .thenReturn(mockQuery);
+    when(mockMessageCollection.where('groupId', isEqualTo: groupId))
+        .thenReturn(mockQuery);
+
     when(mockQuery.get()).thenAnswer((_) async => mockQuerySnapshot);
     when(mockQuerySnapshot.docs).thenReturn([mockQueryDocumentSnapshot]);
-
-    when(mockApiDataSource.postCollection.where('groupId', isEqualTo: groupId))
-        .thenReturn(mockQuery);
-    when(mockApiDataSource.messageCollection.where('groupId', isEqualTo: groupId))
-        .thenReturn(mockQuery);
 
     // Mocking the delete operation for each reference
     when(mockQueryDocumentSnapshot.reference).thenReturn(mockDocumentReference);
