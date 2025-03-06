@@ -1,7 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-
-import '../../config/injection_container.dart';
-
 import '../../domain/entities/settings.dart';
 import '../../domain/entities/user.dart';
 import '../repository/auth_repository.dart';
@@ -28,8 +25,10 @@ abstract class AuthDataSource {
 
 class FirebaseAuthDataSource extends AuthDataSource {
   final FirebaseAuth firebaseAuth;
+  final TBSettings settings;
+  final TBUser user;
 
-  FirebaseAuthDataSource({required this.firebaseAuth});
+  FirebaseAuthDataSource({required this.firebaseAuth, required this.settings, required this.user});
 
 
   @override
@@ -39,9 +38,9 @@ class FirebaseAuthDataSource extends AuthDataSource {
   Future<User?> getCurrentUser() async {
     User? temp = firebaseAuth.currentUser;
     if(temp != null){
-    sl<TBUser>().userId = temp.uid;
-    sl<TBUser>().userName = (temp.displayName ?? temp.email)!;
-    sl<TBUser>().userMail = temp.email!;
+    user.userId = temp.uid;
+    user.userName = (temp.displayName ?? temp.email)!;
+    user.userMail = temp.email!;
     return temp;
     }
     return null;
@@ -57,11 +56,11 @@ class FirebaseAuthDataSource extends AuthDataSource {
     try {
       await firebaseAuth.signInWithEmailAndPassword(
           email: email, password: password);
-          sl<TBSettings>().isLoggedIn = true;
+          settings.isLoggedIn = true;
           User? temp = firebaseAuth.currentUser;
-          sl<TBUser>().userId = temp!.uid;
-          sl<TBUser>().userName = (temp.displayName ?? temp.email)!;
-          sl<TBUser>().userMail = temp.email!;
+          user.userId = temp!.uid;
+          user.userName = (temp.displayName ?? temp.email)!;
+          user.userMail = temp.email!;
 
     } on FirebaseAuthException catch (error) {
       throw AuthError(message: error.message, code: error.code);
@@ -74,11 +73,11 @@ class FirebaseAuthDataSource extends AuthDataSource {
     try {
       await firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
       await firebaseAuth.currentUser?.updateDisplayName(name);
-      sl<TBSettings>().isLoggedIn = true;
+      settings.isLoggedIn = true;
       User? temp = firebaseAuth.currentUser;
-      sl<TBUser>().userId = temp!.uid;
-      sl<TBUser>().userName = temp.displayName!;
-      sl<TBUser>().userMail = temp.email!;
+      user.userId = temp!.uid;
+      user.userName = temp.displayName!;
+      user.userMail = temp.email!;
       // sl<IUserRepository>().createUser(temp.uid, temp.displayName!, temp.email!);
     } on FirebaseAuthException catch (error) {
       throw AuthError(message: error.message, code: error.code);

@@ -12,7 +12,7 @@ import '../presentation/views/login/login_view.dart';
 import 'nav_enums.dart';
 
 GoRouter goRoutes = GoRouter(
-  initialLocation: sl<Settings>().isLoggedIn ? '/' : '/login',
+  initialLocation: sl<TBSettings>().isLoggedIn ? '/' : '/login',
   routes: [
     // ShellRoute(
     //   builder: (context, state, child) => MainLayout(

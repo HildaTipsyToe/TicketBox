@@ -14,7 +14,6 @@ import '../domain/entities/settings.dart';
 import '../domain/entities/user.dart';
 import '../infrastructure/datasource/auth_datasource.dart';
 import '../infrastructure/repository/auth_repository.dart';
-import '../infrastructure/repository/group_repository.dart';
 import '../infrastructure/repository/message_repository.dart';
 import '../infrastructure/repository/tickettype_repository.dart';
 import '../presentation/views/chat/chat_view_model.dart';
@@ -38,7 +37,6 @@ void _initViewModels() {
   sl.registerLazySingleton<LoginViewModel>(() => LoginViewModel());
   sl.registerLazySingleton<FinesViewModel>(() => FinesViewModel());
   sl.registerLazySingleton<GroupViewModel>(() => GroupViewModel());
-  // sl.registerLazySingleton<GroupAdminViewModel>(() => GroupAdminViewModel());
   sl.registerLazySingleton<ChatViewModel>(() => ChatViewModel());
 
 }
@@ -72,7 +70,7 @@ void _initRepositories() {
 
 void _initDataSources() {
   sl.registerLazySingleton<ApiDataSource>(() => ApiDataSource());
-  sl.registerLazySingleton<AuthDataSource>(() => FirebaseAuthDataSource(firebaseAuth: FirebaseAuth.instance));
+  sl.registerLazySingleton<AuthDataSource>(() => FirebaseAuthDataSource(firebaseAuth: FirebaseAuth.instance, settings: sl<TBSettings>(), user: sl<TBUser>()));
 }
 
 

@@ -11,8 +11,8 @@ import 'auth_repository_test.mocks.dart'; // Importer den genererede fil med moc
 void main() {
   late AuthRepositoryImpl authRepository;
   late MockAuthDataSource mockAuthDataSource;
-  late MockUser mockTBUser; // Mock af TBUser
-  late MockTBSettings mockTBSettings; // Mock af TBUser
+  late MockUser mockTBUser; // Mock af User
+  late MockTBSettings mockTBSettings; // Mock af TBSettings
 
   setUp(() {
     // Initialisering af mocks
@@ -29,7 +29,7 @@ void main() {
       final password = 'password123';
 
       when(mockAuthDataSource.signInWithEmailAndPassword(email, password))
-          .thenAnswer((_) async => null); // Mocking signIn
+          .thenAnswer((_) async {}); // Mocking signIn
 
       // Act
       await authRepository.signInWithEmailAndPassword(email, password);
@@ -51,15 +51,14 @@ void main() {
           .thenThrow(exception); // Mocking an error
 
       // Act & Assert
-      expect(
-            () => authRepository.signInWithEmailAndPassword(email, password),
+      expect(() => authRepository.signInWithEmailAndPassword(email, password),
         throwsA(isA<AuthError>()),
       );
     });
 
     test('should return current user', () async {
       // Arrange
-      final mockUser = mockTBUser;  // Brug mockTBUser
+      final mockUser = mockTBUser;
       when(mockAuthDataSource.getCurrentUser()).thenAnswer((_) async => mockUser);
 
       // Act
@@ -72,7 +71,7 @@ void main() {
 
     test('should sign out', () async {
       // Arrange
-      when(mockAuthDataSource.signOut()).thenAnswer((_) async => null);
+      when(mockAuthDataSource.signOut()).thenAnswer((_) async {});
 
       // Act
       await authRepository.signOut();
@@ -84,7 +83,7 @@ void main() {
     test('should handle forgot password', () async {
       // Arrange
       final email = 'test@example.com';
-      when(mockAuthDataSource.forgotPassword(email)).thenAnswer((_) async => null);
+      when(mockAuthDataSource.forgotPassword(email)).thenAnswer((_) async {});
 
       // Act
       await authRepository.forgotPassword(email);
@@ -99,7 +98,7 @@ void main() {
       final email = 'test@example.com';
       final password = 'password123';
       when(mockAuthDataSource.createUser(name, email, password))
-          .thenAnswer((_) async => null);
+          .thenAnswer((_) async {});
 
       // Act
       await authRepository.createUser(name, email, password);
