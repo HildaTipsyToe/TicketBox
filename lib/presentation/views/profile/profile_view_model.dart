@@ -64,7 +64,7 @@ class ProfileViewModel extends BaseViewModel {
                   Container(
                     padding: const EdgeInsets.all(20),
                     child: TextFormField(
-                      readOnly: true,
+                      enabled: false,
                       keyboardType: TextInputType.emailAddress,
                       decoration: const InputDecoration(
                         label: Text('Email'),

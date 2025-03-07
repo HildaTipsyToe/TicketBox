@@ -89,15 +89,15 @@ class GroupViewWidget extends StatelessWidget {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Column(
+                                      Flexible(child: Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
                                             Text(
                                               data[index].ticketTypeName,
-                                              style:
-                                                  const TextStyle(fontSize: 16),
-                                              softWrap: true,
+                                              style: const TextStyle(fontSize: 16),
+                                              overflow: TextOverflow.fade,  // Truncates the text with ellipsis if it's too long
+                                              softWrap: true, // Allows the text to wrap onto a new line if necessary
                                             ),
                                             Text(
                                               data[index].dateIssued ??
@@ -107,7 +107,7 @@ class GroupViewWidget extends StatelessWidget {
                                               softWrap: true,
                                             ),
                                           ],
-                                        ),
+                                        ),),
                                         Text(
                                             data[index]
                                                 .price

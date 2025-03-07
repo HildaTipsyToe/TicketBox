@@ -57,11 +57,13 @@ class FinesViewWidget extends StatelessWidget {
                                         Row(children: [
                                           const Icon(Icons.circle_sharp,
                                               size: 5),
-                                          Text(
-                                            '  ${data.ticketName}',
-                                            style:
-                                                const TextStyle(fontSize: 20),
-                                          ),
+                                          SizedBox(width: 10),
+                                          SizedBox(width: MediaQuery.of(context).size.width * 0.55, child: Text(data.ticketName, style: const TextStyle(fontSize: 20), softWrap: true,)),
+                                          // Text(
+                                          //   '  ${data.ticketName}',
+                                          //   style:
+                                          //       const TextStyle(fontSize: 20),
+                                          // ),
                                         ]),
                                         Text(data.price.toString(),
                                             style:

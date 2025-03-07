@@ -1,5 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:ticketbox/infrastructure/repository/user_repository.dart';
 import '../../domain/entities/settings.dart';
 import '../../domain/entities/user.dart';
 import '../repository/auth_repository.dart';

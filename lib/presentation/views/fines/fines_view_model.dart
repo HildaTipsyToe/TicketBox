@@ -84,11 +84,16 @@ class FinesViewModel extends BaseViewModel {
             TextButton(
               child: const Text('Gem'),
               onPressed: () async {
+                final navigator = Navigator.of(context); // Capture the navigator before the async call
+
                 await saveFine(groupId);
 
-                Navigator.of(context).pop();
+                if (navigator.mounted) {
+                  navigator.pop(); // Use the stored navigator
+                }
               },
             ),
+
           ],
         );
       },

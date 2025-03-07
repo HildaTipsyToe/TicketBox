@@ -23,7 +23,7 @@ class ProfileViewWidget extends StatelessWidget {
           SizedBox(height: 30),
           TextField(
             controller: model.nameController, // Sætter teksten i textfielden
-            enabled: false, // Deaktiverer textfielden
+            readOnly: true, // Deaktiverer textfielden
             decoration: InputDecoration(
               labelText: 'Navn', // Label teksten
               border: OutlineInputBorder( // Tilføjer border omkring textfield
@@ -36,7 +36,7 @@ class ProfileViewWidget extends StatelessWidget {
           SizedBox(height: 20),
           TextField(
             controller: model.emailController, // Sætter teksten i textfielden
-            enabled: false, // Deaktiverer textfielden
+            readOnly: true, // Deaktiverer textfielden
             decoration: InputDecoration(
               labelText: 'Email', // Label teksten
               border: OutlineInputBorder( // Tilføjer border omkring textfield

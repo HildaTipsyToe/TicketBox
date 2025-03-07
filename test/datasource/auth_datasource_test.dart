@@ -6,16 +6,14 @@ import 'package:ticketbox/domain/entities/settings.dart';
 import 'package:ticketbox/domain/entities/user.dart';
 import 'package:ticketbox/infrastructure/datasource/auth_datasource.dart';
 import 'package:ticketbox/infrastructure/repository/auth_repository.dart';
-import 'package:ticketbox/infrastructure/repository/user_repository.dart';
 
 import 'auth_datasource_test.mocks.dart';
 
-@GenerateMocks([FirebaseAuth, User, TBUser, UserCredential, TBSettings, IUserRepository])
+@GenerateMocks([FirebaseAuth, User, TBUser, UserCredential, TBSettings])
 void main() {
   late MockFirebaseAuth mockFirebaseAuth;
   late MockTBUser mockTBUser;
   late MockUser mockUser;
-  late MockIUserRepository mockUserRepository;
   late FirebaseAuthDataSource authDataSource;
   late MockTBSettings mockTBSettings; // Mock af TBSettings
 
@@ -25,7 +23,6 @@ void main() {
     mockUser = MockUser();
     mockTBUser = MockTBUser();
     mockTBSettings = MockTBSettings();
-    mockUserRepository = MockIUserRepository();
     authDataSource = FirebaseAuthDataSource(firebaseAuth: mockFirebaseAuth, settings: mockTBSettings, user: mockTBUser);
   });
 

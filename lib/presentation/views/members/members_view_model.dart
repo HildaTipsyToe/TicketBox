@@ -334,7 +334,12 @@ class MembersViewModel extends BaseViewModel {
                       itemsLayout: (dynamic value) => Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(value.ticketName),
+                          Expanded(
+                            child: Text(
+                              value.ticketName, overflow: TextOverflow.fade, // Ensures text does not overflow
+                              maxLines: 1, // Restricts text to a single line
+                              softWrap: false,),
+                            ),
                           Text('${value.price} ,-     ')
                         ],
                       ),
