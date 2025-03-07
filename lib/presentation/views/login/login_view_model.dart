@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 import '../../../config/injection_container.dart';
 import '../../../infrastructure/repository/auth_repository.dart';
@@ -117,12 +116,15 @@ class LoginViewModel extends BaseViewModel {
   Future<void> createUser(BuildContext context) async {
     if (!busy) {
       setBusy(true);
+      final scaffoldMessenger = ScaffoldMessenger.of(context);
       try{
         await sl<IAuthRepository>().createUser(nameController.text.trim(), createEmailController.text.trim(), createPasswordController.text.trim());
         setBusy(false);
         createUserAuthError = CreateUserAuthError.noError;
         setBusy(false);
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(backgroundColor: Colors.green,content: Text('Bruger oprettet - log ind med den nye bruger')));
+        if (scaffoldMessenger.mounted) {
+          scaffoldMessenger.showSnackBar(const SnackBar(backgroundColor: Colors.green,content: Text('Bruger oprettet - log ind med den nye bruger')));
+        }
       } on AuthError catch (error) {
         if (error.code == 'email-already-in-use') {
           createUserAuthError = CreateUserAuthError.emailInUse;
@@ -135,7 +137,7 @@ class LoginViewModel extends BaseViewModel {
         }
 
         setBusy(false);
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(backgroundColor: Colors.red, content: Text('Fejl - ${createUserAuthError.message}')));
+        scaffoldMessenger.showSnackBar(SnackBar(backgroundColor: Colors.red, content: Text('Fejl - ${createUserAuthError.message}')));
       }
     }
   }
@@ -144,7 +146,9 @@ class LoginViewModel extends BaseViewModel {
     if (!signInFormKey.currentState!.validate()) return;
     if (!busy) {
       setBusy(true);
+      final scaffoldMessenger = ScaffoldMessenger.of(context);
       try {
+        final navigator = Navigator.of(context);
         await signInWithEmailCredentials(context);
         signInAuthError = SignInAuthError.noError;
         emailController.text = '';
@@ -156,8 +160,10 @@ class LoginViewModel extends BaseViewModel {
         //     'roleId': '',
         //   },
         // );
-        context.pushNamed('dashboard');
-        setBusy(false);
+        if (navigator.mounted) {
+          navigator.pushNamed('dashboard');
+          setBusy(false);
+        }
       } on AuthError catch (error) {
         print('error.code: ${error.code}');
         if (error.code == 'invalid-credential') {
@@ -175,7 +181,7 @@ class LoginViewModel extends BaseViewModel {
           signInAuthError = SignInAuthError.unknownError;
         }
         setBusy(false);
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(backgroundColor: Colors.red, content: Text('Fejl - ${signInAuthError.message}')));
+        scaffoldMessenger.showSnackBar(SnackBar(backgroundColor: Colors.red, content: Text('Fejl - ${signInAuthError.message}')));
       }
     }
   }
@@ -193,6 +199,7 @@ class LoginViewModel extends BaseViewModel {
   Future<void> forgotPassword(BuildContext context) async {
     if (!busy) {
       setBusy(true);
+      final scaffoldMessenger = ScaffoldMessenger.of(context);
       try {
         await sl<IAuthRepository>().forgotPassword(createEmailController.text);
         resetPasswordAuthError = ResetPasswordAuthError.success;
@@ -211,7 +218,7 @@ class LoginViewModel extends BaseViewModel {
         }
       }
       setBusy(false);
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(backgroundColor: Colors.red, content: Text(resetPasswordAuthError.message)));
+      scaffoldMessenger.showSnackBar(SnackBar(backgroundColor: Colors.red, content: Text(resetPasswordAuthError.message)));
     }
   }
 
@@ -299,15 +306,20 @@ class LoginViewModel extends BaseViewModel {
                     padding: const EdgeInsets.symmetric(horizontal: 15),
                     child: TBFilledButton(
                       onPressed: () async {
+                        final navigator = Navigator.of(context);
                         await createUser(context);
                         if (createUserAuthError == CreateUserAuthError.noError) {
                           createEmailController.text = '';
                           createPasswordController.text = '';
                           nameController.text = '';
                           sl<IAuthRepository>().signOut();
-                          context.pop();
+                          if (navigator.mounted) {
+                            navigator.pop();
+                          }
                         } else {
-                          context.pop();
+                          if (navigator.mounted) {
+                            navigator.pop();
+                          }
                         }
                       },
                       text: 'Fortsæt',
@@ -354,9 +366,12 @@ class LoginViewModel extends BaseViewModel {
                     padding: const EdgeInsets.symmetric(horizontal: 15),
                     child: TBFilledButton(
                       onPressed: () async {
+                        final navigator = Navigator.of(context);
                         await forgotPassword(context);
                         createEmailController.text = '';
-                        context.pop();
+                        if (navigator.mounted) {
+                          navigator.pop();
+                        }
                       },
                       text: 'Fortsæt',
                     ),

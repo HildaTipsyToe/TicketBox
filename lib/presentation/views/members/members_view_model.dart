@@ -217,17 +217,21 @@ class MembersViewModel extends BaseViewModel {
                         }
                         isDeleted = true;
                       } else {
-                        Navigator.pop(context);
+                        if (context.mounted) {
+                          Navigator.pop(context);
+                        }
                       }
                     } else {
-                      Navigator.pop(context);
-                      // Show a message if the membership cannot be deleted
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(message),
-                          duration: const Duration(seconds: 3),
-                        ),
-                      );
+                      if (context.mounted) {
+                        Navigator.pop(context);
+                        // Show a message if the membership cannot be deleted
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(message),
+                            duration: const Duration(seconds: 3),
+                          ),
+                        );
+                      }
                     }
                   },
                   text: member.userId == sl<TBUser>().userId
