@@ -13,22 +13,45 @@ class GroupView extends StatelessWidget {
   final String saldo;
   final String roleId;
 
-  GroupView({super.key, required this.receiverId, required this.groupId, required this.groupName, required this.saldo, required this.roleId});
+  GroupView(
+      {super.key,
+      required this.receiverId,
+      required this.groupId,
+      required this.groupName,
+      required this.saldo,
+      required this.roleId});
 
   @override
   Widget build(BuildContext context) {
     return BaseViewScaffold(
-      title: 'BØDEKASSE',
-      actions: [
-        IconButton(
-          icon: const Icon(Icons.settings, color: Colors.black),
-          onPressed: () {},
+        title: 'BØDEKASSE',
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.settings, color: Colors.black),
+            onPressed: () {},
+          ),
+        ],
+        overrideOnBackPressed: () {
+          context.pop();
+        },
+        floatingActionButton: FloatingActionButton.extended(
+          backgroundColor: Colors.white,
+          icon: Icon(Icons.chat),
+          label: Text("åben chat"),
+          onPressed: () => context.pushNamed(
+            'chat',
+            queryParameters: {
+              "groupId": groupId,
+              "roleId": roleId,
+            },
+          ),
         ),
-      ],
-      overrideOnBackPressed: () {
-        context.pop();
-      },
-      builder: (context) => GroupViewWidget(model: model, receiverId: receiverId, groupId: groupId, groupName: groupName, saldo: saldo, roleId: roleId)
-    );
+        builder: (context) => GroupViewWidget(
+            model: model,
+            receiverId: receiverId,
+            groupId: groupId,
+            groupName: groupName,
+            saldo: saldo,
+            roleId: roleId));
   }
 }

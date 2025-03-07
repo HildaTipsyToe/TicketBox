@@ -25,15 +25,17 @@ class _DashboardView extends State<DashboardView> {
         ),
       ],
       leading: false,
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton.extended(
+        isExtended: true,
         onPressed: () async {
           await model.createGroup(context);
         },
         backgroundColor: Colors.white,
-        child: const Icon(
+        icon: Icon(
           Icons.add,
           size: 32,
         ),
+        label: Text("Opret bødekasse"),
       ),
       builder: (context) => DashboardViewWidget(model: model),
     );

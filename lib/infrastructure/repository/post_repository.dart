@@ -161,12 +161,6 @@ class PostRepositoryImpl extends IPostRepository {
             .map((doc) => Post.fromMap(doc.data() as Map<String, dynamic>)
                 .copyWith(postId: doc.id))
             .toList());
-
-    temp.listen((posts) {
-      for (var post in posts) {
-        print(post); // Print each post
-      }
-    });
     return temp;
   }
 }

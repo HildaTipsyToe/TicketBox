@@ -74,12 +74,6 @@ GoRouter goRoutes = GoRouter(
         );
       }
       ),
-    // GoRoute(
-    //   path: '/group_admin',
-    //   builder: (BuildContext context, GoRouterState state) {
-    //     return GroupAdminView();
-    //   },
-    // ),
     GoRoute(
       name: 'chat',
       path: '/chat',

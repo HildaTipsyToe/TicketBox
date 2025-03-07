@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ticketbox/domain/entities/user.dart';
 
 import '../../../config/injection_container.dart';
 import '../../../domain/entities/message.dart';
@@ -17,9 +18,9 @@ class ChatViewModel extends BaseViewModel {
     inputController.text = '';
 
     final newMessage = Message(
-        userId: '',
-        userName: '',
-        groupId: '',
+        userId: sl<TBUser>().userId,
+        userName: sl<TBUser>().userName,
+        groupId: groupId,
         text: input);
 
     await sl<IMessageRepository>().addMessage(newMessage);

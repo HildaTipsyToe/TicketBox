@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:ticketbox/config/injection_container.dart';
+import 'package:ticketbox/domain/entities/user.dart';
+import 'package:ticketbox/presentation/views/widget/buttons/filled_button.dart';
 import 'package:ticketbox/presentation/views/widget/buttons/icon_button.dart';
 
 import '../../../domain/entities/message.dart';
@@ -12,11 +15,12 @@ class ChatViewWidget extends StatelessWidget {
   final String groupId;
   final String roleId;
 
-  const ChatViewWidget(
-      {super.key,
-      required this.model,
-      required this.groupId,
-      required this.roleId});
+  const ChatViewWidget({
+    super.key,
+    required this.model,
+    required this.groupId,
+    required this.roleId,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +47,8 @@ class ChatViewWidget extends StatelessWidget {
 
                 if (snapshot.data!.isEmpty) {
                   return Center(
-                    child: Text('No messages yet', style: TextStyle(fontSize: 16)),
+                    child:
+                        Text('No messages yet', style: TextStyle(fontSize: 16)),
                   );
                 }
 
@@ -53,38 +58,72 @@ class ChatViewWidget extends StatelessWidget {
                   itemCount: messages.length,
                   itemBuilder: (context, index) {
                     final message = messages[index];
-                    return Stack(
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.grey, width: 1), // Tilføjer en grå kant
-                            borderRadius: BorderRadius.circular(10), // Runde hjørner (valgfrit)
-                          ),
-                          margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10), // Juster margin
-                          child: ListTile(
+                    return Container(
+                      decoration: BoxDecoration(
+                        color: message.userId == sl<TBUser>().userId
+                            ? AppColors.tbPrimary
+                            : null,
+                        border: Border.all(
+                            color: Colors.grey,
+                            width: 1), // Tilføjer en grå kant
+                        borderRadius: BorderRadius.circular(
+                            10), // Runde hjørner (valgfrit)
+                      ),
+                      margin: message.userId == sl<TBUser>().userId
+                          ? EdgeInsets.only(
+                              left: 35,
+                              right: 5,
+                              top: 10,
+                              bottom: 10,
+                            )
+                          : EdgeInsets.only(
+                              left: 5,
+                              right: 35,
+                              top: 10,
+                              bottom: 10,
+                            ), // Juster margin
+                      child: Stack(
+                        children: [
+                          ListTile(
+                            textColor: message.userId == sl<TBUser>().userId
+                                ? Colors.white
+                                : Colors.black,
                             title: Text(message.text),
                             subtitle: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(message.userName),
-                                  Text(message.timeStamp != null ? DateFormat('HH:mm - dd-MM-yyyy').format(message.timeStamp!.toDate()) : '')
+                                  Text(
+                                    message.userName,
+                                  ),
+                                  Text(message.timeStamp != null
+                                      ? DateFormat('HH:mm - dd-MM-yyyy')
+                                          .format(message.timeStamp!.toDate())
+                                      : '')
                                 ]),
                           ),
-                        ),
-                        if(roleId == '1')
-                          Positioned(
-                            right: 10,
-                            top: 5,
-                            child: TBIconButton(
-                              icon: Icons.settings,
-                              onPressed: () async {
-                                model.deleteMessage(message.messageId);
-                              },
-                              iconSize: 12,
-                              size: 20
-                            ),
-                          )
-                      ]
+                          Align(
+                            alignment: Alignment.topRight,
+                            child: roleId == '1'
+                                ? Container(
+                                  margin:
+                                      EdgeInsets.only(right: 10, top: 2),
+                                  child: MouseRegion(
+                                    cursor: SystemMouseCursors.click,
+                                    child: GestureDetector(
+                                      onTap: () async {
+                                        model.deleteMessage(
+                                            message.messageId);
+                                      },
+                                      child:
+                                          Icon(Icons.delete, size: 20),
+                                    ),
+                                  ),
+                                )
+                                : Container(),
+                          ),
+                        ],
+                      ),
                     );
                   },
                 );
@@ -100,10 +139,10 @@ class ChatViewWidget extends StatelessWidget {
                 border: OutlineInputBorder(
                     borderSide: BorderSide(
                         color: AppColors.tbBlackTextColor, width: 1)),
-                suffixIcon: TBIconButton(
-                  onPressed: () {
-                    model.addMessage(groupId);
-                  },
+                suffixIcon: TBFilledButton(
+                  width: 60,
+                  height: 40,
+                  onPressed: () => model.addMessage(groupId),
                   icon: Icons.send,
                 ),
               ),
