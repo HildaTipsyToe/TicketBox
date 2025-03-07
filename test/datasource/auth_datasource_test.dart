@@ -26,7 +26,7 @@ void main() {
     mockTBUser = MockTBUser();
     mockTBSettings = MockTBSettings();
     mockUserRepository = MockIUserRepository();
-    authDataSource = FirebaseAuthDataSource(firebaseAuth: mockFirebaseAuth, settings: mockTBSettings, user: mockTBUser, userRepository: mockUserRepository);
+    authDataSource = FirebaseAuthDataSource(firebaseAuth: mockFirebaseAuth, settings: mockTBSettings, user: mockTBUser);
   });
 
   group('authStatus', () {
@@ -133,4 +133,35 @@ void main() {
       expect(() => authDataSource.forgotPassword('test@example.com'), throwsA(isA<AuthError>()));
     });
   });
+
+  group('updateDisplayName', () {
+    test('should update display name', () async {
+      // Arrange
+      when(mockFirebaseAuth.currentUser).thenReturn(mockUser);
+      when(mockUser.uid).thenReturn('123');  // Mocking the 'uid' property
+      when(mockUser.email).thenReturn('example@example.com');
+      when(mockUser.displayName).thenReturn('Old Name');  // Mocking the 'displayName' property
+      when(mockUser.updateDisplayName(any)).thenAnswer((_) async {});
+      when(mockUser.reload()).thenAnswer((_) async {});  // If you want to mock reload as well
+
+      // Act
+      await authDataSource.updateDisplayName('New Display Name');
+
+      // Assert
+      verify(mockUser.updateDisplayName('New Display Name')).called(1);
+    });
+
+    test('should throw AuthError on FirebaseAuthException', () async {
+      // Arrange
+      when(mockFirebaseAuth.currentUser).thenReturn(mockUser);
+      when(mockUser.updateDisplayName(any)).thenThrow(FirebaseAuthException(code: 'error', message: 'Error message'));
+
+      // Act
+      final result = authDataSource.updateDisplayName('New Display Name');
+
+      // Assert
+      expect(result, throwsA(isA<AuthError>()));
+    });
+  });
+
 }

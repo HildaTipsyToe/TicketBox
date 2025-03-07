@@ -10,6 +10,7 @@ import 'package:ticketbox/presentation/views/dashboard/dashboard_view_model.dart
 import 'package:ticketbox/presentation/views/fines/fines_view_model.dart';
 import 'package:ticketbox/presentation/views/group/group_view_model.dart';
 import 'package:ticketbox/presentation/views/members/members_view_model.dart';
+import 'package:ticketbox/presentation/views/profile/profile_view_model.dart';
 
 import '../domain/entities/settings.dart';
 import '../domain/entities/user.dart';
@@ -39,7 +40,7 @@ void _initViewModels() {
   sl.registerLazySingleton<FinesViewModel>(() => FinesViewModel());
   sl.registerLazySingleton<GroupViewModel>(() => GroupViewModel());
   sl.registerLazySingleton<ChatViewModel>(() => ChatViewModel());
-
+  sl.registerLazySingleton<ProfileViewModel>(() => ProfileViewModel());
 }
 
 void _initUseCases() {
@@ -57,8 +58,8 @@ void _initRepositories() {
     sl.registerLazySingleton<IPostRepository>(() => PostRepositoryMock());
     sl.registerLazySingleton<IMessageRepository>(() => MessageRepositoryMock());
   } else {
-    sl.registerLazySingleton<IAuthRepository>(() => AuthRepositoryImpl(sl<AuthDataSource>(), sl<TBSettings>()));
-    sl.registerLazySingleton<IUserRepository>(() => UserRepositoryImpl(sl<ApiDataSource>()));
+    sl.registerLazySingleton<IAuthRepository>(() => AuthRepositoryImpl(sl<AuthDataSource>(), sl<TBSettings>(), sl<IUserRepository>(), sl<TBUser>()));
+    sl.registerLazySingleton<IUserRepository>(() => UserRepositoryImpl(sl<ApiDataSource>(), sl<AuthDataSource>()));
     sl.registerLazySingleton<IMembershipRepository>(() => MembershipRepositoryImpl(sl<ApiDataSource>()));
     sl.registerLazySingleton<IPostRepository>(() => PostRepositoryImpl(sl<ApiDataSource>()));
     sl.registerLazySingleton<IGroupRepository>(() => GroupRepositoryImpl(sl<ApiDataSource>(), sl<AuthDataSource>()));
@@ -71,7 +72,7 @@ void _initRepositories() {
 
 void _initDataSources() {
   sl.registerLazySingleton<ApiDataSource>(() => ApiDataSource());
-  sl.registerLazySingleton<AuthDataSource>(() => FirebaseAuthDataSource(firebaseAuth: FirebaseAuth.instance, settings: sl<TBSettings>(), user: sl<TBUser>(), userRepository: sl<IUserRepository>()));
+  sl.registerLazySingleton<AuthDataSource>(() => FirebaseAuthDataSource(firebaseAuth: FirebaseAuth.instance, settings: sl<TBSettings>(), user: sl<TBUser>()));
 }
 
 

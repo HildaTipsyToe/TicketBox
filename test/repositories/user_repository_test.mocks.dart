@@ -6,9 +6,12 @@
 import 'dart:async' as _i5;
 
 import 'package:cloud_firestore/cloud_firestore.dart' as _i2;
+import 'package:firebase_auth/firebase_auth.dart' as _i6;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:mockito/src/dummies.dart' as _i4;
+import 'package:mockito/src/dummies.dart' as _i7;
 import 'package:ticketbox/infrastructure/datasource/api_datasource.dart' as _i3;
+import 'package:ticketbox/infrastructure/datasource/auth_datasource.dart'
+    as _i4;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -147,9 +150,83 @@ class MockApiDataSource extends _i1.Mock implements _i3.ApiDataSource {
           as _i2.CollectionReference<Object?>);
 }
 
+/// A class which mocks [AuthDataSource].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockAuthDataSource extends _i1.Mock implements _i4.AuthDataSource {
+  MockAuthDataSource() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i5.Stream<_i6.User?> get authStatus =>
+      (super.noSuchMethod(
+            Invocation.getter(#authStatus),
+            returnValue: _i5.Stream<_i6.User?>.empty(),
+          )
+          as _i5.Stream<_i6.User?>);
+
+  @override
+  _i5.Future<void> signInWithEmailAndPassword(
+    String? email,
+    String? password,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#signInWithEmailAndPassword, [email, password]),
+            returnValue: _i5.Future<void>.value(),
+            returnValueForMissingStub: _i5.Future<void>.value(),
+          )
+          as _i5.Future<void>);
+
+  @override
+  _i5.Future<_i6.User?> getCurrentUser() =>
+      (super.noSuchMethod(
+            Invocation.method(#getCurrentUser, []),
+            returnValue: _i5.Future<_i6.User?>.value(),
+          )
+          as _i5.Future<_i6.User?>);
+
+  @override
+  _i5.Future<void> createUser(String? name, String? email, String? password) =>
+      (super.noSuchMethod(
+            Invocation.method(#createUser, [name, email, password]),
+            returnValue: _i5.Future<void>.value(),
+            returnValueForMissingStub: _i5.Future<void>.value(),
+          )
+          as _i5.Future<void>);
+
+  @override
+  _i5.Future<void> forgotPassword(String? email) =>
+      (super.noSuchMethod(
+            Invocation.method(#forgotPassword, [email]),
+            returnValue: _i5.Future<void>.value(),
+            returnValueForMissingStub: _i5.Future<void>.value(),
+          )
+          as _i5.Future<void>);
+
+  @override
+  _i5.Future<void> signOut() =>
+      (super.noSuchMethod(
+            Invocation.method(#signOut, []),
+            returnValue: _i5.Future<void>.value(),
+            returnValueForMissingStub: _i5.Future<void>.value(),
+          )
+          as _i5.Future<void>);
+
+  @override
+  _i5.Future<void> updateDisplayName(String? displayName) =>
+      (super.noSuchMethod(
+            Invocation.method(#updateDisplayName, [displayName]),
+            returnValue: _i5.Future<void>.value(),
+            returnValueForMissingStub: _i5.Future<void>.value(),
+          )
+          as _i5.Future<void>);
+}
+
 /// A class which mocks [CollectionReference].
 ///
 /// See the documentation for Mockito's code generation for more information.
+// ignore: must_be_immutable
 class MockCollectionReference<T extends Object?> extends _i1.Mock
     implements _i2.CollectionReference<T> {
   MockCollectionReference() {
@@ -160,7 +237,7 @@ class MockCollectionReference<T extends Object?> extends _i1.Mock
   String get id =>
       (super.noSuchMethod(
             Invocation.getter(#id),
-            returnValue: _i4.dummyValue<String>(this, Invocation.getter(#id)),
+            returnValue: _i7.dummyValue<String>(this, Invocation.getter(#id)),
           )
           as String);
 
@@ -168,7 +245,7 @@ class MockCollectionReference<T extends Object?> extends _i1.Mock
   String get path =>
       (super.noSuchMethod(
             Invocation.getter(#path),
-            returnValue: _i4.dummyValue<String>(this, Invocation.getter(#path)),
+            returnValue: _i7.dummyValue<String>(this, Invocation.getter(#path)),
           )
           as String);
 
@@ -561,6 +638,7 @@ class MockCollectionReference<T extends Object?> extends _i1.Mock
 /// A class which mocks [DocumentReference].
 ///
 /// See the documentation for Mockito's code generation for more information.
+// ignore: must_be_immutable
 class MockDocumentReference<T extends Object?> extends _i1.Mock
     implements _i2.DocumentReference<T> {
   MockDocumentReference() {
@@ -582,7 +660,7 @@ class MockDocumentReference<T extends Object?> extends _i1.Mock
   String get id =>
       (super.noSuchMethod(
             Invocation.getter(#id),
-            returnValue: _i4.dummyValue<String>(this, Invocation.getter(#id)),
+            returnValue: _i7.dummyValue<String>(this, Invocation.getter(#id)),
           )
           as String);
 
@@ -601,7 +679,7 @@ class MockDocumentReference<T extends Object?> extends _i1.Mock
   String get path =>
       (super.noSuchMethod(
             Invocation.getter(#path),
-            returnValue: _i4.dummyValue<String>(this, Invocation.getter(#path)),
+            returnValue: _i7.dummyValue<String>(this, Invocation.getter(#path)),
           )
           as String);
 
@@ -696,6 +774,7 @@ class MockDocumentReference<T extends Object?> extends _i1.Mock
 /// A class which mocks [Query].
 ///
 /// See the documentation for Mockito's code generation for more information.
+// ignore: must_be_immutable
 class MockQuery<T extends Object?> extends _i1.Mock implements _i2.Query<T> {
   MockQuery() {
     _i1.throwOnMissingStub(this);
@@ -1117,7 +1196,7 @@ class MockQueryDocumentSnapshot<T extends Object?> extends _i1.Mock
   String get id =>
       (super.noSuchMethod(
             Invocation.getter(#id),
-            returnValue: _i4.dummyValue<String>(this, Invocation.getter(#id)),
+            returnValue: _i7.dummyValue<String>(this, Invocation.getter(#id)),
           )
           as String);
 
@@ -1152,7 +1231,7 @@ class MockQueryDocumentSnapshot<T extends Object?> extends _i1.Mock
   T data() =>
       (super.noSuchMethod(
             Invocation.method(#data, []),
-            returnValue: _i4.dummyValue<T>(this, Invocation.method(#data, [])),
+            returnValue: _i7.dummyValue<T>(this, Invocation.method(#data, [])),
           )
           as T);
 

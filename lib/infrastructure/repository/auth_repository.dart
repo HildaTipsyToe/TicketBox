@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:ticketbox/infrastructure/repository/user_repository.dart';
 
 import '../../config/injection_container.dart';
 import '../../domain/entities/settings.dart';
@@ -14,6 +15,7 @@ abstract class IAuthRepository {
   Future<void> forgotPassword(String email);
   Future<void> createUser(String name, String email, String password);
   Future<void> signOut();
+  Future<void> updateDisplayName(String displayName);
 }
 
 // Mockup implementation of the auth repository
@@ -49,14 +51,20 @@ class AuthRepositoryMock extends IAuthRepository {
     sl<TBSettings>().isLoggedIn = false;
     print('Mock - log out');
   }
+
+  @override
+  Future<void> updateDisplayName(String displayName) async {
+    print('Mock - update displayName');
+  }
 }
 
 // Concrete implementation of auth repository
 class AuthRepositoryImpl extends IAuthRepository {
   final AuthDataSource authDataSource;
+  final IUserRepository userRepository;
   final TBSettings settings; // Inject TBSettings instead of using GetIt
-
-  AuthRepositoryImpl(this.authDataSource, this.settings);
+  final TBUser user;
+  AuthRepositoryImpl(this.authDataSource, this.settings, this.userRepository, this.user);
 
   @override
   signInWithEmailAndPassword(String email, String password) async {
@@ -87,6 +95,7 @@ class AuthRepositoryImpl extends IAuthRepository {
   Future<void> createUser(String name, String email, String password) async {
     try {
       await authDataSource.createUser(name, email, password);
+      await userRepository.createUser(user.userId, name, email);
     }
     on FirebaseAuthException catch (error) {
     throw AuthError(message: error.message, code: error.code);
@@ -97,6 +106,11 @@ class AuthRepositoryImpl extends IAuthRepository {
   Future<void> signOut() async {
     settings.isLoggedIn = false;
     await authDataSource.signOut();
+  }
+
+  @override
+  Future<void> updateDisplayName(String displayName) async {
+    await authDataSource.updateDisplayName(displayName);
   }
 }
 

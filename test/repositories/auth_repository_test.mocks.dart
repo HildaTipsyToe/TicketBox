@@ -9,8 +9,11 @@ import 'package:firebase_auth/firebase_auth.dart' as _i2;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:mockito/src/dummies.dart' as _i5;
 import 'package:ticketbox/domain/entities/settings.dart' as _i6;
+import 'package:ticketbox/domain/entities/user.dart' as _i7;
 import 'package:ticketbox/infrastructure/datasource/auth_datasource.dart'
     as _i3;
+import 'package:ticketbox/infrastructure/repository/user_repository.dart'
+    as _i8;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -116,6 +119,15 @@ class MockAuthDataSource extends _i1.Mock implements _i3.AuthDataSource {
   _i4.Future<void> signOut() =>
       (super.noSuchMethod(
             Invocation.method(#signOut, []),
+            returnValue: _i4.Future<void>.value(),
+            returnValueForMissingStub: _i4.Future<void>.value(),
+          )
+          as _i4.Future<void>);
+
+  @override
+  _i4.Future<void> updateDisplayName(String? displayName) =>
+      (super.noSuchMethod(
+            Invocation.method(#updateDisplayName, [displayName]),
             returnValue: _i4.Future<void>.value(),
             returnValueForMissingStub: _i4.Future<void>.value(),
           )
@@ -464,4 +476,99 @@ class MockTBSettings extends _i1.Mock implements _i6.TBSettings {
             returnValue: <String, dynamic>{},
           )
           as Map<String, dynamic>);
+}
+
+/// A class which mocks [TBUser].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockTBUser extends _i1.Mock implements _i7.TBUser {
+  MockTBUser() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  String get userId =>
+      (super.noSuchMethod(
+            Invocation.getter(#userId),
+            returnValue: _i5.dummyValue<String>(
+              this,
+              Invocation.getter(#userId),
+            ),
+          )
+          as String);
+
+  @override
+  set userId(String? _userId) => super.noSuchMethod(
+    Invocation.setter(#userId, _userId),
+    returnValueForMissingStub: null,
+  );
+
+  @override
+  String get userName =>
+      (super.noSuchMethod(
+            Invocation.getter(#userName),
+            returnValue: _i5.dummyValue<String>(
+              this,
+              Invocation.getter(#userName),
+            ),
+          )
+          as String);
+
+  @override
+  set userName(String? _userName) => super.noSuchMethod(
+    Invocation.setter(#userName, _userName),
+    returnValueForMissingStub: null,
+  );
+
+  @override
+  String get userMail =>
+      (super.noSuchMethod(
+            Invocation.getter(#userMail),
+            returnValue: _i5.dummyValue<String>(
+              this,
+              Invocation.getter(#userMail),
+            ),
+          )
+          as String);
+
+  @override
+  set userMail(String? _userMail) => super.noSuchMethod(
+    Invocation.setter(#userMail, _userMail),
+    returnValueForMissingStub: null,
+  );
+}
+
+/// A class which mocks [IUserRepository].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockIUserRepository extends _i1.Mock implements _i8.IUserRepository {
+  MockIUserRepository() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i4.Future<_i7.TBUser?> getUserByEmail(String? email) =>
+      (super.noSuchMethod(
+            Invocation.method(#getUserByEmail, [email]),
+            returnValue: _i4.Future<_i7.TBUser?>.value(),
+          )
+          as _i4.Future<_i7.TBUser?>);
+
+  @override
+  _i4.Future<void> createUser(String? uid, String? name, String? email) =>
+      (super.noSuchMethod(
+            Invocation.method(#createUser, [uid, name, email]),
+            returnValue: _i4.Future<void>.value(),
+            returnValueForMissingStub: _i4.Future<void>.value(),
+          )
+          as _i4.Future<void>);
+
+  @override
+  _i4.Future<void> updateUserName(String? userId, String? newUserName) =>
+      (super.noSuchMethod(
+            Invocation.method(#updateUserName, [userId, newUserName]),
+            returnValue: _i4.Future<void>.value(),
+            returnValueForMissingStub: _i4.Future<void>.value(),
+          )
+          as _i4.Future<void>);
 }

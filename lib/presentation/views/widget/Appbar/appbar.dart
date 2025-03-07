@@ -5,7 +5,6 @@ import '../../../../config/injection_container.dart';
 import '../../../../domain/entities/user.dart';
 import '../../../../infrastructure/repository/auth_repository.dart';
 
-
 AppBar tbAppbar({
   bool? leading,
   bool? action,
@@ -18,10 +17,10 @@ AppBar tbAppbar({
   return AppBar(
     toolbarHeight: 75.0,
     title: const Center(
-        child: Text(
-          "B Ø D E K A S S E",
-          style: TextStyle(),
-        ),
+      child: Text(
+        "B Ø D E K A S S E",
+        style: TextStyle(),
+      ),
     ),
     foregroundColor: Colors.white,
     backgroundColor: const Color.fromARGB(255, 0, 61, 108),
@@ -31,19 +30,34 @@ AppBar tbAppbar({
               Icons.arrow_back_ios,
               color: Colors.white,
             ),
-            onPressed: overrideOnBackPressed ?? () {
-              // context.pop();
-              context.replace('/dashboard');
-            },
+            onPressed: overrideOnBackPressed ??
+                () {
+                  // context.pop();
+                  context.replace('/dashboard');
+                },
           )
         : const SizedBox(width: 30),
     actions: [
       action == null || action == true
-          ? TextButton(
-              onPressed: () {
-                sl<IAuthRepository>().signOut();
-                context.go('/login');
+          ? PopupMenuButton<String>(
+              onSelected: (value) {
+                if (value == 'logout') {
+                  sl<IAuthRepository>().signOut();
+                  context.go('/login');
+                } else if (value == 'profile') {
+                  context.pushNamed('profile');
+                }
               },
+              itemBuilder: (BuildContext context) => [
+                PopupMenuItem(
+                  value: 'profile',
+                  child: Text('Profil'),
+                ),
+                PopupMenuItem(
+                  value: 'logout',
+                  child: Text('Log ud'),
+                ),
+              ],
               child: Container(
                 width: 50,
                 height: 50,

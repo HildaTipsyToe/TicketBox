@@ -1,0 +1,40 @@
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+
+import '../../../config/injection_container.dart';
+import '../base/base_view_scaffold.dart';
+import 'profile_view_model.dart';
+import 'profile_view_widget.dart';
+
+class ProfileView extends StatefulWidget {
+
+  const ProfileView({super.key});
+
+  @override
+  State<ProfileView> createState() => _ProfileView();
+}
+
+class _ProfileView extends State<ProfileView> {
+
+  final model = sl<ProfileViewModel>();
+
+  @override
+  Widget build(BuildContext context) {
+    return BaseViewScaffold(
+      title: 'BØDEKASSE',
+      actions: [
+        IconButton(
+          icon: const Icon(
+            Icons.settings,
+            color: Colors.black
+          ),
+          onPressed: () {},
+        ),
+      ],
+      overrideOnBackPressed: () {context.pop();},
+      builder: (context) =>
+          ProfileViewWidget(model: model),
+
+    );
+  }
+}

@@ -10,6 +10,7 @@ import '../domain/entities/settings.dart';
 
 import '../presentation/views/chat/chat_view.dart';
 import '../presentation/views/login/login_view.dart';
+import '../presentation/views/profile/profile_view.dart';
 import 'nav_enums.dart';
 
 GoRouter goRoutes = GoRouter(
@@ -82,6 +83,13 @@ GoRouter goRoutes = GoRouter(
           groupId: state.uri.queryParameters['groupId']!,
           roleId: state.uri.queryParameters['roleId']!,
         );
+      },
+    ),
+    GoRoute(
+      name: 'profile',
+      path: '/profile',
+      builder: (BuildContext context, GoRouterState state) {
+        return ProfileView();
       },
     ),
     //     ],

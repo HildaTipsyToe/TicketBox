@@ -25,7 +25,7 @@ class ChatViewWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-      height: MediaQuery.of(context).size.height - 70,
+      height: MediaQuery.of(context).size.height - 80,
       child: Column(
         children: [
           Expanded(

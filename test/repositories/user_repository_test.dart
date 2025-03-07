@@ -3,13 +3,15 @@ import 'package:mockito/mockito.dart';
 import 'package:mockito/annotations.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ticketbox/infrastructure/datasource/api_datasource.dart';
+import 'package:ticketbox/infrastructure/datasource/auth_datasource.dart';
 import 'package:ticketbox/infrastructure/repository/user_repository.dart';
 import 'user_repository_test.mocks.dart';
 
-@GenerateMocks([ApiDataSource, CollectionReference, DocumentReference, Query, QuerySnapshot, QueryDocumentSnapshot])
+@GenerateMocks([ApiDataSource, AuthDataSource, CollectionReference, DocumentReference, Query, QuerySnapshot, QueryDocumentSnapshot])
 void main() {
   late UserRepositoryImpl userRepository;
   late MockApiDataSource mockApiDataSource;
+  late MockAuthDataSource mockAuthDataSource;
   late MockCollectionReference mockUserCollection;
   late MockDocumentReference mockDocumentReference;
   late MockQuery mockQuery;
@@ -18,6 +20,7 @@ void main() {
 
   setUp(() {
     mockApiDataSource = MockApiDataSource();
+    mockAuthDataSource = MockAuthDataSource();
     mockUserCollection = MockCollectionReference();
     mockDocumentReference = MockDocumentReference();
     mockQuery = MockQuery();
@@ -26,7 +29,7 @@ void main() {
 
     // Mock user collection reference
     when(mockApiDataSource.userCollection).thenReturn(mockUserCollection);
-    userRepository = UserRepositoryImpl(mockApiDataSource);
+    userRepository = UserRepositoryImpl(mockApiDataSource, mockAuthDataSource);
   });
 
   group('getUserByEmail', () {
@@ -126,18 +129,24 @@ void main() {
   });
 
   group('updateUserName', () {
-    test('should call Firestore update method with new userName', () async {
+    test('should call Firestore update method with new userName and update display name', () async {
       // Arrange
       const String userId = 'user123';
       const String newUserName = 'Updated Name';
 
+      // Mock the methods to return successful futures
       when(mockUserCollection.doc(userId)).thenReturn(mockDocumentReference);
       when(mockDocumentReference.update(any)).thenAnswer((_) async {});
+      when(mockAuthDataSource.updateDisplayName(newUserName)).thenAnswer((_) async {}); // Mocking updateDisplayName call
 
       // Act
       await userRepository.updateUserName(userId, newUserName);
 
       // Assert
+      // Verify that updateDisplayName is called with the correct newUserName
+      verify(mockAuthDataSource.updateDisplayName(newUserName)).called(1);
+
+      // Verify that the Firestore update method is called with the correct parameters
       verify(mockDocumentReference.update({'userName': newUserName})).called(1);
     });
 
@@ -146,14 +155,21 @@ void main() {
       const String userId = 'user123';
       const String newUserName = 'Updated Name';
 
+      // Mock the methods to simulate exceptions
       when(mockUserCollection.doc(userId)).thenReturn(mockDocumentReference);
       when(mockDocumentReference.update(any)).thenThrow(Exception('Firestore error'));
+      when(mockAuthDataSource.updateDisplayName(newUserName)).thenAnswer((_) async {}); // Ensure this is mocked
 
       // Act
       await userRepository.updateUserName(userId, newUserName);
 
       // Assert
+      // Verify that the Firestore update method was called once even though an error occurred
       verify(mockDocumentReference.update(any)).called(1);
+
+      // You can optionally verify if logging is done by mocking the log method if necessary.
+      // If you want to ensure logging, you can add a mock or check logs.
     });
   });
+
 }

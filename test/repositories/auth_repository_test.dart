@@ -2,24 +2,30 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mockito/annotations.dart';
 import 'package:ticketbox/domain/entities/settings.dart';
+import 'package:ticketbox/domain/entities/user.dart';
 import 'package:ticketbox/infrastructure/datasource/auth_datasource.dart';
 import 'package:ticketbox/infrastructure/repository/auth_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart'; // For FirebaseAuthException
+import 'package:ticketbox/infrastructure/repository/user_repository.dart';
 import 'auth_repository_test.mocks.dart'; // Importer den genererede fil med mocks
 
-@GenerateMocks([AuthDataSource, User, TBSettings])
+@GenerateMocks([AuthDataSource, User, TBSettings, TBUser, IUserRepository])
 void main() {
   late AuthRepositoryImpl authRepository;
   late MockAuthDataSource mockAuthDataSource;
-  late MockUser mockTBUser; // Mock af User
+  late MockUser mockUser; // Mock af User
+  late MockTBUser mockTBUser;
   late MockTBSettings mockTBSettings; // Mock af TBSettings
+  late MockIUserRepository mockIUserRepository;
 
   setUp(() {
     // Initialisering af mocks
     mockAuthDataSource = MockAuthDataSource();
     mockTBSettings = MockTBSettings();
-    mockTBUser = MockUser();  // Mock af TBUser
-    authRepository = AuthRepositoryImpl(mockAuthDataSource, mockTBSettings);
+    mockUser = MockUser();
+    mockTBUser = MockTBUser();
+    mockIUserRepository = MockIUserRepository();
+    authRepository = AuthRepositoryImpl(mockAuthDataSource, mockTBSettings, mockIUserRepository, mockTBUser);
   });
 
   group('AuthRepositoryImpl', () {
@@ -58,7 +64,6 @@ void main() {
 
     test('should return current user', () async {
       // Arrange
-      final mockUser = mockTBUser;
       when(mockAuthDataSource.getCurrentUser()).thenAnswer((_) async => mockUser);
 
       // Act
@@ -92,12 +97,21 @@ void main() {
       verify(mockAuthDataSource.forgotPassword(email)).called(1);
     });
 
-    test('should create user', () async {
+    test('should create user and call both authDataSource and userRepository', () async {
       // Arrange
       final name = 'John Doe';
       final email = 'test@example.com';
       final password = 'password123';
+      const userId = 'mockUserId';
+
       when(mockAuthDataSource.createUser(name, email, password))
+          .thenAnswer((_) async {});
+
+      when(mockAuthDataSource.getCurrentUser())
+          .thenAnswer((_) async => MockUser());
+
+      when(mockTBUser.userId).thenReturn('mockUserId');
+      when(mockIUserRepository.createUser(userId, name, email))
           .thenAnswer((_) async {});
 
       // Act
@@ -105,6 +119,23 @@ void main() {
 
       // Assert
       verify(mockAuthDataSource.createUser(name, email, password)).called(1);
+      verify(mockIUserRepository.createUser(userId, name, email)).called(1);
+    });
+
+
+    test('should update display name', () async {
+      // Arrange
+      const String newDisplayName = 'Updated User';
+
+      // Mock the updateDisplayName method in AuthDataSource
+      when(mockAuthDataSource.updateDisplayName(newDisplayName))
+          .thenAnswer((_) async {});  // Simulate the update without errors
+
+      // Act
+      await authRepository.updateDisplayName(newDisplayName);
+
+      // Assert
+      verify(mockAuthDataSource.updateDisplayName(newDisplayName)).called(1);  // Ensure the method is called with the expected parameter
     });
   });
 }

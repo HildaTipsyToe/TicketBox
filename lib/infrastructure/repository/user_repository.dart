@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:ticketbox/domain/entities/user.dart';
 import 'package:ticketbox/infrastructure/datasource/api_datasource.dart';
+import 'package:ticketbox/infrastructure/datasource/auth_datasource.dart';
 
 /// Abstract class that represent the User repository
 ///
@@ -20,8 +21,9 @@ abstract class IUserRepository {
 /// - update user
 class UserRepositoryImpl extends IUserRepository {
   final ApiDataSource _apiDataSource;
+final AuthDataSource _authDatasource;
 
-  UserRepositoryImpl(this._apiDataSource);
+  UserRepositoryImpl(this._apiDataSource, this._authDatasource);
 
   /// Method for fetching the user by [email]
   /// else return null, with a log statement
@@ -71,6 +73,7 @@ class UserRepositoryImpl extends IUserRepository {
   @override
   Future<void> updateUserName(String userId, String newUserName) async {
     try {
+      await _authDatasource.updateDisplayName(newUserName);
       // Update the userName field for the document with the provided userId
       return await _apiDataSource.userCollection.doc(userId).update({
         'userName': newUserName,

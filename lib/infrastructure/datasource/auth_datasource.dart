@@ -21,6 +21,7 @@ abstract class AuthDataSource {
   Future<void> createUser(String name, String email, String password);
   Future<void> forgotPassword(String email);
   Future<void> signOut();
+  Future<void> updateDisplayName(String displayName);
 
 }
 
@@ -28,9 +29,8 @@ class FirebaseAuthDataSource extends AuthDataSource {
   final FirebaseAuth firebaseAuth;
   final TBSettings settings;
   final TBUser user;
-  final IUserRepository userRepository;
 
-  FirebaseAuthDataSource({required this.firebaseAuth, required this.settings, required this.user, required this.userRepository});
+  FirebaseAuthDataSource({required this.firebaseAuth, required this.settings, required this.user});
 
 
   @override
@@ -80,7 +80,6 @@ class FirebaseAuthDataSource extends AuthDataSource {
       user.userId = temp!.uid;
       user.userName = temp.displayName!;
       user.userMail = temp.email!;
-      userRepository.createUser(temp.uid, temp.displayName!, temp.email!);
     } on FirebaseAuthException catch (error) {
       throw AuthError(message: error.message, code: error.code);
     }
@@ -90,6 +89,17 @@ class FirebaseAuthDataSource extends AuthDataSource {
   Future<void> forgotPassword(String email) async {
     try {
       await firebaseAuth.sendPasswordResetEmail(email: email);
+    }
+    on FirebaseAuthException catch (error) {
+      throw AuthError(message: error.message, code: error.code);
+    }
+  }
+
+  @override
+  Future<void> updateDisplayName(String displayName) async {
+    try {
+      await firebaseAuth.currentUser?.updateDisplayName(displayName);
+      await getCurrentUser();
     }
     on FirebaseAuthException catch (error) {
       throw AuthError(message: error.message, code: error.code);
