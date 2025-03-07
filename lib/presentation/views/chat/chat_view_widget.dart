@@ -3,7 +3,6 @@ import 'package:intl/intl.dart';
 import 'package:ticketbox/config/injection_container.dart';
 import 'package:ticketbox/domain/entities/user.dart';
 import 'package:ticketbox/presentation/views/widget/buttons/filled_button.dart';
-import 'package:ticketbox/presentation/views/widget/buttons/icon_button.dart';
 
 import '../../../domain/entities/message.dart';
 import '../../shared/constants/app_colors.dart';
@@ -146,6 +145,7 @@ class ChatViewWidget extends StatelessWidget {
                   icon: Icons.send,
                 ),
               ),
+              onSubmitted: (_) => model.addMessage(groupId),
             ),
           ),
         ],
