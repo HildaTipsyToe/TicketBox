@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -51,6 +52,8 @@ class PostRepositoryImpl extends IPostRepository {
 
         await doc.reference.update({'balance': newBalance});
       }
+      await _apiDataSource.postCollection.add(post.toJson());
+
     } catch (error) {
       log('Error handling adding a post: $error');
       Future.error('Error handling adding a post: $error');
@@ -220,9 +223,21 @@ class PostRepositoryMock extends IPostRepository {
   }
 
   @override
-  Stream<List<Post>> getPostsByReceiverIdAndGroupIdStream(
-      String receiverId, String groupId) {
-    // TODO: implement getPostsByReceiverIdAndGroupIdStream
-    throw UnimplementedError();
+  Stream<List<Post>> getPostsByReceiverIdAndGroupIdStream(String receiverId, String groupId) {
+    print('Mock - get Stream');
+    final controller = StreamController<List<Post>>();
+    List<Post> post = [];
+    post.add(Post(postId: '1',
+      adminId: 'adminId',
+      adminName: 'adminName',
+      groupId: 'groupId',
+      price: 100,
+      receiverId: 'receiverId',
+      receiverName: 'receiverName',
+      ticketTypeId: 'ticketTypeId',
+      ticketTypeName: 'ticketTypeName',
+    ));
+    controller.add(List.from(post)); // Sender en ny liste til streamen
+    return controller.stream;
   }
 }

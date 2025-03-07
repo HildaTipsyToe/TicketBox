@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -109,7 +110,11 @@ class TicketTypeRepositoryMock extends ITicketTypeRepository {
 
   @override
   Stream<List<TicketType>> getTicketTypesByGroupIdStream(String groupId) {
-    // TODO: implement getTicketTypesByGroupIdStream
-    throw UnimplementedError();
+    print('Mock - get Stream');
+    final controller = StreamController<List<TicketType>>();
+    List<TicketType> ticketType = [];
+    ticketType.add(TicketType(ticketName: 'test', groupId: groupId));
+    controller.add(List.from(ticketType)); // Sender en ny liste til streamen
+    return controller.stream;
   }
 }

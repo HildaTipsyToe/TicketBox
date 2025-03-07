@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -256,20 +257,44 @@ class MembershipRepositoryMock extends IMembershipRepository {
   }
   
   @override
-  Future<List<Membership>> getGroupByUserID(String id) {
-    // TODO: implement getGroupByUserID
-    throw UnimplementedError();
+  Future<List<Membership>> getGroupByUserID(String id) async {
+    List<Membership> m = [
+      Membership(userId: 'mock_user_id',
+        userName: 'mock_user_name',
+        groupId: 'mock_group_id',
+        groupName: 'Test Group',
+        balance: 0,
+        roleId: 1,)
+    ];
+    return m;
   }
   
   @override
   Stream<List<Membership>> getGroupsByUserIDStream(String id) {
-    // TODO: implement getGroupsByUserIDStream
-    throw UnimplementedError();
+    print('Mock - get Stream');
+    final controller = StreamController<List<Membership>>();
+    List<Membership> membership = [];
+    membership.add(Membership(userId: 'mock_user_id',
+      userName: 'mock_user_name',
+      groupId: 'mock_group_id',
+      groupName: 'Test Group',
+      balance: 0,
+      roleId: 1,));
+    controller.add(List.from(membership)); // Sender en ny liste til streamen
+    return controller.stream;
   }
   
   @override
   Stream<List<Membership>> getMembershipsByGroupIdStream(String id) {
-    // TODO: implement getMembershipsByGroupIdStream
-    throw UnimplementedError();
+    final controller = StreamController<List<Membership>>();
+    List<Membership> membership = [];
+    membership.add(Membership(userId: 'mock_user_id',
+      userName: 'mock_user_name',
+      groupId: 'mock_group_id',
+      groupName: 'Test Group',
+      balance: 0,
+      roleId: 1,));
+    controller.add(List.from(membership)); // Sender en ny liste til streamen
+    return controller.stream;
   }
 }
