@@ -121,7 +121,7 @@ class MembersViewModel extends BaseViewModel {
                         },
                         hint: ({value}) => Center(
                           child: Text(
-                            "Vælg role",
+                            "Vælg rolle",
                             style: TextStyle(color: Colors.grey),
                             textAlign: TextAlign.end,
                           ),
