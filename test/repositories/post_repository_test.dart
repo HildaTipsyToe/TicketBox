@@ -30,6 +30,37 @@ void main() {
 
       when(mockApiDataSource.postCollection).thenReturn(mockCollectionReference);
       when(mockApiDataSource.membershipCollection).thenReturn(mockCollectionReference);
+
+      when(mockCollectionReference.where('groupId', isEqualTo: anyNamed('isEqualTo')))
+          .thenReturn(mockQuery);
+      when(mockQuery.where('userId', isEqualTo: anyNamed('isEqualTo')))
+          .thenReturn(mockQuery);
+      when(mockQuery.get()).thenAnswer((_) async => mockQuerySnapshot);
+      when(mockQuerySnapshot.docs).thenReturn([mockQueryDocumentSnapshot]);
+      when(mockQueryDocumentSnapshot.data()).thenReturn({'balance': 100});
+      when(mockQueryDocumentSnapshot.reference).thenReturn(mockDocumentReference);
+      when(mockDocumentReference.update(any)).thenAnswer((_) async {});
+
+    });
+
+    test('addPost should add post to Firestore', () async {
+      final post = Post(
+        postId: '1',
+        adminId: 'adminId',
+        adminName: 'adminName',
+        groupId: 'groupId',
+        price: 100,
+        receiverId: 'receiverId',
+        receiverName: 'receiverName',
+        ticketTypeId: 'ticketTypeId',
+        ticketTypeName: 'ticketTypeName',
+      );
+
+      when(mockCollectionReference.add(post.toJson())).thenAnswer((_) async => mockDocumentReference);
+
+      await repository.addPost(post);
+
+      verify(mockCollectionReference.add(post.toJson())).called(1);  // Verificér at posten bliver tilføjet
     });
 
     test('deletePost should delete a post and update the balance', () async {
