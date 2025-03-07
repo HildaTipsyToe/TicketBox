@@ -4,9 +4,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ticketbox/domain/entities/tickettype.dart';
 import 'package:ticketbox/infrastructure/datasource/api_datasource.dart';
 
-/// Abstract class that represent the tickettype reposistory
+/// Abstract class that represent the ticketType repository
 ///
-/// This interface defines the contract for tickettype-related data operations.
+/// This interface defines the contract for ticketType-related data operations.
 abstract class ITicketTypeRepository {
   Future<List<TicketType>> getTicketTypesByGroupId(String groupId);
   Stream<List<TicketType>> getTicketTypesByGroupIdStream(String groupId);
@@ -26,7 +26,7 @@ class TicketTypeRepositoryImpl extends ITicketTypeRepository {
       await _apiDataSource.ticketTypeCollection.add(ticketTypeData);
     } catch (error) {
       log('Error handling adding a ticket type: $error');
-      return Future.error('Error handling adding a tickettype: $error');
+      return Future.error('Error handling adding a ticketType: $error');
     }
   }
 

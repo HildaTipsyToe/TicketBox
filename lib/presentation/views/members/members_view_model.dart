@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
 import 'package:ticketbox/config/injection_container.dart';
 import 'package:ticketbox/domain/entities/membership.dart';
 import 'package:ticketbox/domain/entities/post.dart';
@@ -12,7 +11,7 @@ import 'package:ticketbox/infrastructure/repository/tickettype_repository.dart';
 import 'package:ticketbox/infrastructure/repository/user_repository.dart';
 import 'package:ticketbox/presentation/views/base/base_view_model.dart';
 import 'package:ticketbox/presentation/views/widget/buttons/filled_button.dart';
-import 'package:ticketbox/presentation/views/widget/dropdowns/dropdownButton.dart';
+import 'package:ticketbox/presentation/views/widget/dropdowns/dropdown_button.dart';
 
 class MembersViewModel extends BaseViewModel {
   bool isDeleted = false;
@@ -20,7 +19,7 @@ class MembersViewModel extends BaseViewModel {
 
   Future<void> addMember(
       BuildContext context, String groupName, String groupId) {
-    TextEditingController emailController = new TextEditingController();
+    TextEditingController emailController = TextEditingController();
     return showDialog(
       context: context,
       builder: (context) => Dialog(
@@ -291,7 +290,7 @@ class MembersViewModel extends BaseViewModel {
       'dec.',
     ];
     DateTime selectedDate = DateTime.now();
-    TextEditingController amountController = new TextEditingController();
+    TextEditingController amountController = TextEditingController();
     TicketType ticketType = TicketType(ticketName: "", groupId: "");
 
     List<TicketType> tickets =

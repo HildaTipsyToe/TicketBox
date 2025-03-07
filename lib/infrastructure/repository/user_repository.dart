@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:ticketbox/domain/entities/user.dart';
 import 'package:ticketbox/infrastructure/datasource/api_datasource.dart';
 
-/// Abstract class that represent the User reposistory
+/// Abstract class that represent the User repository
 ///
 /// This interface defines the contract for user-related data operations.
 abstract class IUserRepository {
@@ -16,7 +16,7 @@ abstract class IUserRepository {
 ///
 /// The [UserRepositoryImpl] have methode for:
 /// - create user
-/// - retriving user
+/// - retrieving user
 /// - update user
 class UserRepositoryImpl extends IUserRepository {
   final ApiDataSource _apiDataSource;
@@ -24,7 +24,7 @@ class UserRepositoryImpl extends IUserRepository {
   UserRepositoryImpl(this._apiDataSource);
 
   /// Method for fetching the user by [email]
-  /// else return null, with a log statment
+  /// else return null, with a log statement
   @override
   Future<TBUser?> getUserByEmail(String email) async {
     try {
@@ -44,10 +44,10 @@ class UserRepositoryImpl extends IUserRepository {
           userMail: userData['userMail'],  // Brug data() direkte
         );
       }
-      //If the search result retrived nothing
+      //If the search result retrieved nothing
       return null;
     } catch (error) {
-      log('Error handeling fetching by email: $error');
+      log('Error handling fetching by email: $error');
       return null;
     }
   }
@@ -62,7 +62,7 @@ class UserRepositoryImpl extends IUserRepository {
       };
       return await _apiDataSource.userCollection.doc(uid).set(userJson);
     } catch (error) {
-      log('Error handeling creating user: $error');
+      log('Error handling creating user: $error');
       return;
     }
   }
@@ -71,12 +71,12 @@ class UserRepositoryImpl extends IUserRepository {
   @override
   Future<void> updateUserName(String userId, String newUserName) async {
     try {
-      // Update the userName field for the document with the procided userId
+      // Update the userName field for the document with the provided userId
       return await _apiDataSource.userCollection.doc(userId).update({
         'userName': newUserName,
       });
     } catch (error) {
-      log('Error handeling updating user name: $error');
+      log('Error handling updating user name: $error');
       return;
     }
   }

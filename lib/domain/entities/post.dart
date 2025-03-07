@@ -34,7 +34,7 @@ class Post {
     return Post(
       adminId: json['admin'] ?? '',
       adminName: json['adminName'] ?? '',
-      dateIssued: json['dateUssued'] ?? '',
+      dateIssued: json['dateIssued'] ?? '',
       groupId: json['groupId'] ?? '',
       price: json['price'] ?? '',
       receiverId: json['receiverId'] ?? '',

@@ -5,7 +5,7 @@ import 'package:ticketbox/domain/entities/membership.dart';
 import 'package:ticketbox/infrastructure/datasource/api_datasource.dart';
 import 'package:ticketbox/infrastructure/datasource/auth_datasource.dart';
 
-/// Abstract class that represent the group reposistory
+/// Abstract class that represent the group repository
 ///
 /// This interface defines the contract for memberships-related data operations.
 
@@ -52,8 +52,8 @@ class GroupRepositoryImpl extends IGroupRepository {
       await _apiDataSource.membershipCollection.add(membership.toJson());
       return "Group created!";
     } catch (error) {
-      log('Error handeling adding group: $error');
-      return Future.error('Error handeling adding group: $error');
+      log('Error handling adding group: $error');
+      return Future.error('Error handling adding group: $error');
     }
   }
 

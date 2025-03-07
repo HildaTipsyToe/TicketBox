@@ -6,7 +6,7 @@ import 'package:ticketbox/domain/entities/membership.dart';
 import 'package:ticketbox/infrastructure/datasource/api_datasource.dart';
 import 'package:ticketbox/infrastructure/repository/auth_repository.dart';
 
-/// Abstract class that represent the membership reposistory
+/// Abstract class that represent the membership repository
 ///
 /// This interface defines the contract for memberships-related data operations.
 abstract class IMembershipRepository {
@@ -25,10 +25,10 @@ abstract class IMembershipRepository {
 ///
 /// The [MembershipRepositoryImpl] have methods for:
 /// - create membership
-/// - retriving membership by user ID
-/// - retriving membership by user ID as a stream
-/// - retriving membership by group ID
-/// - retriving membership by group ID as a stream
+/// - retrieving membership by user ID
+/// - retrieving membership by user ID as a stream
+/// - retrieving membership by group ID
+/// - retrieving membership by group ID as a stream
 /// - update membership
 /// - deleting membership
 /// - authorization to update membership
@@ -54,12 +54,12 @@ class MembershipRepositoryImpl extends IMembershipRepository {
         await _apiDataSource.membershipCollection.add(membershipData.toJson());
       }
     } catch (error) {
-      log('Error handeling adding membership: $error');
+      log('Error handling adding membership: $error');
       return;
     }
   }
 
-  /// Method for authorizing user can delete a memebership with value [membership]
+  /// Method for authorizing user can delete a membership with value [membership]
   ///
   /// Ensures the user cant delete himself if there is no other admin in the group
   /// and if the group is only 1 member its being deleted.
@@ -117,7 +117,7 @@ class MembershipRepositoryImpl extends IMembershipRepository {
     }
   }
 
-  /// Method for authorizing user can update a memebership with value [membership]
+  /// Method for authorizing user can update a membership with value [membership]
   ///
   /// Ensures the user cant changes his own role, if he is the only admin in the group
   @override
@@ -136,7 +136,7 @@ class MembershipRepositoryImpl extends IMembershipRepository {
     }
   }
 
-  /// Method for retriving memberships by the user ID as a stream with value [id]
+  /// Method for retrieving memberships by the user ID as a stream with value [id]
   @override
   Stream<List<Membership>> getGroupsByUserIDStream(String id) {
     return _apiDataSource.membershipCollection
@@ -148,7 +148,7 @@ class MembershipRepositoryImpl extends IMembershipRepository {
             .toList());
   }
 
-  /// Method for retriving memberships by the user ID with value [id]
+  /// Method for retrieving memberships by the user ID with value [id]
   @override
   Future<List<Membership>> getGroupByUserID(String id) async {
     try {
@@ -170,7 +170,7 @@ class MembershipRepositoryImpl extends IMembershipRepository {
     }
   }
 
-  /// Method for retriving memebership by the group ID with value [id]
+  /// Method for retrieving membership by the group ID with value [id]
   @override
   Future<List<Membership>> getMembershipsByGroupId(String id) async {
     try {

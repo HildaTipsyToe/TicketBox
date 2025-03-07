@@ -13,6 +13,8 @@ import 'package:mockito/mockito.dart' as _i1;
 import 'package:mockito/src/dummies.dart' as _i6;
 import 'package:ticketbox/domain/entities/settings.dart' as _i8;
 import 'package:ticketbox/domain/entities/user.dart' as _i7;
+import 'package:ticketbox/infrastructure/repository/user_repository.dart'
+    as _i9;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -931,4 +933,39 @@ class MockTBSettings extends _i1.Mock implements _i8.TBSettings {
             returnValue: <String, dynamic>{},
           )
           as Map<String, dynamic>);
+}
+
+/// A class which mocks [IUserRepository].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockIUserRepository extends _i1.Mock implements _i9.IUserRepository {
+  MockIUserRepository() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i5.Future<_i7.TBUser?> getUserByEmail(String? email) =>
+      (super.noSuchMethod(
+            Invocation.method(#getUserByEmail, [email]),
+            returnValue: _i5.Future<_i7.TBUser?>.value(),
+          )
+          as _i5.Future<_i7.TBUser?>);
+
+  @override
+  _i5.Future<void> createUser(String? uid, String? name, String? email) =>
+      (super.noSuchMethod(
+            Invocation.method(#createUser, [uid, name, email]),
+            returnValue: _i5.Future<void>.value(),
+            returnValueForMissingStub: _i5.Future<void>.value(),
+          )
+          as _i5.Future<void>);
+
+  @override
+  _i5.Future<void> updateUserName(String? userId, String? newUserName) =>
+      (super.noSuchMethod(
+            Invocation.method(#updateUserName, [userId, newUserName]),
+            returnValue: _i5.Future<void>.value(),
+            returnValueForMissingStub: _i5.Future<void>.value(),
+          )
+          as _i5.Future<void>);
 }

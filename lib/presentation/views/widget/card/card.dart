@@ -10,7 +10,7 @@ class TBCard extends StatelessWidget {
   final EdgeInsets margin;
   final Widget? child;
   final Color? shadowColor;
-  final double? roundedConers;
+  final double? roundedCorners;
 
   const TBCard({
     super.key,
@@ -23,7 +23,7 @@ class TBCard extends StatelessWidget {
     this.child,
     this.maxWidth = double.infinity,
     this.margin = const EdgeInsets.all(0.0),
-    this.roundedConers = 10.0,
+    this.roundedCorners = 10.0,
   });
 
   @override
@@ -35,7 +35,7 @@ class TBCard extends StatelessWidget {
         child: Container(
           clipBehavior: Clip.hardEdge,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(roundedConers!),
+            borderRadius: BorderRadius.circular(roundedCorners!),
             boxShadow: [
               BoxShadow(
                 color: shadowColor ??
@@ -49,7 +49,7 @@ class TBCard extends StatelessWidget {
             ],
           ),
           child: Material(
-            borderRadius: BorderRadius.circular(roundedConers!),
+            borderRadius: BorderRadius.circular(roundedCorners!),
             color: Colors.white,
             child: InkWell(
               onTap: onPressed,

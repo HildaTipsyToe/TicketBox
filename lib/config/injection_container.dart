@@ -71,7 +71,7 @@ void _initRepositories() {
 
 void _initDataSources() {
   sl.registerLazySingleton<ApiDataSource>(() => ApiDataSource());
-  sl.registerLazySingleton<AuthDataSource>(() => FirebaseAuthDataSource(firebaseAuth: FirebaseAuth.instance, settings: sl<TBSettings>(), user: sl<TBUser>()));
+  sl.registerLazySingleton<AuthDataSource>(() => FirebaseAuthDataSource(firebaseAuth: FirebaseAuth.instance, settings: sl<TBSettings>(), user: sl<TBUser>(), userRepository: sl<IUserRepository>()));
 }
 
 

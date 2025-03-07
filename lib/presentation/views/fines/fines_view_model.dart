@@ -17,7 +17,7 @@ class FinesViewModel extends BaseViewModel {
   }
 
   saveFine(String groupId) async {
-    // Retreiving the user data.
+    // Retrieving the user data.
     final ticketName = ticketNameController.text;
 
     final price = int.parse(priceController.text);

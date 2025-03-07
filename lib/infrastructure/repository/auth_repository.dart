@@ -5,7 +5,7 @@ import '../../domain/entities/settings.dart';
 import '../../domain/entities/user.dart';
 import '../datasource/auth_datasource.dart';
 
-/// Abstract class that represent the authentication reposistory
+/// Abstract class that represent the authentication repository
 ///
 /// This interface defines the contract for authentication-related data operations.
 abstract class IAuthRepository {
@@ -21,7 +21,7 @@ class AuthRepositoryMock extends IAuthRepository {
 
   @override
   signInWithEmailAndPassword(String email, String password) async {
-    print('Mock - signin with $email and $password' );
+    print('Mock - sign in with $email and $password' );
     sl<TBSettings>().isLoggedIn = true;
     sl<TBUser>().userId = 'userId';
     sl<TBUser>().userName = 'username';

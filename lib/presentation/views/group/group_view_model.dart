@@ -5,7 +5,7 @@ import 'package:ticketbox/domain/entities/post.dart';
 import 'package:ticketbox/infrastructure/repository/post_repository.dart';
 import 'package:ticketbox/presentation/views/base/base_view_model.dart';
 
-/// Class handeling model data for the Group view
+/// Class handling model data for the Group view
 /// 
 /// This class contains:
 ///  - [getPostsByReceiverIdAndGroupId]

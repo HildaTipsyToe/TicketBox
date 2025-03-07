@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ticketbox/domain/entities/post.dart';
 import 'package:ticketbox/infrastructure/datasource/api_datasource.dart';
 
-/// Abstract class that represent the Post reposistory
+/// Abstract class that represent the Post repository
 ///
 /// This interface defines the contract for Post-related data operations.
 abstract class IPostRepository {
@@ -18,12 +18,12 @@ abstract class IPostRepository {
   Future<void> deletePost(Post post);
 }
 
-/// Class that represent the post repoistory
+/// Class that represent the post repository
 ///
 /// The [PostRepositoryImpl] have methods for:
 /// - create posts
-/// - retriving posts by group id
-/// - retriving posts by reciver id and group id
+/// - retrieving posts by group id
+/// - retrieving posts by receiver id and group id
 /// - updating posts
 /// - deleting posts
 class PostRepositoryImpl extends IPostRepository {
@@ -52,8 +52,8 @@ class PostRepositoryImpl extends IPostRepository {
         await doc.reference.update({'balance': newBalance});
       }
     } catch (error) {
-      log('Error handeling adding a post: $error');
-      Future.error('Error handeling adding a post: $error');
+      log('Error handling adding a post: $error');
+      Future.error('Error handling adding a post: $error');
     }
   }
 
@@ -107,9 +107,9 @@ class PostRepositoryImpl extends IPostRepository {
 
       return posts;
     } catch (error) {
-      log('Error handeling retivering post by group id: $error');
+      log('Error handling retrieving post by group id: $error');
       return Future.error(
-          'Error handeling retivering post by group id: $error');
+          'Error handling retrieving post by group id: $error');
     }
   }
 
@@ -130,9 +130,9 @@ class PostRepositoryImpl extends IPostRepository {
 
       return posts;
     } catch (error) {
-      log('Error handeling retreving posts by receiver and group id');
+      log('Error handling retrieving posts by receiver and group id');
       return Future.error(
-          'Error handeling retreving posts by receiver and group id');
+          'Error handling retrieving posts by receiver and group id');
     }
   }
 
@@ -142,8 +142,8 @@ class PostRepositoryImpl extends IPostRepository {
     try {
       return await _apiDataSource.postCollection.doc(id).update(newData);
     } catch (error) {
-      log('Error handeling updating the post: $error');
-      return Future.error('Error handeling updating the post: $error');
+      log('Error handling updating the post: $error');
+      return Future.error('Error handling updating the post: $error');
     }
   }
 

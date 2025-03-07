@@ -11,7 +11,7 @@ class MembersViewWidget extends StatelessWidget {
   final MembersViewModel model;
   final String groupId;
 
-  MembersViewWidget({
+  const MembersViewWidget({
     super.key,
     required this.model,
     required this.groupId,
