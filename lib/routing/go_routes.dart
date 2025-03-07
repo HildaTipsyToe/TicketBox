@@ -13,7 +13,7 @@ import '../presentation/views/login/login_view.dart';
 import 'nav_enums.dart';
 
 GoRouter goRoutes = GoRouter(
-  initialLocation: sl<Settings>().isLoggedIn ? '/' : '/login',
+  initialLocation: sl<TBSettings>().isLoggedIn ? '/' : '/login',
   routes: [
     // ShellRoute(
     //   builder: (context, state, child) => MainLayout(
@@ -74,12 +74,6 @@ GoRouter goRoutes = GoRouter(
         );
       }
       ),
-    // GoRoute(
-    //   path: '/group_admin',
-    //   builder: (BuildContext context, GoRouterState state) {
-    //     return GroupAdminView();
-    //   },
-    // ),
     GoRoute(
       name: 'chat',
       path: '/chat',
