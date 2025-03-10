@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../config/injection_container.dart';
 import '../../../infrastructure/repository/auth_repository.dart';
@@ -148,7 +149,6 @@ class LoginViewModel extends BaseViewModel {
       setBusy(true);
       final scaffoldMessenger = ScaffoldMessenger.of(context);
       try {
-        final navigator = Navigator.of(context);
         await signInWithEmailCredentials(context);
         signInAuthError = SignInAuthError.noError;
         emailController.text = '';
@@ -160,8 +160,8 @@ class LoginViewModel extends BaseViewModel {
         //     'roleId': '',
         //   },
         // );
-        if (navigator.mounted) {
-          navigator.pushNamed('dashboard');
+        if (context.mounted) {
+          context.pushNamed('dashboard');
           setBusy(false);
         }
       } on AuthError catch (error) {

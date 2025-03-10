@@ -28,7 +28,7 @@ class FinesViewWidget extends StatelessWidget {
                 child: Container(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 10, vertical: 10),
-                    height: MediaQuery.of(context).size.height - 100,
+                    height: MediaQuery.of(context).size.height - 120,
                     width: MediaQuery.of(context).size.width - 20,
                     decoration: BoxDecoration(
                         border: Border.all(width: 2, color: Colors.grey),

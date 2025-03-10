@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ticketbox/firebase_options.dart';
 import 'package:ticketbox/routing/go_routes.dart';
@@ -8,6 +9,8 @@ import 'config/injection_container.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // Skjuler statusbaren
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
   injectionInit();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
