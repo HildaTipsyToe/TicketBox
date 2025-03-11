@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:ticketbox/presentation/views/fines/fines_view_model.dart';
 import 'package:ticketbox/presentation/views/widget/process_indicator/circular_progress_indicator.dart';
 
+import '../widget/buttons/icon_button.dart';
+
 class FinesViewWidget extends StatelessWidget {
   final FinesViewModel model;
 
@@ -65,9 +67,23 @@ class FinesViewWidget extends StatelessWidget {
                                           //       const TextStyle(fontSize: 20),
                                           // ),
                                         ]),
-                                        Text(data.price.toString(),
-                                            style:
-                                                const TextStyle(fontSize: 20))
+                                        roleId == '1' ? Row(children: [
+                                          Text(data.price.toString(),
+                                            style: const TextStyle(fontSize: 20),
+                                          ),
+                                          SizedBox(width: 5),
+                                          TBIconButton(
+                                              icon: Icons.delete,
+                                              size: 25,
+                                              iconSize: 20,
+                                              onPressed: () {
+                                                model.deleteTicketType(data.ticketTypeId);
+                                              },
+                                          )
+                                        ])
+                                            : Text(data.price.toString(),
+                                          style: const TextStyle(fontSize: 20),
+                                        ),
                                       ]));
                             })));
           } else {

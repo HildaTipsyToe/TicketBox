@@ -34,6 +34,10 @@ class FinesViewModel extends BaseViewModel {
     await sl<ITicketTypeRepository>().addTicketType(newTicket.toJson());
   }
 
+  Future<void> deleteTicketType(String ticketTypeId) async {
+    await sl<ITicketTypeRepository>().deleteTicketType(ticketTypeId);
+  }
+
   addFineDialog(BuildContext context, String groupId) async {
     return showDialog(
       context: context,
@@ -99,4 +103,6 @@ class FinesViewModel extends BaseViewModel {
       },
     );
   }
+
+
 }

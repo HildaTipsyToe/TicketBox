@@ -4,7 +4,6 @@ import 'package:ticketbox/domain/entities/membership.dart';
 import 'package:ticketbox/presentation/views/dashboard/dashboard_view_model.dart';
 import 'package:ticketbox/presentation/views/widget/Fab/action_button.dart';
 import 'package:ticketbox/presentation/views/widget/Fab/expandable_fab.dart';
-import 'package:ticketbox/presentation/views/widget/buttons/icon_button.dart';
 import 'package:ticketbox/presentation/views/widget/card/card.dart';
 import 'package:ticketbox/presentation/views/widget/process_indicator/circular_progress_indicator.dart';
 
@@ -35,6 +34,7 @@ class DashboardViewWidget extends StatelessWidget {
           }
           final group = snapshot.data;
           return ListView.builder(
+            padding: EdgeInsets.only(bottom: 100),
             itemCount: group!.length,
             itemBuilder: (BuildContext context, int index) {
               final data = group[index];

@@ -93,7 +93,7 @@ class ChatViewWidget extends StatelessWidget {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    message.userName,
+                                    message.userName, style: TextStyle(fontStyle: FontStyle.italic),
                                   ),
                                   Text(message.timeStamp != null
                                       ? DateFormat('HH:mm - dd-MM-yyyy')
