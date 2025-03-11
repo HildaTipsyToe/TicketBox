@@ -118,17 +118,18 @@ class MembersViewWidget extends StatelessWidget {
                                 }
                                 model.isDeleted = false;
                               } else {
-                                if (context.mounted) {
-                                  context.replaceNamed(
-                                    'members',
-                                    queryParameters: {
-                                      'groupId': data.groupId,
-                                      'groupName': data.groupName,
-                                      'roleId': model.newRole != null
-                                          ? model.newRole.toString()
-                                          : data.roleId.toString()
-                                    },
-                                  );
+                                if (context.mounted) { 
+                                  // context.replaceNamed(
+                                  //   'members',
+                                  //   queryParameters: {
+                                  //     'groupId': data.groupId,
+                                  //     'groupName': data.groupName,
+                                  //     'roleId': data.userId == sl<TBUser>().userId ?
+                                  //      model.newRole != null
+                                  //         ? model.newRole.toString()
+                                  //         : data.roleId.toString() :
+                                  //   },
+                                  // );
                                 }
                               }
                             },

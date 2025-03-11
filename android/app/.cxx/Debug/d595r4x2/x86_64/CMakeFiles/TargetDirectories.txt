@@ -1,0 +1,2 @@
+C:/Users/Jeppe/programmering/SvendeProjekt/ticketbox/android/app/.cxx/Debug/d595r4x2/x86_64/CMakeFiles/edit_cache.dir
+C:/Users/Jeppe/programmering/SvendeProjekt/ticketbox/android/app/.cxx/Debug/d595r4x2/x86_64/CMakeFiles/rebuild_cache.dir

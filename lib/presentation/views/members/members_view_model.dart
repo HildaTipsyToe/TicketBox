@@ -92,7 +92,6 @@ class MembersViewModel extends BaseViewModel {
   Future<void> editUserDialog(
       BuildContext context, Membership member, bool isAdmin) {
     String role = member.roleId.toString();
-    print(role);
     return showDialog(
       context: context,
       builder: (BuildContext context) => Dialog(
@@ -321,7 +320,7 @@ class MembersViewModel extends BaseViewModel {
                     width: double.infinity,
                     margin: const EdgeInsets.symmetric(horizontal: 20),
                     child: const Text(
-                      "Name",
+                      "Bøde",
                       style: TextStyle(fontSize: 20),
                     ),
                   ),
@@ -369,16 +368,16 @@ class MembersViewModel extends BaseViewModel {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 20, vertical: 20),
                       child: TextFormField(
-                        decoration: const InputDecoration(
-                          label: Text(
-                            'Beløb',
-                            style: TextStyle(
-                              fontSize: 20,
-                            ),
-                          ),
+                        decoration:  InputDecoration(
+                          // label: Text(
+                          //   'Beløb',
+                          //   style: TextStyle(
+                          //     fontSize: 20,
+                          //   ),
+                          // ),
                           floatingLabelBehavior: FloatingLabelBehavior.always,
                           labelStyle: TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.bold),
+                              fontSize: 16, fontWeight: FontWeight.bold),
                         ),
                         controller: amountController,
                       ),
