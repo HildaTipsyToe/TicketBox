@@ -19,7 +19,6 @@ class FinesViewModel extends BaseViewModel {
   saveFine(String groupId) async {
     // Retrieving the user data.
     final ticketName = ticketNameController.text;
-
     final price = int.parse(priceController.text);
 
     ticketNameController.text = '';
@@ -89,11 +88,12 @@ class FinesViewModel extends BaseViewModel {
               child: const Text('Gem'),
               onPressed: () async {
                 final navigator = Navigator.of(context); // Capture the navigator before the async call
+                if(ticketNameController.text.trim().isNotEmpty && int.tryParse(priceController.text) != null) {
+                  await saveFine(groupId);
 
-                await saveFine(groupId);
-
-                if (navigator.mounted) {
-                  navigator.pop(); // Use the stored navigator
+                  if (navigator.mounted) {
+                    navigator.pop(); // Use the stored navigator
+                  }
                 }
               },
             ),

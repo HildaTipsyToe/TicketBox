@@ -34,8 +34,10 @@ class GroupViewWidget extends StatelessWidget {
               child: Column(
                 children: [
                   Text(groupName,
-                      style:
-                          const TextStyle(fontSize: 30, color: Colors.black)),
+                      style: const TextStyle(fontSize: 30, color: Colors.black),
+                    maxLines: 1,
+                    overflow: TextOverflow.fade,
+                  ),
                   Text(saldo,
                       style: TextStyle(
                           fontSize: 40,

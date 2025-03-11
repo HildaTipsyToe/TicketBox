@@ -72,7 +72,7 @@ class DashboardViewModel extends BaseViewModel {
                     ),
                     TBFilledButton(
                       onPressed: () async {
-                        if (nameController.text.isNotEmpty) {
+                        if (nameController.text.trim().isNotEmpty) {
                           try {
                             await sl<IGroupRepository>().addGroup(
                                 Group(groupName: nameController.text).toJson());

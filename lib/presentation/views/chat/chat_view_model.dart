@@ -17,13 +17,15 @@ class ChatViewModel extends BaseViewModel {
     final input = inputController.text;
     inputController.text = '';
 
-    final newMessage = Message(
-        userId: sl<TBUser>().userId,
-        userName: sl<TBUser>().userName,
-        groupId: groupId,
-        text: input);
+    if (input.trim().isNotEmpty) {
+      final newMessage = Message(
+          userId: sl<TBUser>().userId,
+          userName: sl<TBUser>().userName,
+          groupId: groupId,
+          text: input);
 
-    await sl<IMessageRepository>().addMessage(newMessage);
+      await sl<IMessageRepository>().addMessage(newMessage);
+    }
   }
 
   deleteMessage(String messageId) async {

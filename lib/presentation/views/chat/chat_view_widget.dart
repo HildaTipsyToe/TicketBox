@@ -92,9 +92,13 @@ class ChatViewWidget extends StatelessWidget {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(
-                                    message.userName, style: TextStyle(fontStyle: FontStyle.italic),
-                                  ),
+                              Flexible(
+                                child: Text(
+                                  message.userName, style: TextStyle(fontStyle: FontStyle.italic),
+                                  overflow: TextOverflow.fade,
+                                  softWrap: false,
+                                ),
+                              ),
                                   Text(message.timeStamp != null
                                       ? DateFormat('HH:mm - dd-MM-yyyy')
                                           .format(message.timeStamp!.toDate())
@@ -103,7 +107,7 @@ class ChatViewWidget extends StatelessWidget {
                           ),
                           Align(
                             alignment: Alignment.topRight,
-                            child: roleId == '1'
+                            child: roleId == '1' || message.userId == sl<TBUser>().userId
                                 ? Container(
                                   margin:
                                       EdgeInsets.only(right: 10, top: 2),

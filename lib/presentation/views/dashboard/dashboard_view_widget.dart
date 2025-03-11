@@ -80,12 +80,14 @@ class DashboardViewWidget extends StatelessWidget {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(
+                                Flexible(child: Text(
                                     data.groupName,
+                                  overflow: TextOverflow.fade,
+                                  softWrap: false,
                                     style: const TextStyle(
                                         fontSize: 18,
                                         decoration: TextDecoration.underline),
-                                  ),
+                                  ),),
                                   Row(
                                     children: [
                                       Text(
