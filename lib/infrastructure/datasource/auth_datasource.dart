@@ -58,10 +58,11 @@ class FirebaseAuthDataSource extends AuthDataSource {
       await firebaseAuth.signInWithEmailAndPassword(
           email: email, password: password);
           settings.isLoggedIn = true;
-          User? temp = firebaseAuth.currentUser;
-          user.userId = temp!.uid;
-          user.userName = (temp.displayName ?? temp.email)!;
-          user.userMail = temp.email!;
+          getCurrentUser();
+          // User? temp = firebaseAuth.currentUser;
+          // user.userId = temp!.uid;
+          // user.userName = (temp.displayName ?? temp.email)!;
+          // user.userMail = temp.email!;
 
     } on FirebaseAuthException catch (error) {
       throw AuthError(message: error.message, code: error.code);
@@ -73,12 +74,16 @@ class FirebaseAuthDataSource extends AuthDataSource {
   Future<void> createUser(String name, String email, String password) async {
     try {
       await firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
+      if (name.isEmpty) {
+        name = email;
+      }
       await firebaseAuth.currentUser?.updateDisplayName(name);
       settings.isLoggedIn = true;
-      User? temp = firebaseAuth.currentUser;
-      user.userId = temp!.uid;
-      user.userName = temp.displayName!;
-      user.userMail = temp.email!;
+      getCurrentUser();
+      // User? temp = firebaseAuth.currentUser;
+      // user.userId = temp!.uid;
+      // user.userName = temp.displayName!;
+      // user.userMail = temp.email!;
     } on FirebaseAuthException catch (error) {
       throw AuthError(message: error.message, code: error.code);
     }
