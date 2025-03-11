@@ -101,6 +101,7 @@ class MembershipRepositoryImpl extends IMembershipRepository {
   /// Method for deleting membership and members posts with value [membership]
   @override
   Future<void> deleteMembership(Membership membership) async {
+    WriteBatch batch = FirebaseFirestore.instance.batch();
     try {
       // Query and delete posts related to the memberships
       QuerySnapshot postsSnapshot = await _apiDataSource.postCollection
@@ -108,13 +109,18 @@ class MembershipRepositoryImpl extends IMembershipRepository {
           .get();
 
       for (QueryDocumentSnapshot doc in postsSnapshot.docs) {
-        await doc.reference.delete();      }
+        batch.delete(doc.reference);
+      }
+     // Finally, delete the group itself
+      DocumentReference groupRef = _apiDataSource.membershipCollection.doc(
+          membership.membershipId);
+      batch.delete(groupRef);
 
-      // Deleting the group itself
+      // Commit the batch delete operation
+      await batch.commit();
     } catch (error) {
       log('Error handling the deletion of a membership: $error');
-      throw Exception(
-          'Error handling the deletion of a membership: $error');
+      throw Exception('Error handling the deletion of a membership: $error');
     }
   }
 
@@ -201,15 +207,16 @@ class MembershipRepositoryImpl extends IMembershipRepository {
       throw Exception('Error updating the membership: $error');
     }
   }
-  
+
   @override
   Stream<List<Membership>> getMembershipsByGroupIdStream(String id) {
     return _apiDataSource.membershipCollection
-          .where('groupId', isEqualTo: id)
-          .snapshots().map((querySnapshot) =>  querySnapshot.docs
-          .map((doc) => Membership.fromMap(doc.data() as Map<String, dynamic>)
-              .copyWith(membershipId: doc.id))
-          .toList());
+        .where('groupId', isEqualTo: id)
+        .snapshots()
+        .map((querySnapshot) => querySnapshot.docs
+            .map((doc) => Membership.fromMap(doc.data() as Map<String, dynamic>)
+                .copyWith(membershipId: doc.id))
+            .toList());
   }
 }
 
@@ -220,7 +227,8 @@ class MembershipRepositoryMock extends IMembershipRepository {
   }
 
   @override
-  Future<Map<String, dynamic>> canDeleteMembership(Membership membership) async {
+  Future<Map<String, dynamic>> canDeleteMembership(
+      Membership membership) async {
     print('Mock - can delete?');
     Map<String, dynamic> result = {
       'canDelete': false,
@@ -245,8 +253,20 @@ class MembershipRepositoryMock extends IMembershipRepository {
   Future<List<Membership>> getMembershipsByGroupId(String id) async {
     print('Mock - Get membership by groupId');
     List<Membership> m = [
-      Membership(userId: 'userId1', userName: 'userName1', groupId: 'groupId', groupName: 'groupName', balance: 1, roleId: 1),
-      Membership(userId: 'userId2', userName: 'userName2', groupId: 'groupId', groupName: 'groupName', balance: 2, roleId: 2)
+      Membership(
+          userId: 'userId1',
+          userName: 'userName1',
+          groupId: 'groupId',
+          groupName: 'groupName',
+          balance: 1,
+          roleId: 1),
+      Membership(
+          userId: 'userId2',
+          userName: 'userName2',
+          groupId: 'groupId',
+          groupName: 'groupName',
+          balance: 2,
+          roleId: 2)
     ];
     return m;
   }
@@ -255,45 +275,51 @@ class MembershipRepositoryMock extends IMembershipRepository {
   Future<void> updateMembership(String id, Map<String, dynamic> newData) async {
     print('Mock - membership updated');
   }
-  
+
   @override
   Future<List<Membership>> getGroupByUserID(String id) async {
     List<Membership> m = [
-      Membership(userId: 'mock_user_id',
+      Membership(
+        userId: 'mock_user_id',
         userName: 'mock_user_name',
         groupId: 'mock_group_id',
         groupName: 'Test Group',
         balance: 0,
-        roleId: 1,)
+        roleId: 1,
+      )
     ];
     return m;
   }
-  
+
   @override
   Stream<List<Membership>> getGroupsByUserIDStream(String id) {
     print('Mock - get Stream');
     final controller = StreamController<List<Membership>>();
     List<Membership> membership = [];
-    membership.add(Membership(userId: 'mock_user_id',
+    membership.add(Membership(
+      userId: 'mock_user_id',
       userName: 'mock_user_name',
       groupId: 'mock_group_id',
       groupName: 'Test Group',
       balance: 0,
-      roleId: 1,));
+      roleId: 1,
+    ));
     controller.add(List.from(membership)); // Sender en ny liste til streamen
     return controller.stream;
   }
-  
+
   @override
   Stream<List<Membership>> getMembershipsByGroupIdStream(String id) {
     final controller = StreamController<List<Membership>>();
     List<Membership> membership = [];
-    membership.add(Membership(userId: 'mock_user_id',
+    membership.add(Membership(
+      userId: 'mock_user_id',
       userName: 'mock_user_name',
       groupId: 'mock_group_id',
       groupName: 'Test Group',
       balance: 0,
-      roleId: 1,));
+      roleId: 1,
+    ));
     controller.add(List.from(membership)); // Sender en ny liste til streamen
     return controller.stream;
   }

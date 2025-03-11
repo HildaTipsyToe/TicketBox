@@ -92,154 +92,153 @@ class MembersViewModel extends BaseViewModel {
   Future<void> editUserDialog(
       BuildContext context, Membership member, bool isAdmin) {
     String role = member.roleId.toString();
+    print(role);
     return showDialog(
       context: context,
       builder: (BuildContext context) => Dialog(
         child: SizedBox(
-            width: 200,
-            height: !isAdmin || member.roleId == 4 ? 200 : 400,
-            child: Column(
-              children: [
-                Center(
-                  child: Container(
-                    margin: const EdgeInsets.symmetric(vertical: 25),
-                    child: const Text(
-                      "Rediger medlem",
-                      style: TextStyle(fontSize: 25),
-                    ),
+          width: 200,
+          height: !isAdmin || member.roleId == 4 ? 200 : 400,
+          child: Column(
+            children: [
+              Center(
+                child: Container(
+                  margin: const EdgeInsets.symmetric(vertical: 25),
+                  child: const Text(
+                    "Rediger medlem",
+                    style: TextStyle(fontSize: 25),
                   ),
                 ),
-                !isAdmin || member.roleId == 4
-                    ? Container()
-                    : TBDropdownButton<String>(
-                        data: ["Administrator", "Kasserer", "Medlem"],
-                        callback: (val) {
-                          role = val;
-                        },
-                        itemsLayout: (dynamic value) {
-                          return Text(value);
-                        },
-                        hint: ({value}) => Center(
-                          child: Text(
-                            "Vælg rolle",
-                            style: TextStyle(color: Colors.grey),
-                            textAlign: TextAlign.end,
-                          ),
+              ),
+              !isAdmin || member.roleId == 4
+                  ? Container()
+                  : TBDropdownButton<String>(
+                      data: ["Administrator", "Kasserer", "Medlem"],
+                      callback: (val) {
+                        role = val;
+                      },
+                      itemsLayout: (dynamic value) {
+                        return Text(value);
+                      },
+                      hint: ({value}) => Center(
+                        child: Text(
+                          "Vælg rolle",
+                          style: TextStyle(color: Colors.grey),
+                          textAlign: TextAlign.end,
                         ),
                       ),
-                !isAdmin || member.roleId == 4
-                    ? Container()
-                    : TBFilledButton(
-                        onPressed: () async {
-                          // Determine the new role ID based on the selected string
-                          String newRoleId = "3"; // Default to 'Medlem'
-                          if (role == "Administrator") {
-                            newRoleId = "1";
-                          }
-                          if (role == "Kasserer") {
-                            newRoleId = "2";
-                          }
-                          if (role == "Medlem") {
-                            newRoleId = "3";
-                          }
-
-                          // Create the updated membership object
-                          Membership updatedMembership = Membership(
-                            userId: member.userId,
-                            userName: member.userName,
-                            groupId: member.groupId,
-                            groupName: member.groupName,
-                            balance: member.balance,
-                            roleId: int.parse(newRoleId),
-                          );
-
-                          try {
-                            // Check if the role can be updated
-                            bool canUpdate = await sl<IMembershipRepository>()
-                                .canUpdateMembershipRole(member);
-
-                            if (canUpdate) {
-                              // If allowed, proceed with updating the membership
-                              await sl<IMembershipRepository>()
-                                  .updateMembership(
-                                member.membershipId,
-                                updatedMembership.toJson(),
-                              );
-
-                              // If the current user is updating their own role, update the local variable
-                              if (sl<TBUser>().userId == member.userId) {
-                                newRole = int.parse(newRoleId);
-                              }
-
-                              // Close the dialog after success
-                              // Navigator.pop(context);
-                            } else if (newRoleId != '1') {
-                              // Navigator.pop(context);
-                              // Show a SnackBar if update is not allowed
-                              if (context.mounted) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text(
-                                        "Der skal mindst være én administrator"),
-                                    duration: Duration(seconds: 3),
-                                  ),
-                                );
-                              }
-                            }
-                          } catch (e) {
-                            print("Update membership failed: $e");
-                            // Navigator.pop(context); // Close the dialog in case of failure
-                          }
-                          if (context.mounted) {
-                            Navigator.pop(context);
-                          }
-                        },
-                        text: "Gem ændring",
-                      ),
-                TBFilledButton(
-                  onPressed: () async {
-                    // Check if the membership can be deleted
-                    Map<String, dynamic> deletionCheck =
-                        await sl<IMembershipRepository>()
-                            .canDeleteMembership(member);
-                    bool canDelete = deletionCheck['canDelete'];
-                    String message = deletionCheck['message'];
-
-                    if (canDelete) {
-                      // Delete the membership
-                      await sl<IMembershipRepository>()
-                          .deleteMembership(member);
-
-                      // If the group was deleted, navigate back to the dashboard
-                      if (sl<TBUser>().userId == member.userId) {
-                        if (context.mounted) {
-                          context.pop();
+                    ),
+              !isAdmin || member.roleId == 4
+                  ? Container()
+                  : TBFilledButton(
+                      onPressed: () async {
+                        // Determine the new role ID based on the selected string
+                        String newRoleId = "3"; // Default to 'Medlem'
+                        if (role == "Administrator") {
+                          newRoleId = "1";
                         }
-                        isDeleted = true;
-                      } else {
+                        if (role == "Kasserer") {
+                          newRoleId = "2";
+                        }
+                        if (role == "Medlem") {
+                          newRoleId = "3";
+                        }
+                        // Create the updated membership object
+                        Membership updatedMembership = Membership(
+                          userId: member.userId,
+                          userName: member.userName,
+                          groupId: member.groupId,
+                          groupName: member.groupName,
+                          balance: member.balance,
+                          roleId: int.parse(newRoleId),
+                        );
+
+                        try {
+                          // Check if the role can be updated
+                          bool canUpdate = await sl<IMembershipRepository>()
+                              .canUpdateMembershipRole(member);
+
+                          if (canUpdate) {
+                            // If allowed, proceed with updating the membership
+                            await sl<IMembershipRepository>().updateMembership(
+                              member.membershipId,
+                              updatedMembership.toJson(),
+                            );
+
+                            // If the current user is updating their own role, update the local variable
+                            if (sl<TBUser>().userId == member.userId) {
+                              newRole = int.parse(newRoleId);
+                            }
+
+                            // Close the dialog after success
+                            // Navigator.pop(context);
+                          } else if (newRoleId != '1') {
+                            // Navigator.pop(context);
+                            // Show a SnackBar if update is not allowed
+                            if (context.mounted) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text(
+                                      "Der skal mindst være én administrator"),
+                                  duration: Duration(seconds: 3),
+                                ),
+                              );
+                            }
+                          }
+                        } catch (e) {
+                          print("Update membership failed: $e");
+                          // Navigator.pop(context); // Close the dialog in case of failure
+                        }
                         if (context.mounted) {
                           Navigator.pop(context);
                         }
+                      },
+                      text: "Gem ændring",
+                    ),
+              TBFilledButton(
+                onPressed: () async {
+                  // Check if the membership can be deleted
+                  Map<String, dynamic> deletionCheck =
+                      await sl<IMembershipRepository>()
+                          .canDeleteMembership(member);
+                  bool canDelete = deletionCheck['canDelete'];
+                  String message = deletionCheck['message'];
+
+                  if (canDelete) {
+                    // Delete the membership
+                    await sl<IMembershipRepository>().deleteMembership(member);
+
+                    // If the group was deleted, navigate back to the dashboard
+                    if (sl<TBUser>().userId == member.userId) {
+                      if (context.mounted) {
+                        context.pop();
                       }
+                      isDeleted = true;
                     } else {
                       if (context.mounted) {
                         Navigator.pop(context);
-                        // Show a message if the membership cannot be deleted
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(message),
-                            duration: const Duration(seconds: 3),
-                          ),
-                        );
                       }
                     }
-                  },
-                  text: member.userId == sl<TBUser>().userId
-                      ? "Forlad gruppe"
-                      : "Fjern medlem",
-                ),
-              ],
-            )),
+                  } else {
+                    if (context.mounted) {
+                      Navigator.pop(context);
+                      // Show a message if the membership cannot be deleted
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(message),
+                          duration: const Duration(seconds: 3),
+                        ),
+                      );
+                    }
+                  }
+                },
+                text: member.userId == sl<TBUser>().userId
+                    ? "Forlad gruppe"
+                    : "Fjern medlem",
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -340,10 +339,13 @@ class MembersViewModel extends BaseViewModel {
                         children: [
                           Expanded(
                             child: Text(
-                              value.ticketName, overflow: TextOverflow.fade, // Ensures text does not overflow
+                              value.ticketName,
+                              overflow: TextOverflow
+                                  .fade, // Ensures text does not overflow
                               maxLines: 1, // Restricts text to a single line
-                              softWrap: false,),
+                              softWrap: false,
                             ),
+                          ),
                           Text('${value.price} ,-     ')
                         ],
                       ),

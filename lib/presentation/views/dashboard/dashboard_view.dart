@@ -3,6 +3,9 @@ import 'package:ticketbox/config/injection_container.dart';
 import 'package:ticketbox/presentation/views/base/base_view_scaffold.dart';
 import 'package:ticketbox/presentation/views/dashboard/dashboard_view_model.dart';
 import 'package:ticketbox/presentation/views/dashboard/dashboard_view_widget.dart';
+import 'package:ticketbox/presentation/views/widget/Fab/action_button.dart';
+import 'package:ticketbox/presentation/views/widget/Fab/expandable_fab.dart'
+    show ExpandableFab;
 
 class DashboardView extends StatefulWidget {
   const DashboardView({super.key});
@@ -25,35 +28,18 @@ class _DashboardView extends State<DashboardView> {
         ),
       ],
       leading: false,
-      floatingActionButton: 
-      ExpandableFab(
-  childrenAnimation: ExpandableFabAnimation.none,
-         distance: 70,
-        type: ExpandableFabType.side,
-        children: [
-          FloatingActionButton.small(
-            onPressed: () => print("HELLO"),
-            child: Text('T'),
-          ),
-          FloatingActionButton.small(
-            onPressed: () => print("HELLO"),
-            child: Text('T2'),
-          ),
-        ],
+      floatingActionButton: FloatingActionButton.extended(
+        isExtended: true,
+        onPressed: () async {
+          await model.createGroup(context);
+        },
+        backgroundColor: Colors.white,
+        icon: Icon(
+          Icons.add,
+          size: 32,
+        ),
+        label: Text("Opret bødekasse"),
       ),
-
-      // FloatingActionButton.extended(
-      //   isExtended: true,
-      //   onPressed: () async {
-      //     await model.createGroup(context);
-      //   },
-      //   backgroundColor: Colors.white,
-      //   icon: Icon(
-      //     Icons.add,
-      //     size: 32,
-      //   ),
-      //   label: Text("Opret bødekasse"),
-      // ),
       builder: (context) => DashboardViewWidget(model: model),
     );
   }

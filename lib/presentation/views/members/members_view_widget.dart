@@ -19,6 +19,7 @@ class MembersViewWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(groupId);
     return StreamBuilder(
       stream: model.fetchMember(groupId),
       builder: (context, snapshot) {
@@ -123,7 +124,9 @@ class MembersViewWidget extends StatelessWidget {
                                     queryParameters: {
                                       'groupId': data.groupId,
                                       'groupName': data.groupName,
-                                      'roleId': model.newRole.toString()
+                                      'roleId': model.newRole != null
+                                          ? model.newRole.toString()
+                                          : data.roleId.toString()
                                     },
                                   );
                                 }

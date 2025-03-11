@@ -23,6 +23,7 @@ class DashboardViewModel extends BaseViewModel {
   }
 
   Future<void> leaveGroup(Membership data) async {
+    print("hello here");
     await sl<IMembershipRepository>().deleteMembership(data);
   }
 
