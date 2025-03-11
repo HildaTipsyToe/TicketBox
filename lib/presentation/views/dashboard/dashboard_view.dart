@@ -25,18 +25,35 @@ class _DashboardView extends State<DashboardView> {
         ),
       ],
       leading: false,
-      floatingActionButton: FloatingActionButton.extended(
-        isExtended: true,
-        onPressed: () async {
-          await model.createGroup(context);
-        },
-        backgroundColor: Colors.white,
-        icon: Icon(
-          Icons.add,
-          size: 32,
-        ),
-        label: Text("Opret bødekasse"),
+      floatingActionButton: 
+      ExpandableFab(
+  childrenAnimation: ExpandableFabAnimation.none,
+         distance: 70,
+        type: ExpandableFabType.side,
+        children: [
+          FloatingActionButton.small(
+            onPressed: () => print("HELLO"),
+            child: Text('T'),
+          ),
+          FloatingActionButton.small(
+            onPressed: () => print("HELLO"),
+            child: Text('T2'),
+          ),
+        ],
       ),
+
+      // FloatingActionButton.extended(
+      //   isExtended: true,
+      //   onPressed: () async {
+      //     await model.createGroup(context);
+      //   },
+      //   backgroundColor: Colors.white,
+      //   icon: Icon(
+      //     Icons.add,
+      //     size: 32,
+      //   ),
+      //   label: Text("Opret bødekasse"),
+      // ),
       builder: (context) => DashboardViewWidget(model: model),
     );
   }
