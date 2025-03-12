@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:ticketbox/config/injection_container.dart';
 import 'package:ticketbox/domain/entities/membership.dart';
+import 'package:ticketbox/domain/entities/message.dart';
 import 'package:ticketbox/infrastructure/datasource/api_datasource.dart';
 import 'package:ticketbox/infrastructure/repository/auth_repository.dart';
 
@@ -17,6 +18,7 @@ abstract class IMembershipRepository {
   Future<List<Membership>> getGroupByUserID(String id);
   Future<void> addMembership(Membership membershipData);
   Future<void> updateMembership(String id, Map<String, dynamic> newData);
+  Future<void> updateMembershipName(String userId, String newName);
   Future<void> deleteMembership(Membership membership);
   Future<Map<String, dynamic>> canDeleteMembership(Membership membership);
   Future<bool> canUpdateMembershipRole(Membership membership);
@@ -31,6 +33,7 @@ abstract class IMembershipRepository {
 /// - retrieving membership by group ID
 /// - retrieving membership by group ID as a stream
 /// - update membership
+/// - update membership userName
 /// - deleting membership
 /// - authorization to update membership
 /// - authorization to delete membership
@@ -75,7 +78,6 @@ class MembershipRepositoryImpl extends IMembershipRepository {
     User? user = await sl<IAuthRepository>().getCurrentUser();
     List<Membership> groupMemberships =
         await getMembershipsByGroupId(membership.groupId);
-    print(groupMemberships.length);
     if (groupMemberships.length == 1) {
       result['canDelete'] = true;
       result['message'] =
@@ -90,7 +92,7 @@ class MembershipRepositoryImpl extends IMembershipRepository {
     if (!otherAdminsExist && membership.userId == user?.uid) {
       result['canDelete'] =
           false; //should already be false, but hey! can be to sure sometimes
-      result['mesage'] =
+      result['message'] =
           'Du kan ikke forlade gruppen som den eneste administrator.';
     } else {
       result['canDelete'] = true;
@@ -108,14 +110,13 @@ class MembershipRepositoryImpl extends IMembershipRepository {
       QuerySnapshot postsSnapshot = await _apiDataSource.postCollection
           .where('userId', isEqualTo: membership.userId)
           .get();
-          print("hello");
 
       for (QueryDocumentSnapshot doc in postsSnapshot.docs) {
         batch.delete(doc.reference);
       }
-     // Finally, delete the group itself
-      DocumentReference groupRef = _apiDataSource.membershipCollection.doc(
-          membership.membershipId);
+      // Finally, delete the group itself
+      DocumentReference groupRef =
+          _apiDataSource.membershipCollection.doc(membership.membershipId);
       batch.delete(groupRef);
 
       // Commit the batch delete operation
@@ -219,6 +220,39 @@ class MembershipRepositoryImpl extends IMembershipRepository {
             .map((doc) => Membership.fromMap(doc.data() as Map<String, dynamic>)
                 .copyWith(membershipId: doc.id))
             .toList());
+  }
+
+  /// Method for updating the memberships username with value [userId] and [newName]
+  @override
+  Future<void> updateMembershipName(String userId, String newName) async {
+    WriteBatch batch = FirebaseFirestore.instance.batch();
+    try {
+      QuerySnapshot membershipSnapshot = await _apiDataSource
+          .membershipCollection
+          .where('userId', isEqualTo: userId)
+          .get();
+
+      for (QueryDocumentSnapshot docs in membershipSnapshot.docs) {
+        Map<String, dynamic> data = docs.data() as Map<String, dynamic>;
+        batch.update(
+          docs.reference,
+          Membership(
+            userId: userId,
+            userName: newName,
+            groupId: data['groupId'],
+            groupName: data['groupName'],
+            balance: data['balance'],
+            roleId: data['roleId'],
+          ).toJson(),
+        );
+      }
+
+      batch.commit();
+      return;
+    } catch (error) {
+      log('Error handling updating the membership of a users userName: $error');
+      throw Exception('Error updating the membership: $error');
+    }
   }
 }
 
@@ -324,5 +358,11 @@ class MembershipRepositoryMock extends IMembershipRepository {
     ));
     controller.add(List.from(membership)); // Sender en ny liste til streamen
     return controller.stream;
+  }
+
+  @override
+  Future<void> updateMembershipName(String userId, String newName) {
+    // TODO: implement updateMembershipName
+    throw UnimplementedError();
   }
 }

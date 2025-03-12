@@ -15,6 +15,7 @@ import '../datasource/api_datasource.dart';
 abstract class IMessageRepository {
   Stream<List<Message>> getMessageStream(String groupId);
   Future<void> addMessage(Message message);
+  Future<void> updatePostUserName(String userId, String newName);
   Future<void> deleteMessage(String messageId);
 }
 
@@ -63,6 +64,33 @@ class MessageRepositoryImpl implements IMessageRepository {
       print('Error deleting post and updating memberships: $e');
     }
   }
+  
+  @override
+  Future<void> updatePostUserName(String userId, String newName) async {
+    WriteBatch batch = FirebaseFirestore.instance.batch();
+    try{
+       QuerySnapshot messageSnapshot = await _apiDataSource.messageCollection
+          .where('userId', isEqualTo: userId)
+          .get();
+
+      for (QueryDocumentSnapshot docs in messageSnapshot.docs) {
+        Map<String, dynamic> data = docs.data() as Map<String, dynamic>;
+        batch.update(
+          docs.reference,
+          Message(
+                  userId: userId,
+                  userName: newName,
+                  groupId: data['groupId'],
+                  text: data['text'])
+              .toJson(),
+        );
+      }
+      batch.commit();
+      return;
+    } catch (error){
+      print('Error updating post : $error');
+    }
+  }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -88,5 +116,11 @@ class MessageRepositoryMock implements IMessageRepository {
   @override
   Future<void> deleteMessage(String messageId) async {
     print('Mock - message deleted');
+  }
+  
+  @override
+  Future<void> updatePostUserName(String userId, String newName) {
+    // TODO: implement updatePostUserName
+    throw UnimplementedError();
   }
 }

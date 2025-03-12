@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ticketbox/domain/entities/user.dart';
 import 'package:ticketbox/infrastructure/repository/auth_repository.dart';
+import 'package:ticketbox/infrastructure/repository/membership_repository.dart';
+import 'package:ticketbox/infrastructure/repository/message_repository.dart';
 import 'package:ticketbox/infrastructure/repository/user_repository.dart';
 
 import '../../../config/injection_container.dart';
@@ -80,7 +82,8 @@ class ProfileViewModel extends BaseViewModel {
                     child: TBFilledButton(
                       onPressed: () async {
                         sl<IUserRepository>().updateUserName(sl<TBUser>().userId, nameController.text);
-                        print('TBUser: ${sl<TBUser>()}');
+                        sl<IMembershipRepository>().updateMembershipName(sl<TBUser>().userId, nameController.text);
+                        sl<IMessageRepository>().updatePostUserName(sl<TBUser>().userId, nameController.text);
                         context.pop();
                       },
                       text: 'Fortsæt',
