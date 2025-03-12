@@ -203,6 +203,7 @@ class MembersViewModel extends BaseViewModel {
                   bool canDelete = deletionCheck['canDelete'];
                   String message = deletionCheck['message'];
 
+                  print(deletionCheck['canDelete']);
                   if (canDelete) {
                     // Delete the membership
                     await sl<IMembershipRepository>().deleteMembership(member);

@@ -75,12 +75,13 @@ class MembershipRepositoryImpl extends IMembershipRepository {
     User? user = await sl<IAuthRepository>().getCurrentUser();
     List<Membership> groupMemberships =
         await getMembershipsByGroupId(membership.groupId);
-
+    print(groupMemberships.length);
     if (groupMemberships.length == 1) {
       result['canDelete'] = true;
       result['message'] =
           'Gruppen er blevet slettet, da det sidste medlem er blevet fjernet.';
       result['groupDeleted'] = true;
+      return result;
     }
 
     bool otherAdminsExist =
@@ -107,6 +108,7 @@ class MembershipRepositoryImpl extends IMembershipRepository {
       QuerySnapshot postsSnapshot = await _apiDataSource.postCollection
           .where('userId', isEqualTo: membership.userId)
           .get();
+          print("hello");
 
       for (QueryDocumentSnapshot doc in postsSnapshot.docs) {
         batch.delete(doc.reference);
