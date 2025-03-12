@@ -57,7 +57,7 @@ class DashboardViewModel extends BaseViewModel {
                         child: TextFormField(
                           decoration: const InputDecoration(
                             label: Text(
-                              'Gruppe navn',
+                              'Gruppenavn',
                               style: TextStyle(
                                 fontSize: 20,
                               ),

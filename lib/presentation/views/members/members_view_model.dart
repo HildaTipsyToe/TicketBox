@@ -25,17 +25,32 @@ class MembersViewModel extends BaseViewModel {
       builder: (context) => Dialog(
         child: SizedBox(
             width: 200,
-            height: 400,
+            height: 250,
             child: Column(
               children: [
-                Center(
-                    child: Container(
-                  margin: const EdgeInsets.symmetric(vertical: 25),
-                  child: const Text(
-                    "Inviter medlem",
-                    style: TextStyle(fontSize: 25),
-                  ),
-                )),
+                SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(width: 20),
+                    Expanded(
+                      child: Center(
+                        child: Text(
+                          "Inviter medlem",
+                          style: TextStyle(fontSize: 25),
+                        ),
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        infoDialog(context);
+                      },
+                      icon: Icon(Icons.info_rounded),
+                    ),
+                  ],
+                ),
                 Expanded(
                   child: Container(
                     padding: const EdgeInsets.all(20),
@@ -179,7 +194,9 @@ class MembersViewModel extends BaseViewModel {
                                 const SnackBar(
                                   backgroundColor: Colors.amber,
                                   content: Text(
-                                      "Der skal mindst være én administrator", style: TextStyle(color: Colors.white),),
+                                    "Der skal mindst være én administrator",
+                                    style: TextStyle(color: Colors.white),
+                                  ),
                                   duration: Duration(seconds: 10),
                                 ),
                               );
@@ -201,7 +218,7 @@ class MembersViewModel extends BaseViewModel {
                   Map<String, dynamic> deletionCheck =
                       await sl<IMembershipRepository>()
                           .canDeleteMembership(member);
-                          print(deletionCheck);
+                  print(deletionCheck);
                   bool canDelete = deletionCheck['canDelete'];
                   String message = deletionCheck['message'];
 
@@ -227,7 +244,10 @@ class MembersViewModel extends BaseViewModel {
                       // Show a message if the membership cannot be deleted
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content: Text(message, style: TextStyle(color: Colors.white),),
+                          content: Text(
+                            message,
+                            style: TextStyle(color: Colors.white),
+                          ),
                           duration: const Duration(seconds: 3),
                         ),
                       );
@@ -237,6 +257,34 @@ class MembersViewModel extends BaseViewModel {
                 text: member.userId == sl<TBUser>().userId
                     ? "Forlad gruppe"
                     : "Fjern medlem",
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Future<void> infoDialog(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) => Dialog(
+        child: SizedBox(
+          width: 200,
+          height: 300,
+          child: Column(
+            children: [
+              SizedBox(height: 10),
+              Text('INFO', style: TextStyle(fontSize: 25)),
+              Padding(
+                padding: EdgeInsets.all(20),
+                child: Text("Hvis du vil tilføje medlemmer til gruppen, skal de først oprettes i app'en. Derefter kan du tilføje dem til gruppen ved at indtaste deres e-mail her."),),
+              SizedBox(height: 10),
+              TBFilledButton(
+                  text: 'OK',
+                  onPressed: () async {
+                    Navigator.pop(context);
+                  },
               ),
             ],
           ),
@@ -371,7 +419,7 @@ class MembersViewModel extends BaseViewModel {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 20, vertical: 20),
                       child: TextFormField(
-                        decoration:  InputDecoration(
+                        decoration: InputDecoration(
                           // label: Text(
                           //   'Beløb',
                           //   style: TextStyle(
@@ -412,7 +460,8 @@ class MembersViewModel extends BaseViewModel {
                     child: TBFilledButton(
                       roundBorder: 25,
                       onPressed: () async {
-                        if (amountController.text.isNotEmpty) {
+                        if (amountController.text.isNotEmpty &&
+                            ticketType.ticketTypeId.isNotEmpty) {
                           Post po = Post(
                             adminId: sl<TBUser>().userId,
                             adminName: sl<TBUser>().userName,

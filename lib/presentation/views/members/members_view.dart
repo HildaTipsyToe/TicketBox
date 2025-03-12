@@ -35,12 +35,13 @@ class MembersView extends StatelessWidget {
       // },
       builder: (context) => MembersViewWidget(model: model, groupId: groupId),
       floatingActionButton: roleId == '1'
-          ? FloatingActionButton(
+          ? FloatingActionButton.extended(
               onPressed: () async {
                 await model.addMember(context, groupName, groupId);
               },
               backgroundColor: Colors.white,
-              child: const Icon(Icons.add, size: 32,),
+              label: Text('Tilføj medlem'),
+              icon: const Icon(Icons.add),
             )
           : null // No FAB if roleId is not 1,
     );

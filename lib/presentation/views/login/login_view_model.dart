@@ -107,8 +107,8 @@ class LoginViewModel extends BaseViewModel {
   final createUserFormKey = GlobalKey<FormState>();
 
   LoginViewModel(){
-    passwordController.text = "Test1234";
-    emailController.text = 'j@j.com';
+    // passwordController.text = "Test1234";
+    // emailController.text = 'j@j.com';
   }
 
   SignInAuthError signInAuthError = SignInAuthError.noError;

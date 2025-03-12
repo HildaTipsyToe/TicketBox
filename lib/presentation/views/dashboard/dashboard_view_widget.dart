@@ -29,7 +29,7 @@ class DashboardViewWidget extends StatelessWidget {
           }
           if (!snapshot.hasData || snapshot.data!.isEmpty) {
             return Center(
-              child: Text('Du er ikke medlem af nogen gruppe endnud!'),
+              child: Text('Du er ikke medlem af nogen gruppe endnu!'),
             );
           }
           final group = snapshot.data;
