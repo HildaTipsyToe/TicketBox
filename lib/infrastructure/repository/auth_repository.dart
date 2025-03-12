@@ -70,6 +70,10 @@ class AuthRepositoryImpl extends IAuthRepository {
   signInWithEmailAndPassword(String email, String password) async {
     try {
       await authDataSource.signInWithEmailAndPassword(email, password);
+      TBUser? userExist = await userRepository.getUserByEmail(email);
+      if (userExist == null) {
+        userRepository.createUser(user.userId, user.userName, email);
+      }
     }
     on FirebaseAuthException catch (error) {
       throw AuthError(message: error.message, code: error.code);
