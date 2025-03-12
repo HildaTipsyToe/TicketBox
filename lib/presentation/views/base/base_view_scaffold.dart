@@ -32,23 +32,19 @@ class BaseViewScaffold extends StatelessWidget {
             overrideOnBackPressed: overrideOnBackPressed));
     return Scaffold(
       appBar: appbar,
-      //      ? const Drawer(
-      //    child: null//RoutingNavigationBar(),
-      //  )
-      //      : null,
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
-        child: NotificationListener<OverscrollIndicatorNotification>(
+        child: Column(children: [NotificationListener<OverscrollIndicatorNotification>(
           onNotification: (overscroll) {
             overscroll.disallowIndicator();
             return true;
           },
-          child: SingleChildScrollView(
+          child: Expanded (
             child: Builder(
               builder: (context) => builder(context),
             ),
           ),
-        ),
+        ),],)
       ),
       floatingActionButton: floatingActionButton,
     );

@@ -6,6 +6,8 @@ import 'package:ticketbox/firebase_options.dart';
 import 'package:ticketbox/routing/go_routes.dart';
 
 import 'config/injection_container.dart';
+import 'domain/entities/settings.dart';
+import 'infrastructure/repository/auth_repository.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -15,6 +17,11 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  // Undersøger om der allerede er en bruger logget ind
+  if (await sl<IAuthRepository>().getCurrentUser() != null) {
+    sl<TBSettings>().isLoggedIn = true;
+    sl<IAuthRepository>().getCurrentUser();
+  }
   runApp(const MyApp());
 }
 

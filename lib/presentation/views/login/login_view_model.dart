@@ -101,6 +101,7 @@ class LoginViewModel extends BaseViewModel {
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController createEmailController = TextEditingController();
   final TextEditingController createPasswordController = TextEditingController();
+  final FocusNode passwordFocusNode = FocusNode();
 
   final signInFormKey = GlobalKey<FormState>();
   final createUserFormKey = GlobalKey<FormState>();

@@ -145,7 +145,8 @@ class ChatViewWidget extends StatelessWidget {
                 suffixIcon: TBFilledButton(
                   width: 60,
                   height: 40,
-                  onPressed: () => model.addMessage(groupId),
+                  onPressed: () {
+                    model.addMessage(groupId);},
                   icon: Icons.send,
                 ),
               ),

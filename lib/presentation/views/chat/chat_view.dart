@@ -33,7 +33,7 @@ class _ChatView extends State<ChatView> {
           onPressed: () {},
         ),
       ],
-      overrideOnBackPressed: () {context.pop();},
+      overrideOnBackPressed: () => context.pop(),
       builder: (context) =>
             ChatViewWidget(model: model, groupId: widget.groupId, roleId: widget.roleId),
 

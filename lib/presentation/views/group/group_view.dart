@@ -37,7 +37,7 @@ class GroupView extends StatelessWidget {
         floatingActionButton: FloatingActionButton.extended(
           backgroundColor: Colors.white,
           icon: Icon(Icons.chat),
-          label: Text("åben chat"),
+          label: Text("Åbn chat"),
           onPressed: () => context.pushNamed(
             'chat',
             queryParameters: {

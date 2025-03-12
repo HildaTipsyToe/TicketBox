@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../config/injection_container.dart';
 import '../../../domain/entities/settings.dart';
+import '../../../domain/entities/user.dart';
 import '../../shared/constants/app_colors.dart';
 import '../widget/buttons/filled_button.dart';
 import 'login_view_model.dart';
@@ -17,7 +18,8 @@ class LoginViewWidget extends StatelessWidget {
     return sl<TBSettings>().isLoggedIn == true
         ? Column(
             children: [
-              const Text('Du er logget ind'),
+              SizedBox(height: 20),
+              Text('Du er logget ind som ${sl<TBUser>().userName}'),
               TBFilledButton(
                   onPressed: () {
                     context.goNamed('dashboard');
@@ -36,28 +38,36 @@ class LoginViewWidget extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.all(20),
                     child: TextFormField(
-                        keyboardType: TextInputType.emailAddress,
-                        decoration: const InputDecoration(
-                          label: Text('Email'),
-                          floatingLabelBehavior: FloatingLabelBehavior.always,
-                          labelStyle: TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.bold),
-                        ),
-                        controller: model.emailController,
-                        ),
+                      autofocus: true,
+                      keyboardType: TextInputType.emailAddress,
+                      decoration: const InputDecoration(
+                        label: Text('Email'),
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                        labelStyle: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                      controller: model.emailController,
+                      onFieldSubmitted: (value) {
+                        model.passwordFocusNode.requestFocus();
+                      },
+                    ),
                   ),
                   Container(
                     padding: const EdgeInsets.all(20),
                     child: TextFormField(
+                      focusNode: model.passwordFocusNode,
                       keyboardType: TextInputType.visiblePassword,
                       obscureText: true,
                       decoration: const InputDecoration(
-                          label: Text('Password'),
-                          floatingLabelBehavior: FloatingLabelBehavior.always,
-                          labelStyle: TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.bold),
-                          ),
+                        label: Text('Password'),
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                        labelStyle: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
                       controller: model.passwordController,
+                      onFieldSubmitted: (value) {
+                        model.loginEmail(context);
+                      },
                     ),
                   ),
                   Container(
@@ -76,8 +86,7 @@ class LoginViewWidget extends StatelessWidget {
                         style: TextStyle(
                             fontSize: 12,
                             color: AppColors.tbPrimary,
-                            decoration: TextDecoration.underline
-                        ),
+                            decoration: TextDecoration.underline),
                       ),
                     ),
                   ),
@@ -90,7 +99,10 @@ class LoginViewWidget extends StatelessWidget {
                     child: TextButton(
                       child: Text(
                         'Opret profil',
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(decoration: TextDecoration.underline),
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyMedium
+                            ?.copyWith(decoration: TextDecoration.underline),
                       ),
                       onPressed: () {
                         model.createUserDialog(context);
@@ -100,6 +112,6 @@ class LoginViewWidget extends StatelessWidget {
                 ],
               ),
             ),
-        );
+          );
   }
 }
