@@ -42,7 +42,7 @@ class MembersView extends StatelessWidget {
               backgroundColor: Colors.white,
               child: const Icon(Icons.add, size: 32,),
             )
-          : FloatingActionButton(onPressed: (){}, child: Text(roleId.toString()),) // No FAB if roleId is not 1,
+          : null // No FAB if roleId is not 1,
     );
   }
 }

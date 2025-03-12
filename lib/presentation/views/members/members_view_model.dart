@@ -177,9 +177,10 @@ class MembersViewModel extends BaseViewModel {
                             if (context.mounted) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
+                                  backgroundColor: Colors.amber,
                                   content: Text(
-                                      "Der skal mindst være én administrator"),
-                                  duration: Duration(seconds: 3),
+                                      "Der skal mindst være én administrator", style: TextStyle(color: Colors.white),),
+                                  duration: Duration(seconds: 10),
                                 ),
                               );
                             }
@@ -200,6 +201,7 @@ class MembersViewModel extends BaseViewModel {
                   Map<String, dynamic> deletionCheck =
                       await sl<IMembershipRepository>()
                           .canDeleteMembership(member);
+                          print(deletionCheck);
                   bool canDelete = deletionCheck['canDelete'];
                   String message = deletionCheck['message'];
 
@@ -225,7 +227,7 @@ class MembersViewModel extends BaseViewModel {
                       // Show a message if the membership cannot be deleted
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content: Text(message),
+                          content: Text(message, style: TextStyle(color: Colors.white),),
                           duration: const Duration(seconds: 3),
                         ),
                       );
