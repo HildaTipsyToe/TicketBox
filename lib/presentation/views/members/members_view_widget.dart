@@ -33,7 +33,7 @@ class MembersViewWidget extends StatelessWidget {
               children: [
                 const Center(
                   child: Text(
-                    "Gruppe medlemmer",
+                    "Gruppemedlemmer",
                     style: TextStyle(fontSize: 20),
                   ),
                 ),
