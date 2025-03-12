@@ -81,7 +81,11 @@ class MessageRepositoryImpl implements IMessageRepository {
                   userId: userId,
                   userName: newName,
                   groupId: data['groupId'],
-                  text: data['text'])
+                  text: data['text'],
+                  messageId: data['messageId'],
+                  timeStamp: data['timeStamp']
+                  )
+
               .toJson(),
         );
       }
