@@ -19,7 +19,11 @@ class ProfileViewModel extends BaseViewModel {
   ProfileViewModel () {
     nameController.text = sl<TBUser>().userName;
     emailController.text = sl<TBUser>().userMail;
+  }
 
+  void getCurrentUser(){
+    nameController.text = sl<TBUser>().userName;
+    emailController.text = sl<TBUser>().userMail;
   }
 
 

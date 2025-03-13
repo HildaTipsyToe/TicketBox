@@ -13,6 +13,7 @@ class ProfileViewWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    model.getCurrentUser();
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
       height: MediaQuery.of(context).size.height - 70,
@@ -22,27 +23,37 @@ class ProfileViewWidget extends StatelessWidget {
               style: const TextStyle(fontSize: 30, color: Colors.black)),
           SizedBox(height: 30),
           TextField(
-            controller: model.nameController, // Sætter teksten i textfielden
+            controller:
+                model.nameController, // Sætter teksten i textfielden
             readOnly: true, // Deaktiverer textfielden
             decoration: InputDecoration(
               labelText: 'Navn', // Label teksten
-              border: OutlineInputBorder( // Tilføjer border omkring textfield
-                borderRadius: BorderRadius.circular(8.0), // Rundede hjørner på borderen
+              border: OutlineInputBorder(
+                // Tilføjer border omkring textfield
+                borderRadius:
+                    BorderRadius.circular(8.0), // Rundede hjørner på borderen
               ),
-              contentPadding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 10.0), // Øger størrelsen på textfielden
+              contentPadding: EdgeInsets.symmetric(
+                  vertical: 20.0,
+                  horizontal: 10.0), // Øger størrelsen på textfielden
             ),
             style: TextStyle(fontSize: 18), // Gør tekststørrelsen større
           ),
           SizedBox(height: 20),
           TextField(
-            controller: model.emailController, // Sætter teksten i textfielden
+            controller:
+                model.emailController, // Sætter teksten i textfielden
             readOnly: true, // Deaktiverer textfielden
             decoration: InputDecoration(
               labelText: 'Email', // Label teksten
-              border: OutlineInputBorder( // Tilføjer border omkring textfield
-                borderRadius: BorderRadius.circular(8.0), // Rundede hjørner på borderen
+              border: OutlineInputBorder(
+                // Tilføjer border omkring textfield
+                borderRadius:
+                    BorderRadius.circular(8.0), // Rundede hjørner på borderen
               ),
-              contentPadding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 10.0), // Øger størrelsen på textfielden
+              contentPadding: EdgeInsets.symmetric(
+                  vertical: 20.0,
+                  horizontal: 10.0), // Øger størrelsen på textfielden
             ),
             style: TextStyle(fontSize: 18), // Gør tekststørrelsen større
           ),
@@ -52,7 +63,9 @@ class ProfileViewWidget extends StatelessWidget {
               text: 'Rediger profil',
               width: 200,
               onPressed: () {
-                model.editUserDialog(context);
+                  model.editUserDialog(context);
+                // setState(() {
+                // });
               },
             ),
           ),
