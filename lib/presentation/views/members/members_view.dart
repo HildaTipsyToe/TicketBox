@@ -33,7 +33,7 @@ class MembersView extends StatelessWidget {
       // overrideOnBackPressed: () {
       //   context.go("/");
       // },
-      builder: (context) => MembersViewWidget(model: model, groupId: groupId),
+      builder: (context) => MembersViewWidget(model: model, groupId: groupId, roleId: roleId,),
       floatingActionButton: roleId == '1'
           ? FloatingActionButton.extended(
               onPressed: () async {

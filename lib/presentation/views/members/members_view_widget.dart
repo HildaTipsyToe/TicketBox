@@ -10,16 +10,17 @@ import 'package:ticketbox/presentation/views/widget/process_indicator/circular_p
 class MembersViewWidget extends StatelessWidget {
   final MembersViewModel model;
   final String groupId;
+  final String roleId;
 
   const MembersViewWidget({
     super.key,
     required this.model,
     required this.groupId,
+    required this.roleId,
   });
 
   @override
   Widget build(BuildContext context) {
-    print(groupId);
     return StreamBuilder(
       stream: model.fetchMember(groupId),
       builder: (context, snapshot) {
@@ -41,7 +42,11 @@ class MembersViewWidget extends StatelessWidget {
                   Stack(
                     children: [
                       TBCard(
-                        onPressed: () {},
+                        onPressed: () {
+                          if(roleId == '1' || roleId == '2') {
+                            model.seeTickets(context, data.userId, data.userName, groupId);
+                          }
+                        },
                         shadowColor: const Color.fromARGB(255, 161, 160, 160),
                         width: MediaQuery.of(context).size.width / 3 * 2,
                         padding: const EdgeInsets.all(16.0),

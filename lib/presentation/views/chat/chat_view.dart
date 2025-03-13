@@ -6,19 +6,12 @@ import '../base/base_view_scaffold.dart';
 import 'chat_view_model.dart';
 import 'chat_view_widget.dart';
 
-class ChatView extends StatefulWidget {
+class ChatView extends StatelessWidget {
   final String groupId;
   final String roleId;
+  final ChatViewModel model = sl<ChatViewModel>();
 
-  const ChatView({super.key, required this.groupId, required this.roleId});
-
-  @override
-  State<ChatView> createState() => _ChatView();
-}
-
-class _ChatView extends State<ChatView> {
-
-  final model = sl<ChatViewModel>();
+  ChatView({super.key, required this.groupId, required this.roleId});
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +28,7 @@ class _ChatView extends State<ChatView> {
       ],
       overrideOnBackPressed: () => context.pop(),
       builder: (context) =>
-            ChatViewWidget(model: model, groupId: widget.groupId, roleId: widget.roleId),
+            ChatViewWidget(model: model, groupId: groupId, roleId: roleId),
 
     );
   }

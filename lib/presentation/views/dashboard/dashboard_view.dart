@@ -6,15 +6,20 @@ import 'package:ticketbox/presentation/views/dashboard/dashboard_view_widget.dar
 // import 'package:ticketbox/presentation/views/widget/Fab/action_button.dart';
 // import 'package:ticketbox/presentation/views/widget/Fab/expandable_fab.dart' show ExpandableFab;
 
-class DashboardView extends StatefulWidget {
-  const DashboardView({super.key});
+// class DashboardView extends StatefulWidget {
+//   const DashboardView({super.key});
+//
+//   @override
+//   State<StatefulWidget> createState() => _DashboardView();
+// }
+//
+// class _DashboardView extends State<DashboardView> {
+//   final model = sl<DashboardViewModel>();
 
-  @override
-  State<StatefulWidget> createState() => _DashboardView();
-}
+  class DashboardView extends StatelessWidget {
+  final DashboardViewModel model = sl<DashboardViewModel>();
 
-class _DashboardView extends State<DashboardView> {
-  final model = sl<DashboardViewModel>();
+  DashboardView({super.key});
 
   @override
   Widget build(BuildContext context) {

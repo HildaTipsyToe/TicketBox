@@ -36,7 +36,8 @@ void main() {
 
       when(mockAuthDataSource.signInWithEmailAndPassword(email, password))
           .thenAnswer((_) async {}); // Mocking signIn
-
+      when(mockIUserRepository.getUserByEmail(email))
+          .thenAnswer((_) async => mockTBUser);
       // Act
       await authRepository.signInWithEmailAndPassword(email, password);
 

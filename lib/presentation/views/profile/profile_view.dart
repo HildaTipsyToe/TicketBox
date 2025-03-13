@@ -6,17 +6,10 @@ import '../base/base_view_scaffold.dart';
 import 'profile_view_model.dart';
 import 'profile_view_widget.dart';
 
-class ProfileView extends StatefulWidget {
-
-  const ProfileView({super.key});
-
-  @override
-  State<ProfileView> createState() => _ProfileView();
-}
-
-class _ProfileView extends State<ProfileView> {
-
+class ProfileView extends StatelessWidget {
   final model = sl<ProfileViewModel>();
+
+  ProfileView({super.key});
 
   @override
   Widget build(BuildContext context) {

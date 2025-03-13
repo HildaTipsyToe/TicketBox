@@ -4,7 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:ticketbox/config/injection_container.dart';
 import 'package:ticketbox/domain/entities/membership.dart';
-import 'package:ticketbox/domain/entities/message.dart';
 import 'package:ticketbox/infrastructure/datasource/api_datasource.dart';
 import 'package:ticketbox/infrastructure/repository/auth_repository.dart';
 

@@ -10,8 +10,11 @@ import 'package:ticketbox/infrastructure/repository/post_repository.dart';
 import 'package:ticketbox/infrastructure/repository/tickettype_repository.dart';
 import 'package:ticketbox/infrastructure/repository/user_repository.dart';
 import 'package:ticketbox/presentation/views/base/base_view_model.dart';
+import 'package:ticketbox/presentation/views/group/group_view_model.dart';
 import 'package:ticketbox/presentation/views/widget/buttons/filled_button.dart';
 import 'package:ticketbox/presentation/views/widget/dropdowns/dropdown_button.dart';
+
+import '../widget/process_indicator/circular_progress_indicator.dart';
 
 class MembersViewModel extends BaseViewModel {
   bool isDeleted = false;
@@ -278,13 +281,15 @@ class MembersViewModel extends BaseViewModel {
               Text('INFO', style: TextStyle(fontSize: 25)),
               Padding(
                 padding: EdgeInsets.all(20),
-                child: Text("Hvis du vil tilføje medlemmer til gruppen, skal de først oprettes i app'en. Derefter kan du tilføje dem til gruppen ved at indtaste deres e-mail her."),),
+                child: Text(
+                    "Hvis du vil tilføje medlemmer til gruppen, skal de først oprettes i app'en. Derefter kan du tilføje dem til gruppen ved at indtaste deres e-mail her."),
+              ),
               SizedBox(height: 10),
               TBFilledButton(
-                  text: 'OK',
-                  onPressed: () async {
-                    Navigator.pop(context);
-                  },
+                text: 'OK',
+                onPressed: () async {
+                  Navigator.pop(context);
+                },
               ),
             ],
           ),
@@ -312,6 +317,10 @@ class MembersViewModel extends BaseViewModel {
       return true;
     }
     return false;
+  }
+
+  Future<void> deletePost(Post post) async {
+    await sl<IPostRepository>().deletePost(post);
   }
 
   Future<DateTime> _selectDate(
@@ -488,4 +497,150 @@ class MembersViewModel extends BaseViewModel {
       },
     );
   }
+
+  Future<void> seeTickets(BuildContext context, String userId, String userName,
+      String groupId) async {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) => Dialog(
+        child: SizedBox(
+          width: MediaQuery.of(context).size.width - 70,
+          height: MediaQuery.of(context).size.height - 100,
+          child: Column(children: [
+            SizedBox(height: 15),
+            Text(userName, style: TextStyle(fontSize: 25)),
+            StreamBuilder(
+                  stream: sl<GroupViewModel>()
+                      .getPostsByReceiverIdAndGroupId(userId, groupId),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      final data = snapshot.data;
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 30),
+                        child: Container(
+                          margin: EdgeInsets.only(top: 10),
+                          height: MediaQuery.of(context).size.height - 270,
+                          width: MediaQuery.of(context).size.width - 70,
+                          decoration: BoxDecoration(
+                            border: Border.all(width: 2, color: Colors.grey),
+                            borderRadius: BorderRadius.circular(3),
+                          ),
+                          child: data!.isEmpty
+                              ? SizedBox(
+                                  width: double.infinity,
+                                  height: double.infinity,
+                                  child: Center(
+                                    child: Text('Ingen bøder på oversigten'),
+                                  ),
+                                )
+                              : ListView.builder(
+                                  physics:
+                                      const AlwaysScrollableScrollPhysics(),
+                                  shrinkWrap: false,
+                                  padding: const EdgeInsets.all(8),
+                                  itemCount: data.length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return Stack(children: [
+                                      Container(
+                                        padding: const EdgeInsets.all(15),
+                                        margin: const EdgeInsets.only(
+                                            bottom: 5,
+                                            left: 8,
+                                            right: 8,
+                                            top: 8),
+                                        decoration: BoxDecoration(
+                                          border: Border.all(
+                                              width: 1, color: Colors.grey),
+                                          borderRadius:
+                                              BorderRadius.circular(2),
+                                        ),
+                                        child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Flexible(
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      data[index]
+                                                          .ticketTypeName,
+                                                      style: const TextStyle(
+                                                          fontSize: 16),
+                                                      overflow: TextOverflow
+                                                          .fade, // Truncates the text with ellipsis if it's too long
+                                                      softWrap:
+                                                          true, // Allows the text to wrap onto a new line if necessary
+                                                    ),
+                                                    Text(
+                                                      data[index].dateIssued ??
+                                                          '01-01-24',
+                                                      style: const TextStyle(
+                                                          fontSize: 10),
+                                                      softWrap: true,
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              Text(
+                                                data[index]
+                                                    .price
+                                                    .toString()
+                                                    .replaceAll('-', ''),
+                                                style: TextStyle(
+                                                    fontSize: 20,
+                                                    color: data[index].price < 0
+                                                        ? Colors.green
+                                                        : Colors.red),
+                                              )
+                                            ]),
+                                      ),
+                                      Align(
+                                        alignment: Alignment.topRight,
+                                        child: Container(
+                                          margin:
+                                          EdgeInsets.only(right: 5),
+                                          child: MouseRegion(
+                                            cursor: SystemMouseCursors.click,
+                                            child: GestureDetector(
+                                              onTap: () async => deletePost(data[index]),
+                                              child: Container(
+                                                padding: EdgeInsets.all(4), // Justér størrelsen på cirklen
+                                                decoration: BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  color: Colors.grey[300],
+                                                    border: Border.all(color: Colors.black, width: 1)
+                                                ),
+                                                child: Icon(Icons.delete, size: 20),
+                                              ),
+                                            ),
+                                          ),
+                                        )
+                                      ),
+                                    ]);
+                                  }),
+                        ),
+                      );
+                    } else {
+                      return const TBCircularProgressIndicator();
+                    }
+                  }),
+            SizedBox(height: 10),
+            TBFilledButton(
+              text: 'OK',
+              width: MediaQuery.of(context).size.width /2,
+              onPressed: () async {
+                Navigator.pop(context);
+              },
+            ),
+          ]),
+        ),
+      ),
+    );
+  }
+
+
 }

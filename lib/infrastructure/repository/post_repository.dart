@@ -122,7 +122,7 @@ class PostRepositoryImpl extends IPostRepository {
       String receiverId, String groupId) async {
     try {
       QuerySnapshot querySnapshot = await _apiDataSource.postCollection
-          .where('userId', isEqualTo: receiverId)
+          .where('receiverId', isEqualTo: receiverId)
           .where('groupId', isEqualTo: groupId)
           .get();
 
@@ -156,6 +156,7 @@ class PostRepositoryImpl extends IPostRepository {
     var temp = _apiDataSource.postCollection
         .where('receiverId', isEqualTo: receiverId)
         .where('groupId', isEqualTo: groupId)
+        .orderBy('dateIssued', descending: true)
         .snapshots()
         .map((querySnapshot) => querySnapshot.docs
             .map((doc) => Post.fromMap(doc.data() as Map<String, dynamic>)

@@ -122,44 +122,9 @@ class GroupViewWidget extends StatelessWidget {
                                                     : Colors.red))
                                       ]),
                                 ),
-                                // Positioned(
-                                //   bottom: 0,
-                                //   right: 0,
-                                //   child: CircleAvatar(
-                                //     radius: 20,
-                                //     backgroundColor: AppColors.bkBlackTextColor,
-                                //     child: CircleAvatar(
-                                //       radius: 19,
-                                //       backgroundColor: AppColors.bkPrimary,
-                                //       child: IconButton(
-                                //         onPressed: () {},
-                                //         color: AppColors.bkWhiteTextColor,
-                                //         icon: const Icon(Icons.people),
-                                //       ),
-                                //     ),
-                                //   ),
-                                // ),
-                                // Positioned(
-                                //   bottom: 0,
-                                //   right: 50,
-                                //   child: CircleAvatar(
-                                //     radius: 20,
-                                //     backgroundColor: AppColors.bkBlackTextColor,
-                                //     child: CircleAvatar(
-                                //       radius: 19,
-                                //       backgroundColor: AppColors.bkPrimary,
-                                //       child: IconButton(
-                                //         onPressed: () {},
-                                //         color: AppColors.bkWhiteTextColor,
-                                //         icon: const Icon(Icons.attach_money),
-                                //       ),
-                                //     ),
-                                //   ),
-                                // )
                               ]);
                             }),
                   )
-                  //)
                 ],
               ),
             );
