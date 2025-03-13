@@ -36,7 +36,8 @@ class MessageRepositoryImpl implements IMessageRepository {
         .where('groupId', isEqualTo: groupId)
         .orderBy('timeStamp', descending: true)
         .snapshots()
-        .map((querySnapshot) { // Konverter snapshot til liste af Message-objekter
+        .map((querySnapshot) {
+      // Konverter snapshot til liste af Message-objekter
       return querySnapshot.docs.map((doc) {
         return Message.fromMap(doc.id, doc.data() as Map<String, dynamic>);
       }).toList();
@@ -58,40 +59,39 @@ class MessageRepositoryImpl implements IMessageRepository {
   @override
   Future<void> deleteMessage(String messageId) async {
     try {
-      DocumentReference messageRef = _apiDataSource.messageCollection.doc(messageId);
+      DocumentReference messageRef =
+          _apiDataSource.messageCollection.doc(messageId);
       await messageRef.delete();
     } catch (e) {
       print('Error deleting post and updating memberships: $e');
     }
   }
-  
+
   @override
   Future<void> updatePostUserName(String userId, String newName) async {
     WriteBatch batch = FirebaseFirestore.instance.batch();
-    try{
-       QuerySnapshot messageSnapshot = await _apiDataSource.messageCollection
+    try {
+      QuerySnapshot messageSnapshot = await _apiDataSource.messageCollection
           .where('userId', isEqualTo: userId)
           .get();
 
       for (QueryDocumentSnapshot docs in messageSnapshot.docs) {
         Map<String, dynamic> data = docs.data() as Map<String, dynamic>;
+        Message updatedMessage = Message(
+          userId: userId,
+          userName: newName,
+          groupId: data['groupId'],
+          text: data['text'],
+          timeStamp: data['timeStamp'],
+        );
         batch.update(
           docs.reference,
-          Message(
-                  userId: userId,
-                  userName: newName,
-                  groupId: data['groupId'],
-                  text: data['text'],
-                  messageId: data['messageId'],
-                  timeStamp: data['timeStamp']
-                  )
-
-              .toJson(),
+          updatedMessage.toJson(),
         );
       }
       batch.commit();
       return;
-    } catch (error){
+    } catch (error) {
       print('Error updating post : $error');
     }
   }
@@ -101,13 +101,16 @@ class MessageRepositoryImpl implements IMessageRepository {
 
 // Mockup implementation of the Post repository
 class MessageRepositoryMock implements IMessageRepository {
-
   @override
   Stream<List<Message>> getMessageStream(String groupId) {
     print('Mock - get Stream');
     final controller = StreamController<List<Message>>();
     List<Message> messages = [];
-    messages.add(Message(userId: 'userId', userName: 'userName', groupId: groupId, text: 'text'));
+    messages.add(Message(
+        userId: 'userId',
+        userName: 'userName',
+        groupId: groupId,
+        text: 'text'));
     controller.add(List.from(messages)); // Sender en ny liste til streamen
     return controller.stream;
   }
@@ -121,7 +124,7 @@ class MessageRepositoryMock implements IMessageRepository {
   Future<void> deleteMessage(String messageId) async {
     print('Mock - message deleted');
   }
-  
+
   @override
   Future<void> updatePostUserName(String userId, String newName) {
     // TODO: implement updatePostUserName

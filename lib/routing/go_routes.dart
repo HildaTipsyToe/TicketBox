@@ -16,12 +16,6 @@ import 'nav_enums.dart';
 GoRouter goRoutes = GoRouter(
   initialLocation: sl<TBSettings>().isLoggedIn ? '/' : '/login',
   routes: [
-    // ShellRoute(
-    //   builder: (context, state, child) => MainLayout(
-    //     state: state,
-    //     child: child,
-    //   ),
-    //   routes: <RouteBase>[
     GoRoute(
         path: '/',
         builder: (BuildContext context, GoRouterState state) {
