@@ -117,10 +117,11 @@ class DashboardViewWidget extends StatelessWidget {
                       Positioned(
                         bottom: 0,
                         right: 0,
-                        child: SizedBox(
+                        child: data.roleId != 4 ? SizedBox(
                           width: 300, // Adjust based on your layout needs
                           height: 100, // Adjust based on your layout needs
-                          child: ExpandableFab(
+                          child:
+                          ExpandableFab(
                             distance: 50,
                             children: [
                               if (data.roleId == 1)
@@ -129,7 +130,6 @@ class DashboardViewWidget extends StatelessWidget {
                                   onPressed: () async => await model
                                       .deleteGroup(context, data.groupId),
                                 ),
-                              if (data.roleId != 4)
                                 ActionButton(
                                   icon: Icon(Icons.people_outline),
                                   onPressed: () => context.pushNamed(
@@ -141,39 +141,40 @@ class DashboardViewWidget extends StatelessWidget {
                                     },
                                   ),
                                 ),
-                              if (data.roleId == 4)
-                                ActionButton(
-                                    icon: Icon(
-                                      Icons.close,
-                                      color: Colors.red,
-                                    ),
-                                    onPressed: () async {
-                                      print("hello");
-                                      await model.leaveGroup(data);
-                                    }),
-                              if (data.roleId == 4)
-                                ActionButton(
+
+                            ],
+                          ),)
+                          : Row(children: [
+                              ActionButton(
                                   icon: Icon(
-                                    Icons.check,
-                                    color: Colors.green,
+                                    Icons.close,
+                                    color: Colors.red,
                                   ),
                                   onPressed: () async {
-                                    Membership updatedMembership = Membership(
-                                      userId: data.userId,
-                                      userName: data.userName,
-                                      groupId: data.groupId,
-                                      groupName: data.groupName,
-                                      balance: data.balance,
-                                      roleId: 3,
-                                    );
-                                    await model.updateRole(
-                                        data.membershipId, updatedMembership);
-                                  },
-                                )
-                            ],
-                          ),
+                                    await model.leaveGroup(data);
+                                  }),
+                              SizedBox(width: 15),
+                              ActionButton(
+                                icon: Icon(
+                                  Icons.check,
+                                  color: Colors.green,
+                                ),
+                                onPressed: () async {
+                                  Membership updatedMembership = Membership(
+                                    userId: data.userId,
+                                    userName: data.userName,
+                                    groupId: data.groupId,
+                                    groupName: data.groupName,
+                                    balance: data.balance,
+                                    roleId: 3,
+                                  );
+                                  await model.updateRole(
+                                      data.membershipId, updatedMembership);
+                                },
+                              )
+                          ],),
                         ),
-                      ),
+
                       // if (data.roleId == 1)
                       //   Positioned(
                       //     right: 100,
