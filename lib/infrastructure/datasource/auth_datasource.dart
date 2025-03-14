@@ -20,6 +20,7 @@ abstract class AuthDataSource {
   Future<void> forgotPassword(String email);
   Future<void> signOut();
   Future<void> updateDisplayName(String displayName);
+  Future<void> deleteUser();
 }
 
 class FirebaseAuthDataSource extends AuthDataSource {
@@ -92,6 +93,16 @@ class FirebaseAuthDataSource extends AuthDataSource {
     try {
       await firebaseAuth.currentUser?.updateDisplayName(displayName);
       await getCurrentUser();
+    }
+    on FirebaseAuthException catch (error) {
+      throw AuthError(message: error.message, code: error.code);
+    }
+  }
+
+  @override
+  Future<void> deleteUser() async {
+    try {
+      await firebaseAuth.currentUser?.delete();
     }
     on FirebaseAuthException catch (error) {
       throw AuthError(message: error.message, code: error.code);

@@ -16,6 +16,7 @@ abstract class IAuthRepository {
   Future<void> createUser(String name, String email, String password);
   Future<void> signOut();
   Future<void> updateDisplayName(String displayName);
+  Future<void> deleteUser();
 }
 
 // Mockup implementation of the auth repository
@@ -55,6 +56,11 @@ class AuthRepositoryMock extends IAuthRepository {
   @override
   Future<void> updateDisplayName(String displayName) async {
     print('Mock - update displayName');
+  }
+
+  @override
+  Future<void> deleteUser() async {
+    print('Mock - delete user');
   }
 }
 
@@ -116,6 +122,13 @@ class AuthRepositoryImpl extends IAuthRepository {
   @override
   Future<void> updateDisplayName(String displayName) async {
     await authDataSource.updateDisplayName(displayName);
+  }
+
+  ///Sletter brugeren - Vi slette dog ikke alt den tilhørende data
+  @override
+  Future<void> deleteUser() async {
+    settings.isLoggedIn = false;
+    await authDataSource.deleteUser();
   }
 }
 

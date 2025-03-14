@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ticketbox/presentation/views/widget/buttons/filled_button.dart';
 
+import '../../shared/constants/app_colors.dart';
 import 'profile_view_model.dart';
 
 class ProfileViewWidget extends StatelessWidget {
@@ -67,6 +68,26 @@ class ProfileViewWidget extends StatelessWidget {
                 // setState(() {
                 // });
               },
+            ),
+          ),
+          Container(
+            alignment: Alignment.topRight,
+            height: 26.0,
+            width: MediaQuery.of(context).size.width - 100,
+            child: TextButton(
+              style: TextButton.styleFrom(
+                  padding: const EdgeInsets.all(0.0)),
+              onPressed: () {
+                model.deleteUserDialog(context);
+              },
+              child: const Text(
+                'Slet bruger?',
+                textAlign: TextAlign.right,
+                style: TextStyle(
+                    fontSize: 12,
+                    color: AppColors.tbPrimary,
+                    decoration: TextDecoration.underline),
+              ),
             ),
           ),
         ],

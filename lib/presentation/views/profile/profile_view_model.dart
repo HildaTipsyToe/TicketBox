@@ -101,4 +101,50 @@ class ProfileViewModel extends BaseViewModel {
       },
     );
   }
+
+  Future<void> deleteUserDialog(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) => Dialog(
+        child: SizedBox(
+          width: 200,
+          height: 250,
+          child: Column(
+            children: [
+              SizedBox(height: 10),
+              Text('Slet bruger', style: TextStyle(fontSize: 25)),
+              Padding(
+                padding: EdgeInsets.all(20),
+                child: Text(
+                    "Er du sikker på, du vil slette din bruger?"),
+              ),
+              SizedBox(height: 10),
+              Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                TBFilledButton(
+                  text: 'Annuller',
+                  width: 100,
+                  color: Colors.red,
+                  onPressed: () async {
+                    Navigator.pop(context);
+                  },
+                ),
+                TBFilledButton(
+                  text: 'OK',
+                  width: 100,
+                  color: Colors.green,
+                  onPressed: () async {
+                    await sl<IAuthRepository>().deleteUser();
+                    if (context.mounted) {
+                      Navigator.popUntil(context, (route) => route.isFirst);
+                    }
+                  },
+                ),
+              ]),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 }
