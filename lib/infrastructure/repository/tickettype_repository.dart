@@ -114,7 +114,7 @@ class TicketTypeRepositoryMock extends ITicketTypeRepository {
     final controller = StreamController<List<TicketType>>();
     List<TicketType> ticketType = [];
     ticketType.add(TicketType(ticketName: 'test', groupId: groupId));
-    controller.add(List.from(ticketType)); // Sender en ny liste til streamen
+    controller.add(List.from(ticketType));
     return controller.stream;
   }
 }

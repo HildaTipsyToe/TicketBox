@@ -24,7 +24,6 @@ import '../presentation/views/login/login_view_model.dart';
 final sl = GetIt.instance;
 bool mock = false;
 
-
 Future<void> injectionInit() async {
   _initViewModels();
   _initUseCases();
@@ -68,13 +67,10 @@ void _initRepositories() {
   }
 }
 
-
-
 void _initDataSources() {
   sl.registerLazySingleton<ApiDataSource>(() => ApiDataSource());
   sl.registerLazySingleton<AuthDataSource>(() => FirebaseAuthDataSource(firebaseAuth: FirebaseAuth.instance, settings: sl<TBSettings>(), user: sl<TBUser>()));
 }
-
 
 void _initExternals() {
   // sl.registerLazySingleton(() => const FlutterSecureStorage());

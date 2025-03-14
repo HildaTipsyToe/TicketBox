@@ -64,6 +64,7 @@ class AuthRepositoryImpl extends IAuthRepository {
   final IUserRepository userRepository;
   final TBSettings settings; // Inject TBSettings instead of using GetIt
   final TBUser user;
+
   AuthRepositoryImpl(this.authDataSource, this.settings, this.userRepository, this.user);
 
   @override

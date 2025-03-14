@@ -39,14 +39,13 @@ final AuthDataSource _authDatasource;
       if (querySnapshot.docs.isNotEmpty) {
         var userDoc = querySnapshot.docs.first;
         // Parse the collection into a TBUser object
-        var userData = userDoc.data() as Map<String, dynamic>;  // Hent data som en Map<String, dynamic>
+        var userData = userDoc.data() as Map<String, dynamic>;
         return TBUser(
           userId: userDoc.id,
-          userName: userData['userName'],  // Brug data() direkte
-          userMail: userData['userMail'],  // Brug data() direkte
+          userName: userData['userName'],
+          userMail: userData['userMail'],
         );
       }
-      //If the search result retrieved nothing
       return null;
     } catch (error) {
       log('Error handling fetching by email: $error');

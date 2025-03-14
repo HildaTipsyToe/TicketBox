@@ -75,24 +75,19 @@ class MembershipRepositoryImpl extends IMembershipRepository {
       'groupDeleted': false
     };
     User? user = await sl<IAuthRepository>().getCurrentUser();
-    List<Membership> groupMemberships =
-        await getMembershipsByGroupId(membership.groupId);
+    List<Membership> groupMemberships = await getMembershipsByGroupId(membership.groupId);
     if (groupMemberships.length == 1) {
       result['canDelete'] = true;
-      result['message'] =
-          'Gruppen er blevet slettet, da det sidste medlem er blevet fjernet.';
+      result['message'] = 'Gruppen er blevet slettet, da det sidste medlem er blevet fjernet.';
       result['groupDeleted'] = true;
       return result;
     }
 
-    bool otherAdminsExist =
-        groupMemberships.any((x) => x.roleId == 1 && x.userId != user?.uid);
+    bool otherAdminsExist = groupMemberships.any((x) => x.roleId == 1 && x.userId != user?.uid);
 
     if (!otherAdminsExist && membership.userId == user?.uid) {
-      result['canDelete'] =
-          false; //should already be false, but hey! can be to sure sometimes
-      result['message'] =
-          'Du kan ikke forlade gruppen som den eneste administrator.';
+      result['canDelete'] = false; //should already be false, but hey! can be to sure sometimes
+      result['message'] = 'Du kan ikke forlade gruppen som den eneste administrator.';
     } else {
       result['canDelete'] = true;
       result['message'] = 'Bruger er blevet fjernet fra gruppen';
@@ -132,11 +127,8 @@ class MembershipRepositoryImpl extends IMembershipRepository {
   @override
   Future<bool> canUpdateMembershipRole(Membership membership) async {
     User? user = await sl<IAuthRepository>().getCurrentUser();
-    List<Membership> groupMemberships =
-        await getMembershipsByGroupId(membership.groupId);
-
-    bool otherAdminsExist =
-        groupMemberships.any((x) => x.roleId == 1 && x.userId != user?.uid);
+    List<Membership> groupMemberships = await getMembershipsByGroupId(membership.groupId);
+    bool otherAdminsExist = groupMemberships.any((x) => x.roleId == 1 && x.userId != user?.uid);
 
     if (!otherAdminsExist && membership.userId == user?.uid) {
       return false;
@@ -152,9 +144,9 @@ class MembershipRepositoryImpl extends IMembershipRepository {
         .where('userId', isEqualTo: id)
         .snapshots()
         .map((querySnapshot) => querySnapshot.docs
-            .map((doc) => Membership.fromMap(doc.data() as Map<String, dynamic>)
-                .copyWith(membershipId: doc.id))
-            .toList());
+          .map((doc) => Membership.fromMap(doc.data() as Map<String, dynamic>)
+        .copyWith(membershipId: doc.id))
+        .toList());
   }
 
   /// Method for retrieving memberships by the user ID with value [id]
@@ -167,9 +159,7 @@ class MembershipRepositoryImpl extends IMembershipRepository {
 
       List<Membership> membership = querySnapshot.docs
           .map((doc) => Membership.fromMap(doc.data() as Map<String, dynamic>)
-              .copyWith(
-                  membershipId: doc
-                      .id)) //using the CopyWith because the Id is the doc id, and not in the object itself.
+            .copyWith(membershipId: doc.id)) //using the CopyWith because the Id is the doc id, and not in the object itself.
           .toList();
 
       return membership;
@@ -360,8 +350,7 @@ class MembershipRepositoryMock extends IMembershipRepository {
   }
 
   @override
-  Future<void> updateMembershipName(String userId, String newName) {
-    // TODO: implement updateMembershipName
-    throw UnimplementedError();
+  Future<void> updateMembershipName(String userId, String newName) async {
+    print('Mock - membershipName updated');
   }
 }

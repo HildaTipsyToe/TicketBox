@@ -14,14 +14,12 @@ import '../repository/auth_repository.dart';
 abstract class AuthDataSource {
 
   Stream<User?> get authStatus;
-
   Future<void> signInWithEmailAndPassword(String email, String password);
   Future<User?> getCurrentUser();
   Future<void> createUser(String name, String email, String password);
   Future<void> forgotPassword(String email);
   Future<void> signOut();
   Future<void> updateDisplayName(String displayName);
-
 }
 
 class FirebaseAuthDataSource extends AuthDataSource {
@@ -30,7 +28,6 @@ class FirebaseAuthDataSource extends AuthDataSource {
   final TBUser user;
 
   FirebaseAuthDataSource({required this.firebaseAuth, required this.settings, required this.user});
-
 
   @override
   Stream<User?> get authStatus => firebaseAuth.authStateChanges();
@@ -59,11 +56,6 @@ class FirebaseAuthDataSource extends AuthDataSource {
           email: email, password: password);
           settings.isLoggedIn = true;
           getCurrentUser();
-          // User? temp = firebaseAuth.currentUser;
-          // user.userId = temp!.uid;
-          // user.userName = (temp.displayName ?? temp.email)!;
-          // user.userMail = temp.email!;
-
     } on FirebaseAuthException catch (error) {
       throw AuthError(message: error.message, code: error.code);
     }
@@ -80,10 +72,6 @@ class FirebaseAuthDataSource extends AuthDataSource {
       await firebaseAuth.currentUser?.updateDisplayName(name);
       settings.isLoggedIn = true;
       getCurrentUser();
-      // User? temp = firebaseAuth.currentUser;
-      // user.userId = temp!.uid;
-      // user.userName = temp.displayName!;
-      // user.userMail = temp.email!;
     } on FirebaseAuthException catch (error) {
       throw AuthError(message: error.message, code: error.code);
     }

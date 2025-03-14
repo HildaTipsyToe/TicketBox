@@ -37,7 +37,6 @@ class MessageRepositoryImpl implements IMessageRepository {
         .orderBy('timeStamp', descending: true)
         .snapshots()
         .map((querySnapshot) {
-      // Konverter snapshot til liste af Message-objekter
       return querySnapshot.docs.map((doc) {
         return Message.fromMap(doc.id, doc.data() as Map<String, dynamic>);
       }).toList();
@@ -111,7 +110,7 @@ class MessageRepositoryMock implements IMessageRepository {
         userName: 'userName',
         groupId: groupId,
         text: 'text'));
-    controller.add(List.from(messages)); // Sender en ny liste til streamen
+    controller.add(List.from(messages));
     return controller.stream;
   }
 
@@ -126,8 +125,7 @@ class MessageRepositoryMock implements IMessageRepository {
   }
 
   @override
-  Future<void> updatePostUserName(String userId, String newName) {
-    // TODO: implement updatePostUserName
-    throw UnimplementedError();
+  Future<void> updatePostUserName(String userId, String newName) async {
+    print('Mock - message updated');
   }
 }
