@@ -1,16 +1,17 @@
 # ticketbox
 
-A new Flutter project.
+Anders' og Jeppes svendeprojekt
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+Formålet med denne opgave er at udvikle en app, der kan administrere en bødekasse, og som er nem at bruge for alle medlemmer i en gruppe. 
 
-A few resources to get you started if this is your first Flutter project:
+App’en skal være sikker, brugervenlig og skal kunne tilpasses forskellige behov.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+Administratoren skal kunne oprette hold og tilføje brugere hertil. Admin skal også kunne oprette de forskellige bøder, så det står klart og tydeligt for alle brugerne. 
+Kassereren skal kunne uddele bøder og kvittere for betaling, samt tilføje nye spillere. 
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+
+De enkelte brugere skal kunne logge ind og se de forskellige bøder og takster, hvornår de har fået bøder, og hvad de skylder. 
+
+
